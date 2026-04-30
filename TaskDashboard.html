@@ -59,6 +59,36 @@
   .kpi-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:28px;opacity:.08}
   .charts-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px}
   .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px}
+  
+  /* Modern styling for the 3rd column card */
+  .chart-card-alt {
+    background: var(--surface2);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  .chart-card-alt::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-top-left-radius: 12px; border-top-right-radius: 12px;
+  }
+  .chart-card-alt .chart-title {
+    color: #fff; font-size: 13px; letter-spacing: 1.5px; margin-bottom: 22px;
+  }
+  .chart-card-alt .bar-track {
+    height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden;
+  }
+  .chart-card-alt .bar-name {
+    font-weight: 500; color: #d1d4e3;
+  }
+  .chart-card-alt .bar-count {
+    background: var(--surface); padding: 2px 8px; border-radius: 12px;
+    font-size: 11px; color: #fff; border: 1px solid rgba(255,255,255,0.05);
+    font-family: var(--font-head); font-weight: 700;
+  }
+
   .chart-title{font-family:var(--font-head);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
   .bar-list{display:flex;flex-direction:column;gap:10px}
   .bar-item{display:flex;flex-direction:column;gap:4px}
@@ -127,7 +157,7 @@
     <div class="live-badge"><div class="live-dot"></div> LIVE DATA</div>
     <div class="sync-info">
       <div class="sync-label">Last synced from Excel</div>
-      <div class="sync-time">Apr 30, 2026 at 02:17 PM</div>
+      <div class="sync-time">Apr 30, 2026 at 02:21 PM</div>
     </div>
   </div>
 </header>
@@ -198,7 +228,7 @@
   <div class="charts-row">
     <div class="chart-card"><div class="chart-title">Tasks by Company</div><div class="bar-list" id="companyChart"></div></div>
     <div class="chart-card"><div class="chart-title">Priority Split</div><div class="donut-wrap"><svg width="90" height="90" viewBox="0 0 90 90"><g id="donutSegments" transform="translate(45,45)"></g></svg><div class="donut-legend" id="donutLegend"></div></div></div>
-    <div class="chart-card"><div class="chart-title">Assignee Workload</div><div class="bar-list" id="assigneeChart"></div><div style="margin-top:18px"><div class="chart-title" style="margin-bottom:12px">By Service Type</div><div class="bar-list" id="serviceChart"></div></div></div>
+    <div class="chart-card-alt"><div class="chart-title">Assignee Workload</div><div class="bar-list" id="assigneeChart"></div><div style="margin-top:24px"><div class="chart-title" style="margin-bottom:12px">By Service Type</div><div class="bar-list" id="serviceChart"></div></div></div>
   </div>
   <div class="table-card">
     <div class="table-header-row">
@@ -243,9 +273,31 @@ function applyFilters(){const q=document.getElementById('searchInput').value.toL
 function resetFilters(){document.querySelectorAll('.multi-select input[type="checkbox"]').forEach(cb=>cb.checked=false);Object.keys(multiSelectState).forEach(k=>multiSelectState[k]=new Set());document.querySelectorAll('.multi-select-toggle').forEach(btn=>{btn.textContent=btn.getAttribute('data-default')||'All';});document.getElementById('searchInput').value='';filtered=[...RAW_DATA];page=1;render();}
 function sortBy(k){if(sortKey===k)sortDir=sortDir==='asc'?'desc':'asc';else{sortKey=k;sortDir='asc'}document.querySelectorAll('thead th').forEach(th=>th.classList.remove('sorted'));const el=document.getElementById('th-'+k);if(el)el.classList.add('sorted');filtered.sort((a,b)=>{let av=a[k]||'',bv=b[k]||'';if(k==='priority'){av=PRIORITY_ORDER[av]??9;bv=PRIORITY_ORDER[bv]??9}else if(typeof av==='string'){av=av.toLowerCase();bv=bv.toLowerCase()}let r=av<bv?-1:av>bv?1:0;return sortDir==='desc'?-r:r;});render();}
 function updateKPIs(){const t=filtered.length,comp=filtered.filter(d=>d.status==='Completed').length;document.getElementById('kTotal').textContent=t;document.getElementById('kCompleted').textContent=comp;document.getElementById('kCompRate').textContent=pct(comp,t)+'% rate';document.getElementById('kInProgress').textContent=filtered.filter(d=>d.status==='In Progress').length;document.getElementById('kUrgent').textContent=filtered.filter(d=>d.priority==='Urgent').length;document.getElementById('kCompanies').textContent=new Set(filtered.map(d=>d.company)).size;}
-function renderCompanyChart(){const s=Object.entries(countBy(filtered,'company')).sort((a,b)=>b[1]-a[1]).slice(0,7);const max=s[0]?.[1]||1;document.getElementById('companyChart').innerHTML=s.map(([n,v],i)=>`<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,max)}%;background:${COLORS[i%COLORS.length]}"></div></div></div>`).join('');}
+function renderCompanyChart(){
+  const counts = countBy(filtered,'company');
+  const s=Object.entries(counts).filter(([n])=>n&&n.trim()!=='').sort((a,b)=>b[1]-a[1]).slice(0,7);
+  const max=s[0]?.[1]||1;
+  let extraIdx = 0;
+  const COMPANY_COLORS = {'Mithaq':'#b89f7d', 'Koushan':'#f74f4f', 'Midwam':'#f7954f', 'W&B':'#4ff78a', 'SweatArmy':'#f7d44f'};
+  const EXTRA_COLORS = ['#7c5cfc', '#5ce8f7', '#fc5cc7', '#9d4edd', '#00b4d8', '#a8dadc'];
+  
+  document.getElementById('companyChart').innerHTML=s.map(([n,v])=>{
+    const c = COMPANY_COLORS[n] || EXTRA_COLORS[(extraIdx++) % EXTRA_COLORS.length];
+    return `<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,max)}%;background:${c}"></div></div></div>`;
+  }).join('');
+}
 function renderDonut(){const ps=[{k:'Urgent',c:'#f74f4f'},{k:'High',c:'#f7954f'},{k:'Med',c:'#f7d44f'},{k:'Low',c:'#4ff78a'}];const total=filtered.length||1;let sa=-Math.PI/2,segs='',legend='';const R=36,r=22;ps.forEach(({k,c})=>{const n=filtered.filter(d=>d.priority===k).length;if(!n)return;const ang=(n/total)*2*Math.PI,lg=ang>Math.PI?1:0;const x1=Math.cos(sa)*R,y1=Math.sin(sa)*R,x2=Math.cos(sa+ang)*R,y2=Math.sin(sa+ang)*R;const xi=Math.cos(sa)*r,yi=Math.sin(sa)*r,xf=Math.cos(sa+ang)*r,yf=Math.sin(sa+ang)*r;segs+=`<path d="M${xi.toFixed(1)},${yi.toFixed(1)} L${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 ${lg} 1 ${x2.toFixed(1)},${y2.toFixed(1)} L${xf.toFixed(1)},${yf.toFixed(1)} A${r},${r} 0 ${lg} 0 ${xi.toFixed(1)},${yi.toFixed(1)}" fill="${c}" opacity="0.9"/>`;legend+=`<div class="legend-item"><div class="legend-dot" style="background:${c}"></div><span class="legend-label">${k}</span><span class="legend-val">${n}</span></div>`;sa+=ang;});document.getElementById('donutSegments').innerHTML=segs;document.getElementById('donutLegend').innerHTML=legend;}
-function renderAssigneeChart(){const c=countBy(filtered,'assignee'),max=Math.max(...Object.values(c),1);document.getElementById('assigneeChart').innerHTML=Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([n,v],i)=>`<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,max)}%;background:${COLORS[i]}"></div></div></div>`).join('');const sv=countBy(filtered,'service_type'),sm=Math.max(...Object.values(sv),1);document.getElementById('serviceChart').innerHTML=Object.entries(sv).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,v],i)=>`<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,sm)}%;background:${COLORS[i%COLORS.length]}"></div></div></div>`).join('');}
+function renderAssigneeChart(){
+  const c=countBy(filtered,'assignee');
+  const sAssignee=Object.entries(c).filter(([n])=>n&&n.trim()!=='').sort((a,b)=>b[1]-a[1]);
+  const max=sAssignee[0]?.[1]||1;
+  document.getElementById('assigneeChart').innerHTML=sAssignee.map(([n,v],i)=>`<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,max)}%;background:${COLORS[i%COLORS.length]}"></div></div></div>`).join('');
+
+  const sv=countBy(filtered,'service_type');
+  const sService=Object.entries(sv).filter(([n])=>n&&n.trim()!=='').sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const sm=sService[0]?.[1]||1;
+  document.getElementById('serviceChart').innerHTML=sService.map(([n,v],i)=>`<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,sm)}%;background:${COLORS[(i+3)%COLORS.length]}"></div></div></div>`).join('');
+}
 function priorityBadge(p){const m={Urgent:'urgent',High:'high',Med:'med',Low:'low'};const c=m[p]||'med';return`<span class="badge badge-${c}"><span class="badge-dot" style="background:var(--${c})"></span>${p}</span>`;}
 function statusBadge(s){return s==='Completed'?`<span class="badge badge-completed"><span class="badge-dot" style="background:var(--completed)"></span>Done</span>`:`<span class="badge badge-inprogress"><span class="badge-dot" style="background:var(--inprogress)"></span>In Progress</span>`;}
 function assigneeChip(a){const g=a==='Sultan'?'#4f8ef7,#7c5cfc':'#f74f4f,#f7954f';return`<span class="assignee-chip"><span class="assignee-avatar" style="background:linear-gradient(135deg,${g})">${(a||'?')[0]}</span>${a}</span>`;}
