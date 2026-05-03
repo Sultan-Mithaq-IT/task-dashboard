@@ -75,20 +75,65 @@
     border-top-left-radius: 12px; border-top-right-radius: 12px;
   }
   .chart-card-alt .chart-title {
-    color: #fff; font-size: 13px; letter-spacing: 1.5px; margin-bottom: 22px;
+    color: #fff; font-size: 13px; letter-spacing: 1.5px; margin-bottom: 18px;
   }
   .chart-card-alt .bar-track {
-    height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden;
+    height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;
+  }
+  .chart-card-alt .bar-fill {
+    height: 100%; border-radius: 4px; transition: width .6s cubic-bezier(.4,0,.2,1);
+  }
+  .chart-card-alt .bar-item {
+    gap: 6px;
   }
   .chart-card-alt .bar-name {
-    font-weight: 500; color: #d1d4e3;
+    font-size: 13px; font-weight: 500; color: #d1d4e3;
   }
   .chart-card-alt .bar-count {
-    background: var(--surface); padding: 2px 8px; border-radius: 12px;
-    font-size: 11px; color: #fff; border: 1px solid rgba(255,255,255,0.05);
-    font-family: var(--font-head); font-weight: 700;
+    font-size: 13px; font-family: var(--font-head); font-weight: 700; color: #fff;
   }
-
+  .chart-card-alt .bar-list {
+    gap: 12px;
+  }
+  .chart-section-divider {
+    margin: 20px 0; border: none; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .assignee-number-card {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 8px;
+  }
+  .anc-avatar {
+    width: 36px; height: 36px; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; font-family: var(--font-head);
+    font-weight: 800; font-size: 13px; flex-shrink: 0;
+  }
+  .anc-info { flex: 1; min-width: 0; }
+  .anc-name { font-size: 13px; font-weight: 500; color: #d1d4e3; }
+  .anc-share { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .anc-count {
+    font-family: var(--font-head); font-size: 26px; font-weight: 800; line-height: 1;
+  }
+  .service-tile {
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .service-tile:last-child { border-bottom: none; }
+  .svc-icon {
+    width: 34px; height: 34px; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
+  }
+  .svc-info { flex: 1; min-width: 0; }
+  .svc-name { font-size: 12px; font-weight: 500; color: #d1d4e3; margin-bottom: 5px; }
+  .svc-bar-wrap {
+    height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
+  }
+  .svc-bar { height: 100%; border-radius: 2px; transition: width .6s cubic-bezier(.4,0,.2,1); }
+  .svc-count {
+    font-family: var(--font-head); font-size: 16px; font-weight: 800;
+    flex-shrink: 0; min-width: 32px; text-align: right;
+  }
+ 
   .chart-title{font-family:var(--font-head);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
   .bar-list{display:flex;flex-direction:column;gap:10px}
   .bar-item{display:flex;flex-direction:column;gap:4px}
@@ -157,7 +202,7 @@
     <div class="live-badge"><div class="live-dot"></div> LIVE DATA</div>
     <div class="sync-info">
       <div class="sync-label">Last synced from Excel</div>
-      <div class="sync-time">Apr 30, 2026 at 03:57 PM</div>
+      <div class="sync-time">May 03, 2026 at 09:53 AM</div>
     </div>
   </div>
 </header>
@@ -228,7 +273,7 @@
   <div class="charts-row">
     <div class="chart-card"><div class="chart-title">Tasks by Company</div><div class="bar-list" id="companyChart"></div></div>
     <div class="chart-card"><div class="chart-title">Priority Split</div><div class="donut-wrap"><svg width="90" height="90" viewBox="0 0 90 90"><g id="donutSegments" transform="translate(45,45)"></g></svg><div class="donut-legend" id="donutLegend"></div></div></div>
-    <div class="chart-card-alt"><div class="chart-title">Assignee Workload</div><div class="bar-list" id="assigneeChart"></div><div style="margin-top:24px"><div class="chart-title" style="margin-bottom:12px">By Service Type</div><div class="bar-list" id="serviceChart"></div></div></div>
+    <div class="chart-card-alt"><div class="chart-title">Assignee Workload</div><div class="bar-list" id="assigneeChart"></div><hr class="chart-section-divider"><div class="chart-title">By Service Type</div><div class="bar-list" id="serviceChart"></div></div>
   </div>
   <div class="table-card">
     <div class="table-header-row">
@@ -290,13 +335,24 @@ function renderDonut(){const ps=[{k:'Urgent',c:'#f74f4f'},{k:'High',c:'#f7954f'}
 function renderAssigneeChart(){
   const c=countBy(filtered,'assignee');
   const sAssignee=Object.entries(c).filter(([n])=>n&&n.trim()!=='').sort((a,b)=>b[1]-a[1]);
-  const max=sAssignee[0]?.[1]||1;
-  document.getElementById('assigneeChart').innerHTML=sAssignee.map(([n,v],i)=>`<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,max)}%;background:${COLORS[i%COLORS.length]}"></div></div></div>`).join('');
-
+  const total=filtered.length||1;
+  document.getElementById('assigneeChart').innerHTML=sAssignee.map(([n,v],i)=>{
+    const color=COLORS[i%COLORS.length];
+    const initials=n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const share=Math.round(v/total*100);
+    return `<div class="assignee-number-card"><div class="anc-avatar" style="background:${color}20;color:${color};border:1.5px solid ${color}40">${initials}</div><div class="anc-info"><div class="anc-name">${n}</div><div class="anc-share">${share}% of tasks</div></div><div class="anc-count" style="color:${color}">${v}</div></div>`;
+  }).join('');
   const sv=countBy(filtered,'service_type');
   const sService=Object.entries(sv).filter(([n])=>n&&n.trim()!=='').sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const sm=sService[0]?.[1]||1;
-  document.getElementById('serviceChart').innerHTML=sService.map(([n,v],i)=>`<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,sm)}%;background:${COLORS[(i+3)%COLORS.length]}"></div></div></div>`).join('');
+  const SERVICE_ICONS={'Technical Support':'🛠','Hardware':'🖥','Software':'💾','Security':'🔒','Account and Mail':'✉️'};
+  const SERVICE_COLORS={'Technical Support':'#f97316','Hardware':'#22c55e','Software':'#eab308','Security':'#06b6d4','Account and Mail':'#ec4899'};
+  const stotal=Object.values(sv).reduce((a,b)=>a+b,0)||1;
+  document.getElementById('serviceChart').innerHTML=sService.map(([n,v],i)=>{
+    const icon=SERVICE_ICONS[n]||'📌';
+    const color=SERVICE_COLORS[n]||COLORS[(i+3)%COLORS.length];
+    const share=Math.round(v/stotal*100);
+    return `<div class="service-tile"><div class="svc-icon" style="background:${color}18;border:1px solid ${color}30">${icon}</div><div class="svc-info"><div class="svc-name">${n}</div><div class="svc-bar-wrap"><div class="svc-bar" style="width:${share}%;background:${color}"></div></div></div><div class="svc-count" style="color:${color}">${v}</div></div>`;
+  }).join('');
 }
 function priorityBadge(p){const m={Urgent:'urgent',High:'high',Med:'med',Low:'low'};const c=m[p]||'med';return`<span class="badge badge-${c}"><span class="badge-dot" style="background:var(--${c})"></span>${p}</span>`;}
 function statusBadge(s){return s==='Completed'?`<span class="badge badge-completed"><span class="badge-dot" style="background:var(--completed)"></span>Done</span>`:`<span class="badge badge-inprogress"><span class="badge-dot" style="background:var(--inprogress)"></span>In Progress</span>`;}
