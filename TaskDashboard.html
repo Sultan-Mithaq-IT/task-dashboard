@@ -161,7 +161,7 @@
     font-family: var(--font-head); font-size: 16px; font-weight: 800;
     flex-shrink: 0; min-width: 32px; text-align: right;
   }
- 
+
   .chart-title{font-family:var(--font-head);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:18px}
   .bar-list{display:flex;flex-direction:column;gap:10px}
   .bar-item{display:flex;flex-direction:column;gap:4px}
@@ -216,6 +216,110 @@
   .page-btn:hover,.page-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
   .page-btn:disabled{opacity:.3;cursor:not-allowed}
   .empty-state{padding:48px;text-align:center;color:var(--text-muted);font-size:14px}
+
+  /* ── Donut card ── */
+  .donut-card {min-height:320px;display:flex;flex-direction:column;}
+  .donut-center-wrap {display:flex;flex-direction:column;align-items:center;gap:18px;flex:1;justify-content:center;}
+  .donut-svg-wrap {position:relative;filter:drop-shadow(0 0 18px rgba(79,142,247,0.12));}
+  .donut-legend {display:flex;flex-direction:row;flex-wrap:wrap;gap:8px 20px;justify-content:center;}
+  .legend-item {display:flex;align-items:center;gap:7px;}
+  .legend-dot {width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .legend-label {font-size:12px;color:var(--text-muted);}
+  .legend-val {font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text);}
+  .legend-pct {font-family:var(--font-head);font-size:11px;font-weight:600;margin-left:2px;}
+
+  /* ── Duration chart row ── */
+  .charts-row-2 {margin-bottom:24px;}
+  .duration-chart-card {padding:24px 28px;}
+  .duration-header {display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:16px;flex-wrap:wrap;}
+  .duration-subtitle {font-size:12px;color:var(--text-muted);margin-top:4px;}
+  .duration-stats {display:flex;gap:24px;}
+  .dur-stat {text-align:center;}
+  .dur-stat-val {font-family:var(--font-head);font-size:22px;font-weight:800;line-height:1;}
+  .dur-stat-label {font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-top:3px;}
+  .duration-chart-wrap {width:100%;}
+  #durationSvg {width:100%;display:block;overflow:visible;}
+
+  /* ── KPI cards — glowy accent top border ── */
+  .kpi-card {
+    background: linear-gradient(160deg, var(--surface) 60%, color-mix(in srgb, var(--kpi-color) 4%, var(--surface)));
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+  }
+  .kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3), 0 0 0 1px var(--kpi-color,var(--accent));
+  }
+  .kpi-card::after {
+    content:''; position:absolute; inset:0; border-radius:10px;
+    background: radial-gradient(ellipse at 80% 10%, color-mix(in srgb, var(--kpi-color) 10%, transparent), transparent 70%);
+    pointer-events:none;
+  }
+
+  /* ── Chart cards refined ── */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+    transition: box-shadow .2s;
+  }
+  .chart-card:hover {box-shadow: 0 6px 24px rgba(0,0,0,0.25);}
+
+  /* ── Header glow ── */
+  header {
+    background: linear-gradient(135deg,#090c18,#0e1422) !important;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 4px 32px rgba(0,0,0,0.4);
+  }
+  .logo-dot {
+    box-shadow: 0 0 16px rgba(79,142,247,0.4);
+    animation: logoPulse 3s ease-in-out infinite;
+  }
+  @keyframes logoPulse {
+    0%,100% {box-shadow:0 0 16px rgba(79,142,247,0.4);}
+    50% {box-shadow:0 0 28px rgba(124,92,252,0.6);}
+  }
+
+  /* ── Table improvements ── */
+  .table-card {
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+  thead th {
+    background: linear-gradient(180deg, var(--surface3), var(--surface2));
+    border-bottom: 1px solid var(--border);
+    font-size: 10px; letter-spacing: 1.4px;
+  }
+  thead th.sorted {color:var(--accent); text-shadow: 0 0 8px rgba(79,142,247,0.4);}
+  tbody tr {transition: background .12s, transform .12s;}
+  tbody tr:hover {background: var(--surface2); transform: none;}
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar {width:6px;height:6px;}
+  ::-webkit-scrollbar-track {background:var(--surface2);}
+  ::-webkit-scrollbar-thumb {background:var(--surface3);border-radius:3px;}
+  ::-webkit-scrollbar-thumb:hover {background:var(--accent);}
+
+  /* ── Section separator ── */
+  .section-label {
+    font-family:var(--font-head);font-size:10px;font-weight:700;letter-spacing:2px;
+    text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .section-label::after {content:'';flex:1;height:1px;background:var(--border);}
+
   @media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.charts-row{grid-template-columns:1fr 1fr}}
   @media(max-width:768px){main{padding:20px}header{padding:20px}.kpi-grid{grid-template-columns:repeat(2,1fr)}.charts-row{grid-template-columns:1fr}}
 </style>
@@ -231,7 +335,7 @@
     <div class="live-badge"><div class="live-dot"></div> LIVE DATA</div>
     <div class="sync-info">
       <div class="sync-label">Last synced from Excel</div>
-      <div class="sync-time">May 06, 2026 at 02:38 PM</div>
+      <div class="sync-time">May 06, 2026 at 02:40 PM</div>
     </div>
   </div>
 </header>
@@ -292,6 +396,7 @@
     </div>
     <button class="reset-btn" onclick="resetFilters()">↺ Reset All Filters</button>
   </div>
+  <div class="section-label">Overview</div>
   <div class="kpi-grid">
     <div class="kpi-card" style="--kpi-color:#4f8ef7"><div class="kpi-label">Total Tasks</div><div class="kpi-value" id="kTotal">—</div><div class="kpi-sub">All time</div><div class="kpi-icon">📋</div></div>
     <div class="kpi-card" style="--kpi-color:#4ff78a"><div class="kpi-label">Completed</div><div class="kpi-value" id="kCompleted">—</div><div class="kpi-sub" id="kCompRate">—</div><div class="kpi-icon">✓</div></div>
@@ -299,11 +404,36 @@
     <div class="kpi-card" style="--kpi-color:#f74f4f"><div class="kpi-label">Urgent</div><div class="kpi-value" id="kUrgent">—</div><div class="kpi-sub">High priority</div><div class="kpi-icon">🔴</div></div>
     <div class="kpi-card" style="--kpi-color:#7c5cfc"><div class="kpi-label">Companies</div><div class="kpi-value" id="kCompanies">—</div><div class="kpi-sub">Clients served</div><div class="kpi-icon">🏢</div></div>
   </div>
+  <div class="section-label">Analytics</div>
   <div class="charts-row">
     <div class="chart-card"><div class="chart-title">Tasks by Company</div><div class="bar-list" id="companyChart"></div></div>
-    <div class="chart-card"><div class="chart-title">Priority Split</div><div class="donut-wrap"><svg width="160" height="160" viewBox="0 0 160 160"><g id="donutSegments" transform="translate(80,80)"></g></svg><div class="donut-legend" id="donutLegend"></div></div></div>
+    <div class="chart-card donut-card">
+      <div class="chart-title">Priority Split</div>
+      <div class="donut-center-wrap">
+        <div class="donut-svg-wrap">
+          <svg width="220" height="220" viewBox="0 0 220 220"><g id="donutSegments" transform="translate(110,110)"></g><text id="donutCenter" x="110" y="110" text-anchor="middle" dominant-baseline="middle" font-family="Syne,sans-serif" font-weight="800" font-size="28" fill="var(--text)"></text><text id="donutCenterSub" x="110" y="132" text-anchor="middle" dominant-baseline="middle" font-family="DM Sans,sans-serif" font-size="11" fill="var(--text-muted)"></text></svg>
+        </div>
+        <div class="donut-legend" id="donutLegend"></div>
+      </div>
+    </div>
     <div class="chart-card-alt"><div class="chart-title">Assignee Workload</div><div class="bar-list" id="assigneeChart"></div><hr class="chart-section-divider"><div class="chart-title">By Service Type</div><div class="bar-list" id="serviceChart"></div></div>
   </div>
+  <div class="charts-row-2">
+    <div class="chart-card duration-chart-card">
+      <div class="duration-header">
+        <div>
+          <div class="chart-title">Task Duration Distribution</div>
+          <div class="duration-subtitle">Days from entry to due date</div>
+        </div>
+        <div class="duration-stats" id="durationStats"></div>
+      </div>
+      <div class="duration-chart-wrap">
+        <svg id="durationSvg" width="100%" height="160" preserveAspectRatio="none"></svg>
+        <div class="duration-x-labels" id="durationXLabels"></div>
+      </div>
+    </div>
+  </div>
+  <div class="section-label">Task Log</div>
   <div class="table-card">
     <div class="table-header-row">
       <div class="table-title">Task Log</div>
@@ -362,7 +492,32 @@ function renderCompanyChart(){
     return `<div class="bar-item"><div class="bar-meta"><span class="bar-name">${n}</span><span class="bar-count">${v}</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct(v,max)}%;background:${c}"></div></div></div>`;
   }).join('');
 }
-function renderDonut(){const ps=[{k:'Urgent',c:'#f74f4f'},{k:'High',c:'#f7954f'},{k:'Med',c:'#f7d44f'},{k:'Low',c:'#4ff78a'}];const total=filtered.length||1;let sa=-Math.PI/2,segs='',legend='';const R=64,r=44;ps.forEach(({k,c})=>{const n=filtered.filter(d=>d.priority===k).length;if(!n)return;const ang=(n/total)*2*Math.PI,lg=ang>Math.PI?1:0;const x1=Math.cos(sa)*R,y1=Math.sin(sa)*R,x2=Math.cos(sa+ang)*R,y2=Math.sin(sa+ang)*R;const xi=Math.cos(sa)*r,yi=Math.sin(sa)*r,xf=Math.cos(sa+ang)*r,yf=Math.sin(sa+ang)*r;segs+=`<path d="M${xi.toFixed(1)},${yi.toFixed(1)} L${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 ${lg} 1 ${x2.toFixed(1)},${y2.toFixed(1)} L${xf.toFixed(1)},${yf.toFixed(1)} A${r},${r} 0 ${lg} 0 ${xi.toFixed(1)},${yi.toFixed(1)}" fill="${c}" opacity="0.9"/>`;legend+=`<div class="legend-item"><div class="legend-dot" style="background:${c}"></div><span class="legend-label">${k}</span><span class="legend-val">${n}</span></div>`;sa+=ang;});document.getElementById('donutSegments').innerHTML=segs;document.getElementById('donutLegend').innerHTML=legend;}
+function renderDonut(){
+  const ps=[{k:'Urgent',c:'#f74f4f'},{k:'High',c:'#f7954f'},{k:'Med',c:'#f7d44f'},{k:'Low',c:'#4ff78a'}];
+  const total=filtered.length||1;
+  let sa=-Math.PI/2,segs='',legend='';
+  const R=95,r=62;
+  let dominantP=null,dominantN=0;
+  ps.forEach(({k,c})=>{
+    const n=filtered.filter(d=>d.priority===k).length;
+    if(!n)return;
+    if(n>dominantN){dominantN=n;dominantP={k,c};}
+    const ang=(n/total)*2*Math.PI,lg=ang>Math.PI?1:0;
+    const x1=Math.cos(sa)*R,y1=Math.sin(sa)*R,x2=Math.cos(sa+ang)*R,y2=Math.sin(sa+ang)*R;
+    const xi=Math.cos(sa)*r,yi=Math.sin(sa)*r,xf=Math.cos(sa+ang)*r,yf=Math.sin(sa+ang)*r;
+    segs+=`<path d="M${xi.toFixed(1)},${yi.toFixed(1)} L${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 ${lg} 1 ${x2.toFixed(1)},${y2.toFixed(1)} L${xf.toFixed(1)},${yf.toFixed(1)} A${r},${r} 0 ${lg} 0 ${xi.toFixed(1)},${yi.toFixed(1)}" fill="${c}" opacity="0.92" style="transition:opacity .2s" onmouseover="this.style.opacity=1;this.style.filter='brightness(1.2)'" onmouseout="this.style.opacity=0.92;this.style.filter=''"/>`;
+    const pct2=Math.round(n/total*100);
+    legend+=`<div class="legend-item"><div class="legend-dot" style="background:${c}"></div><span class="legend-label">${k}</span><span class="legend-val">${n}</span><span class="legend-pct" style="color:${c}">${pct2}%</span></div>`;
+    sa+=ang;
+  });
+  document.getElementById('donutSegments').innerHTML=segs;
+  document.getElementById('donutLegend').innerHTML=legend;
+  if(dominantP){
+    document.getElementById('donutCenter').textContent=Math.round(dominantN/total*100)+'%';
+    document.getElementById('donutCenter').setAttribute('fill',dominantP.c);
+    document.getElementById('donutCenterSub').textContent=dominantP.k;
+  }
+}
 function renderAssigneeChart(){
   const c=countBy(filtered,'assignee');
   const sAssignee=Object.entries(c).filter(([n])=>n&&n.trim()!=='').sort((a,b)=>b[1]-a[1]);
@@ -393,7 +548,36 @@ function calcDuration(start,end){if(!start||!end)return null;const s=new Date(st
 function durationBadge(d){if(d===null||d===undefined)return'<span style="color:var(--text-muted);font-size:11px">—</span>';const color=d<=7?'var(--low)':d<=30?'var(--high)':'var(--urgent)';return`<span style="font-family:var(--font-head);font-weight:700;font-size:12px;color:${color}">${d}d</span>`;}
 function renderTable(){const s=(page-1)*PER_PAGE,e=s+PER_PAGE,pd=filtered.slice(s,e);document.getElementById('tableBody').innerHTML=pd.length?pd.map(d=>{const dur=calcDuration(d.date_entered,d.due_date);return`<tr><td style="color:var(--text-muted);font-size:11px">#${d.id}</td><td style="color:var(--text-muted);font-size:12px;white-space:nowrap">${fmtDate(d.date_entered)}</td><td><span class="task-text" title="${d.task}">${d.task}</span></td><td style="white-space:nowrap">${d.company}</td><td>${priorityBadge(d.priority)}</td><td>${statusBadge(d.status)}</td><td>${assigneeChip(d.assignee)}</td><td style="font-size:12px;color:var(--text-muted)">${d.service_type}</td><td style="color:var(--text-muted);font-size:12px;white-space:nowrap">${fmtDate(d.due_date)||'—'}</td><td>${durationBadge(dur)}</td></tr>`;}).join(''):`<tr><td colspan="10"><div class="empty-state">No tasks match current filters.</div></td></tr>`;document.getElementById('showCount').textContent=Math.min(e,filtered.length);document.getElementById('totalCount').textContent=filtered.length;const pages=Math.ceil(filtered.length/PER_PAGE);document.getElementById('pageInfo').textContent=filtered.length?`${s+1}–${Math.min(e,filtered.length)} of ${filtered.length}`:'0 results';let btns=`<button class="page-btn" onclick="goPage(${page-1})" ${page<=1?'disabled':''}>‹</button>`;const range=[];for(let i=1;i<=pages;i++){if(i===1||i===pages||Math.abs(i-page)<=1)range.push(i);else if(range[range.length-1]!=='…')range.push('…');}range.forEach(p2=>{btns+=p2==='…'?`<button class="page-btn" disabled>…</button>`:`<button class="page-btn${p2===page?' active':''}" onclick="goPage(${p2})">${p2}</button>`;});btns+=`<button class="page-btn" onclick="goPage(${page+1})" ${page>=pages?'disabled':''}>›</button>`;document.getElementById('pageBtns').innerHTML=btns;}
 function goPage(p2){const pages=Math.ceil(filtered.length/PER_PAGE);if(p2<1||p2>pages)return;page=p2;renderTable();document.querySelector('.table-card').scrollIntoView({behavior:'smooth',block:'start'});}
-function render(){updateKPIs();renderCompanyChart();renderDonut();renderAssigneeChart();renderTable();}
+function renderDurationChart(){
+  const durations=filtered.map(d=>d.duration).filter(v=>v!==null&&v!==undefined&&v>=0&&v<=365);
+  if(!durations.length){document.getElementById('durationSvg').innerHTML='<text x="50%" y="50%" text-anchor="middle" fill="var(--text-muted)" font-size="13">No duration data</text>';return;}
+  durations.sort((a,b)=>a-b);
+  const median=durations[Math.floor(durations.length/2)];
+  const avg=Math.round(durations.reduce((a,b)=>a+b,0)/durations.length);
+  const p25=durations[Math.floor(durations.length*0.25)];
+  const p75=durations[Math.floor(durations.length*0.75)];
+  document.getElementById('durationStats').innerHTML=
+    `<div class="dur-stat"><div class="dur-stat-val" style="color:#4f8ef7">${median}</div><div class="dur-stat-label">Median days</div></div>
+     <div class="dur-stat"><div class="dur-stat-val" style="color:#7c5cfc">${avg}</div><div class="dur-stat-label">Avg days</div></div>
+     <div class="dur-stat"><div class="dur-stat-val" style="color:#4ff78a">${p25}–${p75}</div><div class="dur-stat-label">Middle 50%</div></div>`;
+  const buckets=[{label:'0–7',min:0,max:7,color:'#4ff78a'},{label:'8–14',min:8,max:14,color:'#4f8ef7'},{label:'15–30',min:15,max:30,color:'#f7d44f'},{label:'31–60',min:31,max:60,color:'#f7954f'},{label:'61–90',min:61,max:90,color:'#f74f4f'},{label:'90+',min:91,max:999,color:'#7c5cfc'}];
+  const counts=buckets.map(b=>durations.filter(v=>v>=b.min&&v<=b.max).length);
+  const maxCount=Math.max(...counts)||1;
+  const svgW=900,svgH=140,pad=10,barW=Math.floor((svgW-pad*2)/buckets.length)-10;
+  const bars=buckets.map((b,i)=>{
+    const h=Math.round((counts[i]/maxCount)*(svgH-30));
+    const x=pad+i*(barW+10);
+    const y=svgH-h-20;
+    const isMedianBucket=median>=b.min&&median<=b.max;
+    return `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="4" fill="${b.color}" opacity="${isMedianBucket?'1':'0.55'}" style="transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity='${isMedianBucket?1:0.55}'"/>
+    <text x="${x+barW/2}" y="${y-5}" text-anchor="middle" font-size="11" font-family="Syne,sans-serif" font-weight="700" fill="${b.color}">${counts[i]||''}</text>
+    ${isMedianBucket?`<rect x="${x}" y="0" width="${barW}" height="${svgH-18}" rx="4" fill="${b.color}" opacity="0.06"/>`:''}`;
+  }).join('');
+  const labels=buckets.map((b,i)=>{const x=pad+i*(barW+10)+barW/2;return`<text x="${x}" y="${svgH-4}" text-anchor="middle" font-size="10" font-family="DM Sans,sans-serif" fill="var(--text-muted)">${b.label}d</text>`;}).join('');
+  document.getElementById('durationSvg').setAttribute('viewBox',`0 0 ${svgW} ${svgH}`);
+  document.getElementById('durationSvg').innerHTML=bars+labels;
+}
+function render(){updateKPIs();renderCompanyChart();renderDonut();renderAssigneeChart();renderDurationChart();renderTable();}
 RAW_DATA.forEach(d=>{if(d.date_entered&&d.due_date){const s=new Date(d.date_entered),e=new Date(d.due_date);d.duration=isNaN(s)||isNaN(e)?null:Math.round((e-s)/(1000*60*60*24));}});
 filtered.sort((a,b)=>a.date_entered>b.date_entered?-1:1);
 populateMultiSelect('msYear','year',(a,b)=>b.localeCompare(a));
