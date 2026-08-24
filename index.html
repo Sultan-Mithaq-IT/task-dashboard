@@ -414,7 +414,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
     <button class="hbtn hbtn-icon" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme"></button>
     <div class="sync" id="sync">
       <span class="sync-dot" id="syncDot"></span>
-      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">24 Aug 2026, 12:32</span></div>
+      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">24 Aug 2026, 12:37</span></div>
     </div>
   </div>
 </header>
@@ -1248,7 +1248,7 @@ addEventListener('scroll', () => { $('totop').classList.toggle('show', scrollY >
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-08-24T12:32:12+03:00');
+  const built = new Date('2026-08-24T12:37:14+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
