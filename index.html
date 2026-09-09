@@ -340,6 +340,59 @@ main{max-width:1660px;margin:0 auto;padding:26px 26px 100px}
 .p-split i{display:block;height:100%;border-radius:2px}
 .p-count{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--pc-ink);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
 
+/* ── Comparison ───────────────────────────────────────────────── */
+.yoy{display:flex;flex-direction:column;gap:3px;flex:1;justify-content:center}
+.yoy-row{display:grid;grid-template-columns:52px 1fr auto auto auto;align-items:center;gap:11px;
+  padding:11px 9px;border-radius:10px;transition:background .14s}
+.yoy-row:hover{background:var(--surface-2)}
+.yoy-year{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.yoy-bar{height:9px;border-radius:5px;background:var(--track);overflow:hidden;display:flex}
+.yoy-bar i{display:block;height:100%;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.yoy-bar i.done{background:var(--st-done);border-radius:5px 0 0 5px}
+.yoy-bar i.rest{background:var(--s1);opacity:.55;border-radius:0 5px 5px 0}
+.yoy-n{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--text);
+  font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.yoy-rate{font-size:11px;color:var(--text-muted);font-variant-numeric:tabular-nums;min-width:42px;text-align:right}
+.chip-d{display:inline-flex;align-items:center;gap:3px;height:21px;padding:0 7px;border-radius:6px;
+  font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;min-width:56px;justify-content:center;
+  background:var(--surface-3);color:var(--text-2)}
+.chip-d.up{background:color-mix(in srgb, var(--st-done) 15%, transparent);color:var(--st-done-ink)}
+.chip-d.down{background:var(--alert-soft);color:var(--alert-ink)}
+.chip-d.flat{color:var(--text-muted)}
+.yoy-legend{display:flex;gap:14px;font-size:10.5px;color:var(--text-muted);padding:9px 9px 0;
+  border-top:1px solid var(--border);margin-top:5px}
+.yoy-legend span{display:inline-flex;align-items:center;gap:5px}
+.yoy-legend i{width:9px;height:9px;border-radius:2px;display:block}
+
+.cmp-pick{display:grid;grid-template-columns:1fr auto 1fr;gap:9px;align-items:center;margin-bottom:16px}
+.cmp-sel{position:relative}
+.cmp-sel select{
+  width:100%;height:36px;padding:0 30px 0 11px;border-radius:10px;cursor:pointer;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--text);font-size:12.5px;
+  font-weight:600;appearance:none;-webkit-appearance:none;transition:.15s}
+.cmp-sel select:hover{border-color:var(--border-strong)}
+.cmp-sel select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+.cmp-sel::after{content:'';position:absolute;right:12px;top:50%;width:6px;height:6px;pointer-events:none;
+  border-right:1.7px solid var(--text-muted);border-bottom:1.7px solid var(--text-muted);
+  transform:translateY(-70%) rotate(45deg)}
+.cmp-sel::before{content:'';position:absolute;left:0;top:-1px;bottom:-1px;width:3px;border-radius:2px;background:var(--pc)}
+.cmp-vs{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.cmp-rows{display:flex;flex-direction:column;gap:2px;flex:1;justify-content:center}
+.cmp-row{display:grid;grid-template-columns:92px 1fr auto auto;align-items:center;gap:11px;
+  padding:10px 9px;border-radius:10px;transition:background .14s}
+.cmp-row:hover{background:var(--surface-2)}
+.cmp-label{font-size:11.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmp-track{position:relative;height:22px}
+.cmp-track .rail{position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:var(--track);border-radius:1px}
+.cmp-track .link{position:absolute;top:50%;height:2px;margin-top:-1px;background:var(--border-strong);border-radius:1px}
+.cmp-track .pt{position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+  border:2px solid var(--surface);box-shadow:0 0 0 1px var(--border)}
+.cmp-track .pt.a{background:var(--s1);z-index:2}
+.cmp-track .pt.b{background:var(--s2);z-index:1}
+.cmp-vals{font-size:11.5px;color:var(--text-2);font-variant-numeric:tabular-nums;white-space:nowrap;min-width:74px;text-align:right}
+.cmp-vals b{color:var(--text);font-weight:700}
+.cmp-empty{padding:26px 10px;text-align:center;font-size:12.5px;color:var(--text-muted)}
+
 /* ── Task log ──────────────────────────────────────────────── */
 .log-head{display:flex;align-items:center;gap:13px;flex-wrap:wrap;padding:17px 20px;border-bottom:1px solid var(--border)}
 .log-title{font-family:'Syne',sans-serif;font-size:14.5px;font-weight:700}
@@ -438,7 +491,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
     <button class="hbtn hbtn-icon" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme"></button>
     <div class="sync" id="sync">
       <span class="sync-dot" id="syncDot"></span>
-      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">09 Sep 2026, 10:49</span></div>
+      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">09 Sep 2026, 11:01</span></div>
     </div>
   </div>
 </header>
@@ -539,6 +592,27 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
           <div class="area-x" id="areaX"></div>
           <div class="area-cursor" id="areaCursor"></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="section-title">Comparison</span><span class="section-rule"></span><span class="section-note" id="cmpNote"></span></div>
+    <div class="grid-2">
+      <div class="card card-pad">
+        <div class="card-title">Year over year</div>
+        <div class="card-sub">Volume and completion each year, with the change on the year before</div>
+        <div class="yoy" id="yoy"></div>
+      </div>
+      <div class="card card-pad">
+        <div class="card-title">Period vs period</div>
+        <div class="card-sub">Pick any two years or quarters to compare</div>
+        <div class="cmp-pick">
+          <div class="cmp-sel" style="--pc:var(--s1)"><select id="cmpA" onchange="renderCompare()" aria-label="First period"></select></div>
+          <span class="cmp-vs">vs</span>
+          <div class="cmp-sel" style="--pc:var(--s2)"><select id="cmpB" onchange="renderCompare()" aria-label="Second period"></select></div>
+        </div>
+        <div class="cmp-rows" id="cmpRows"></div>
       </div>
     </div>
   </section>
@@ -689,7 +763,7 @@ const FILTERS = {
   msService:{field:'service_type', label:'Service type', def:'All service types'}
 };
 const sel = {};
-let view = [...DATA], sortKey = 'date_entered', sortDir = 'desc', page = 1, odOnly = false;
+let view = [...DATA], cmpBase = [...DATA], sortKey = 'date_entered', sortDir = 'desc', page = 1, odOnly = false;
 const PER_PAGE = 50;
 
 /* ── Helpers ──────────────────────────────────────────────────── */
@@ -774,15 +848,22 @@ function renderChips(){
   $('odBtn').style.borderColor = odOnly ? 'var(--alert)' : '';
   $('odBtn').style.color = odOnly ? 'var(--alert-ink)' : '';
 }
+function matches(d, q, skipPeriod){
+  for (const [id, cfg] of Object.entries(FILTERS)){
+    if (skipPeriod && (cfg.field === 'year' || cfg.field === 'quarter')) continue;
+    if (sel[id].size && !sel[id].has(d[cfg.field])) return false;
+  }
+  if (odOnly && !d.overdue) return false;
+  if (q && !(`${d.task} ${d.company} ${d.assignee} ${d.service_type} ${d.location}`.toLowerCase().includes(q))) return false;
+  return true;
+}
 function applyFilters(){
   const q = $('q').value.trim().toLowerCase();
-  view = DATA.filter(d => {
-    for (const [id, cfg] of Object.entries(FILTERS))
-      if (sel[id].size && !sel[id].has(d[cfg.field])) return false;
-    if (odOnly && !d.overdue) return false;
-    if (q && !(`${d.task} ${d.company} ${d.assignee} ${d.service_type} ${d.location}`.toLowerCase().includes(q))) return false;
-    return true;
-  });
+  view = DATA.filter(d => matches(d, q, false));
+  /* The comparison panel picks its own periods, so it honours every other
+     filter but ignores Year and Quarter — otherwise choosing a year in the
+     filter bar would empty out one side of the comparison. */
+  cmpBase = DATA.filter(d => matches(d, q, true));
   sortView(); page = 1; renderChips(); render();
 }
 
@@ -968,6 +1049,119 @@ function renderLocations(){
           `<div><span>${esc(c)}</span><b>${view.filter(d => d.company === c).length}</b></div>`).join('') + '</div>' : ''));
     host.appendChild(el);
   });
+}
+
+/* ── Comparison: year over year, and any two periods ─────────────
+   A dumbbell per metric: one dot for each period on a shared scale,
+   so the gap itself is the message. Each metric gets its own row and
+   its own scale — never two scales on one axis.                     */
+const YEARS_DESC = [...new Set(DATA.map(d => d.year).filter(Boolean))].sort((a, b) => b.localeCompare(a));
+const PERIODS = [
+  ...YEARS_DESC.map(y => ({key:`Y|${y}`, label:`${y} · full year`})),
+  ...[...new Set(DATA.map(d => d.year_quarter).filter(Boolean))]
+      .sort((a, b) => b.localeCompare(a)).map(k => ({key:`Q|${k}`, label:k}))
+];
+const periodRows = key => {
+  if (!key) return [];
+  const [kind, val] = key.split('|');
+  return cmpBase.filter(d => kind === 'Y' ? d.year === val : d.year_quarter === val);
+};
+const periodLabel = key => (PERIODS.find(p => p.key === key) || {}).label || '—';
+
+function buildPeriodPickers(){
+  const opts = PERIODS.map(p => `<option value="${esc(p.key)}">${esc(p.label)}</option>`).join('');
+  $('cmpA').innerHTML = opts;
+  $('cmpB').innerHTML = opts;
+  /* default to the newest quarter against the same quarter a year earlier */
+  const quarters = PERIODS.filter(p => p.key.startsWith('Q|'));
+  if (quarters.length){
+    const a = quarters[0].key;
+    const [y, q] = a.slice(2).split(' ');
+    const wanted = `Q|${Number(y) - 1} ${q}`;
+    const b = PERIODS.some(p => p.key === wanted) ? wanted : (quarters[1] || quarters[0]).key;
+    $('cmpA').value = a; $('cmpB').value = b;
+  }
+}
+
+function deltaChip(a, b, higherIsBetter, suffix){
+  const d = a - b;
+  const cls = d === 0 ? 'flat' : higherIsBetter === null ? '' : (d > 0) === higherIsBetter ? 'up' : 'down';
+  const arrow = d > 0 ? '▲' : d < 0 ? '▼' : '■';
+  const val = Math.abs(d) + (suffix || '');
+  return `<span class="chip-d ${cls}">${arrow} ${d === 0 ? '0' + (suffix || '') : val}</span>`;
+}
+
+function renderYoY(){
+  const host = $('yoy');
+  const years = [...YEARS_DESC];
+  if (!years.length){ host.innerHTML = '<div class="cmp-empty">No dated tasks in view</div>'; return; }
+  const stat = y => {
+    const r = cmpBase.filter(d => d.year === y);
+    const done = r.filter(d => !d.open).length;
+    return {n:r.length, done, rate:pct(done, r.length)};
+  };
+  const all = Object.fromEntries(years.map(y => [y, stat(y)]));
+  const max = Math.max(...years.map(y => all[y].n), 1);
+  host.innerHTML = years.map(y => {
+    const c = all[y];
+    const prevY = String(Number(y) - 1);
+    const prev = all[prevY];
+    const w = (c.n / max) * 100;
+    const donePart = c.n ? (c.done / c.n) * w : 0;
+    const chip = prev
+      ? deltaChip(c.n, prev.n, null, '')
+      : `<span class="chip-d flat">—</span>`;
+    return `<div class="yoy-row" title="${y}: ${c.n} logged, ${c.done} completed (${c.rate}%)${prev ? ` · ${prevY}: ${prev.n} logged` : ''}">
+      <span class="yoy-year">${y}</span>
+      <span class="yoy-bar"><i class="done" style="width:${donePart.toFixed(1)}%"></i><i class="rest" style="width:${(w - donePart).toFixed(1)}%"></i></span>
+      <span class="yoy-n">${c.n}</span>
+      <span class="yoy-rate">${c.rate}%</span>
+      ${chip}
+    </div>`;
+  }).join('')
+  + `<div class="yoy-legend"><span><i style="background:var(--st-done)"></i>Completed</span>
+     <span><i style="background:var(--s1);opacity:.55"></i>Still open</span>
+     <span style="margin-left:auto">count · completion · change vs the year before</span></div>`;
+}
+
+function renderCompare(){
+  const ka = $('cmpA').value, kb = $('cmpB').value;
+  const A = periodRows(ka), B = periodRows(kb);
+  const host = $('cmpRows');
+  const la = periodLabel(ka), lb = periodLabel(kb);
+  $('cmpNote').textContent = `${la} vs ${lb}`;
+  if (!A.length && !B.length){
+    host.innerHTML = `<div class="cmp-empty">Neither ${esc(la)} nor ${esc(lb)} has tasks in the current filters.</div>`;
+    return;
+  }
+  const done = r => r.filter(d => !d.open).length;
+  const metrics = [
+    {label:'Tasks logged',   a:A.length,            b:B.length,            better:null, suffix:''},
+    {label:'Completed',      a:done(A),             b:done(B),             better:null, suffix:''},
+    {label:'Completion',     a:pct(done(A), A.length), b:pct(done(B), B.length), better:true, suffix:'pp', unit:'%'},
+    {label:'Still open',     a:A.length - done(A),  b:B.length - done(B),  better:false, suffix:''},
+    {label:'Clients served', a:new Set(A.map(d => d.company).filter(Boolean)).size,
+                             b:new Set(B.map(d => d.company).filter(Boolean)).size, better:null, suffix:''}
+  ];
+  host.innerHTML = metrics.map(m => {
+    const max = Math.max(m.a, m.b, 1);
+    const pa = (m.a / max) * 100, pb = (m.b / max) * 100;
+    const lo = Math.min(pa, pb), hi = Math.max(pa, pb);
+    const u = m.unit || '';
+    return `<div class="cmp-row">
+      <span class="cmp-label">${m.label}</span>
+      <span class="cmp-track">
+        <i class="rail"></i>
+        <i class="link" style="left:${lo}%;width:${(hi - lo).toFixed(1)}%"></i>
+        <i class="pt b" style="left:${pb.toFixed(1)}%"></i>
+        <i class="pt a" style="left:${pa.toFixed(1)}%"></i>
+      </span>
+      <span class="cmp-vals"><b>${m.a}${u}</b> vs ${m.b}${u}</span>
+      ${deltaChip(m.a, m.b, m.better, m.suffix)}
+    </div>`;
+  }).join('')
+  + `<div class="yoy-legend"><span><i style="background:var(--s1)"></i>${esc(la)}</span>
+     <span><i style="background:var(--s2)"></i>${esc(lb)}</span></div>`;
 }
 
 /* ── Donut: status distribution ───────────────────────────────── */
@@ -1347,7 +1541,7 @@ addEventListener('scroll', () => { $('totop').classList.toggle('show', scrollY >
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-09-09T10:49:14+03:00');
+  const built = new Date('2026-09-09T11:01:15+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
@@ -1366,10 +1560,12 @@ addEventListener('scroll', () => { $('totop').classList.toggle('show', scrollY >
 /* ── Boot ─────────────────────────────────────────────────────── */
 function render(){
   renderKPIs(); renderLocations(); renderAttention(); renderDonut(); renderColumns();
+  renderYoY(); renderCompare();
   renderArea(); renderAssignees(); renderServiceHeatmap(); renderTable();
 }
 paintThemeBtn();
 buildFilters();
+buildPeriodPickers();
 sortView();
 markSort();
 render();
