@@ -419,20 +419,20 @@ main{max-width:1660px;margin:0 auto;padding:26px 26px 100px}
   transform:translateY(-70%) rotate(45deg)}
 .cmp-sel::before{content:'';position:absolute;left:0;top:-1px;bottom:-1px;width:3px;border-radius:2px;background:var(--pc)}
 .cmp-vs{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
-.cmp-rows{display:flex;flex-direction:column;gap:2px;flex:1;justify-content:center}
-.cmp-row{display:grid;grid-template-columns:92px 1fr auto auto;align-items:center;gap:11px;
-  padding:10px 9px;border-radius:10px;transition:background .14s}
-.cmp-row:hover{background:var(--surface-2)}
-.cmp-label{font-size:11.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cmp-track{position:relative;height:22px}
-.cmp-track .rail{position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:var(--track);border-radius:1px}
-.cmp-track .link{position:absolute;top:50%;height:2px;margin-top:-1px;background:var(--border-strong);border-radius:1px}
-.cmp-track .pt{position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
-  border:2px solid var(--surface);box-shadow:0 0 0 1px var(--border)}
-.cmp-track .pt.a{background:var(--s1);z-index:2}
-.cmp-track .pt.b{background:var(--s2);z-index:1}
-.cmp-vals{font-size:11.5px;color:var(--text-2);font-variant-numeric:tabular-nums;white-space:nowrap;min-width:74px;text-align:right}
-.cmp-vals b{color:var(--text);font-weight:700}
+.cmp-rows{display:flex;flex-direction:column;gap:14px;flex:1;justify-content:flex-end}
+/* Period vs period: two metrics, paired vertical columns, one shared scale
+   so "Completed" always reads as a subset of "Tasks received". */
+.cmpv{display:flex;align-items:flex-end;justify-content:space-around;gap:18px;height:236px;padding-top:24px}
+.cmpv-g{flex:1;max-width:230px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.cmpv-bars{display:flex;align-items:flex-end;justify-content:center;gap:12px;width:100%;flex:1}
+.cmpv-b{flex:1;max-width:58px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.cmpv-n{font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;margin-bottom:5px;white-space:nowrap}
+.cmpv-f{width:100%;border-radius:7px 7px 0 0;background:var(--bc);min-height:3px;
+  transition:height .6s cubic-bezier(.4,0,.2,1),filter .15s}
+.cmpv-b:hover .cmpv-f{filter:brightness(1.08)}
+.cmpv-foot{display:flex;align-items:center;gap:8px;margin-top:11px;padding-top:11px;border-top:1px solid var(--border);
+  width:100%;justify-content:center;flex-wrap:wrap}
+.cmpv-label{font-size:12px;font-weight:650;color:var(--text-2);white-space:nowrap}
 .cmp-empty{padding:26px 10px;text-align:center;font-size:12.5px;color:var(--text-muted)}
 
 /* ── Task log ──────────────────────────────────────────────── */
@@ -1281,32 +1281,25 @@ function renderCompare(){
   }
   const done = r => r.filter(d => !d.open).length;
   const metrics = [
-    {label:'Tasks logged',   a:A.length,            b:B.length,            better:null, suffix:''},
-    {label:'Completed',      a:done(A),             b:done(B),             better:null, suffix:''},
-    {label:'Completion',     a:pct(done(A), A.length), b:pct(done(B), B.length), better:true, suffix:'pp', unit:'%'},
-    {label:'Still open',     a:A.length - done(A),  b:B.length - done(B),  better:false, suffix:''},
-    {label:'Clients served', a:new Set(A.map(d => d.company).filter(Boolean)).size,
-                             b:new Set(B.map(d => d.company).filter(Boolean)).size, better:null, suffix:''}
+    {label:'Tasks received', a:A.length, b:B.length},
+    {label:'Completed',      a:done(A),  b:done(B)}
   ];
-  host.innerHTML = metrics.map(m => {
-    const max = Math.max(m.a, m.b, 1);
-    const pa = (m.a / max) * 100, pb = (m.b / max) * 100;
-    const lo = Math.min(pa, pb), hi = Math.max(pa, pb);
-    const u = m.unit || '';
-    return `<div class="cmp-row">
-      <span class="cmp-label">${m.label}</span>
-      <span class="cmp-track">
-        <i class="rail"></i>
-        <i class="link" style="left:${lo}%;width:${(hi - lo).toFixed(1)}%"></i>
-        <i class="pt b" style="left:${pb.toFixed(1)}%"></i>
-        <i class="pt a" style="left:${pa.toFixed(1)}%"></i>
-      </span>
-      <span class="cmp-vals"><b>${m.a}${u}</b> vs ${m.b}${u}</span>
-      ${deltaChip(m.a, m.b, m.better, m.suffix)}
-    </div>`;
-  }).join('')
+  /* one scale across both metrics and both periods — otherwise Completed
+     could out-tower the Received bar it is a subset of */
+  const max = Math.max(...metrics.flatMap(m => [m.a, m.b]), 1);
+  const bar = (v, cvar, label) =>
+    `<div class="cmpv-b" title="${esc(label)}: ${v}">
+       <span class="cmpv-n">${v}</span>
+       <i class="cmpv-f" style="--bc:var(${cvar});height:${((v / max) * 100).toFixed(1)}%"></i>
+     </div>`;
+  host.innerHTML = `<div class="cmpv">` + metrics.map(m => `
+    <div class="cmpv-g">
+      <div class="cmpv-bars">${bar(m.a, '--s1', la)}${bar(m.b, '--s2', lb)}</div>
+      <div class="cmpv-foot"><span class="cmpv-label">${m.label}</span>${deltaChip(m.a, m.b, null, '')}</div>
+    </div>`).join('') + `</div>`
   + `<div class="yoy-legend"><span><i style="background:var(--s1)"></i>${esc(la)}</span>
-     <span><i style="background:var(--s2)"></i>${esc(lb)}</span></div>`;
+     <span><i style="background:var(--s2)"></i>${esc(lb)}</span>
+     <span style="margin-left:auto">change vs ${esc(lb)}</span></div>`;
 }
 
 /* ── Donut: status distribution ───────────────────────────────── */
@@ -1686,7 +1679,7 @@ addEventListener('scroll', () => { $('totop').classList.toggle('show', scrollY >
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-09-09T12:24:15+03:00');
+  const built = new Date('2026-09-09T12:24:59+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
