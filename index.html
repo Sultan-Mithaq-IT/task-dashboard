@@ -21,23 +21,30 @@ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+
    ───────────────────────────────────────────────────────────── */
 :root, :root[data-theme="light"] {
   color-scheme: light;
-  --page:#eef1f6; --page-2:#e4e9f1;
-  --surface:#ffffff; --surface-2:#f4f6fa; --surface-3:#e8ecf3;
-  --border:rgba(16,22,36,.10); --border-strong:rgba(16,22,36,.20);
-  --text:#0d1220; --text-2:#49505f; --text-muted:#7a8294;
-  --track:#e6eaf1;
-  --shadow-sm:0 1px 2px rgba(16,22,36,.05), 0 2px 6px rgba(16,22,36,.04);
-  --shadow:0 2px 6px rgba(16,22,36,.06), 0 14px 36px rgba(16,22,36,.10);
-  --shadow-lg:0 8px 20px rgba(16,22,36,.10), 0 24px 56px rgba(16,22,36,.14);
-  --header-bg:linear-gradient(120deg,#111a2e 0%,#1b2947 55%,#243459 100%);
+  --page:#f2efea; --page-2:#e9e3da;
+  --surface:#ffffff; --surface-2:#f6f3ef; --surface-3:#ece7e0;
+  --border:rgba(38,28,18,.10); --border-strong:rgba(38,28,18,.20);
+  --text:#171310; --text-2:#524941; --text-muted:#7f7468;
+  --track:#eae5dd;
+  --shadow-sm:0 1px 2px rgba(38,28,18,.05), 0 2px 6px rgba(38,28,18,.04);
+  --shadow:0 2px 6px rgba(38,28,18,.06), 0 14px 36px rgba(38,28,18,.10);
+  --shadow-lg:0 8px 20px rgba(38,28,18,.10), 0 24px 56px rgba(38,28,18,.14);
+  --header-bg:linear-gradient(120deg,#241c14 0%,#3b2e22 55%,#4d3c2b 100%);
   --header-ink:#ffffff; --header-ink-2:rgba(255,255,255,.62);
   --header-chip:rgba(255,255,255,.11); --header-chip-line:rgba(255,255,255,.18);
 
-  --brand:#2a78d6; --brand-2:#4a3aa7; --brand-strong:#1c5cab;
-  --brand-soft:rgba(42,120,214,.10);
+  /* Brand: the logo's taupe (#a5907b) is the identity colour. It measures
+     3.05:1 on white, so anything that has to read as TEXT uses the darker
+     step below; the true taupe stays on fills, rules and tints. */
+  --logo:#a5907b;
+  --brand:#8a725c; --brand-2:#5f4c39; --brand-strong:#6d5842;
+  --brand-soft:rgba(165,144,123,.16);
 
-  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s-other:#7a8294;
-  --s1-ink:#1c5cab; --s2-ink:#b04a12; --s3-ink:#0c7350; --s-other-ink:#585f6d;
+  /* map: neutral base so the three country colours carry all the meaning */
+  --map-sea:#f7f4f0; --map-land:#e6dfd5; --map-line:#d6ccbe; --map-zero:#c9c0b4;
+
+  --s1:#a8721c; --s2:#2a6f9e; --s3:#9c4a6e; --s-other:#7f7468;
+  --s1-ink:#7d5613; --s2-ink:#255f87; --s3-ink:#82395a; --s-other-ink:#5c5349;
 
   --p-urgent:#e34948; --p-high:#eda100; --p-med:#2a78d6; --p-low:#1baf7a;
   --p-urgent-ink:#b32220; --p-high-ink:#8a5d00; --p-med-ink:#1c5cab; --p-low-ink:#0c7350;
@@ -54,32 +61,35 @@ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+
   --alert:#e34948; --alert-ink:#b32220; --alert-soft:rgba(227,73,72,.11);
 
   /* sequential ramp — magnitude encoding (heatmap cells, area fill).
-     Ordinal rule: on light, no step lighter than #86b6ef. */
-  --tm1:#86b6ef; --tm1-ink:#0a1c31;
-  --tm2:#5598e7; --tm2-ink:#06121f;
-  --tm3:#2a78d6; --tm3-ink:#ffffff;
-  --tm4:#1c5cab; --tm4-ink:#ffffff;
-  --tm5:#104281; --tm5-ink:#ffffff;
+     One hue, monotone lightness; light end clears the surface at 2.19:1. */
+  --tm1:#cfa759; --tm1-ink:#241704;
+  --tm2:#b8831f; --tm2-ink:#241704;
+  --tm3:#94661a; --tm3-ink:#ffffff;
+  --tm4:#6e4b12; --tm4-ink:#ffffff;
+  --tm5:#492f09; --tm5-ink:#ffffff;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --page:#080b11; --page-2:#0d121b;
-  --surface:#161a21; --surface-2:#1d2230; --surface-3:#262d3d;
+  --page:#0a0806; --page-2:#12100d;
+  --surface:#181513; --surface-2:#221d1a; --surface-3:#2d2723;
   --border:rgba(255,255,255,.09); --border-strong:rgba(255,255,255,.20);
-  --text:#f3f5fa; --text-2:#b4bccb; --text-muted:#8992a4;
-  --track:#262d3d;
+  --text:#f5f2ee; --text-2:#bdb2a7; --text-muted:#9a8f83;
+  --track:#2d2723;
   --shadow-sm:0 1px 2px rgba(0,0,0,.4);
   --shadow:0 2px 8px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.42);
   --shadow-lg:0 10px 28px rgba(0,0,0,.5), 0 28px 64px rgba(0,0,0,.5);
-  --header-bg:linear-gradient(120deg,#0b1120 0%,#141d33 55%,#1a2542 100%);
+  --header-bg:linear-gradient(120deg,#191310 0%,#2b211a 55%,#3a2c21 100%);
   --header-ink:#ffffff; --header-ink-2:rgba(255,255,255,.58);
   --header-chip:rgba(255,255,255,.09); --header-chip-line:rgba(255,255,255,.16);
 
-  --brand:#3987e5; --brand-2:#9085e9; --brand-strong:#6da7ec;
-  --brand-soft:rgba(57,135,229,.18);
+  --logo:#c4a98d;
+  --brand:#c4a98d; --brand-2:#8a725c; --brand-strong:#d9c3aa;
+  --brand-soft:rgba(196,169,141,.18);
 
-  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s-other:#8992a4;
-  --s1-ink:#7fb3f0; --s2-ink:#f0865a; --s3-ink:#35c793; --s-other-ink:#a8b0bf;
+  --map-sea:#131110; --map-land:#292219; --map-line:#39301f; --map-zero:#4a423a;
+
+  --s1:#b8831f; --s2:#4a92cf; --s3:#bb6a97; --s-other:#9a8f83;
+  --s1-ink:#dab264; --s2-ink:#8dbcf2; --s3-ink:#e79bc0; --s-other-ink:#b6aa9e;
 
   --p-urgent:#e66767; --p-high:#cf9a1c; --p-med:#3987e5; --p-low:#199e70;
   --p-urgent-ink:#f08e8e; --p-high-ink:#e0b537; --p-med-ink:#7fb3f0; --p-low-ink:#35c793;
@@ -95,12 +105,12 @@ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+
   --warn:#cf9a1c; --warn-ink:#e0b537; --warn-soft:rgba(207,154,28,.16);
   --alert:#e66767; --alert-ink:#f08e8e; --alert-soft:rgba(230,103,103,.15);
 
-  /* dark: no step darker than #184f95 */
-  --tm1:#184f95; --tm1-ink:#ffffff;
-  --tm2:#256abf; --tm2-ink:#ffffff;
-  --tm3:#2a78d6; --tm3-ink:#ffffff;
-  --tm4:#3987e5; --tm4-ink:#ffffff;
-  --tm5:#6da7ec; --tm5-ink:#07131f;
+  /* dark: no step darker than #6b4a10 — it must still clear the surface */
+  --tm1:#6b4a10; --tm1-ink:#ffffff;
+  --tm2:#8a6015; --tm2-ink:#ffffff;
+  --tm3:#a8721c; --tm3-ink:#ffffff;
+  --tm4:#c1902f; --tm4-ink:#241704;
+  --tm5:#dab264; --tm5-ink:#241704;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -119,13 +129,13 @@ button,input,a{font-family:inherit}
 .topbar{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:16px;padding:0 26px;height:76px;
   background:var(--header-bg);color:var(--header-ink);box-shadow:0 6px 26px rgba(0,0,0,.28)}
 .topbar::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;
-  background:linear-gradient(90deg,var(--brand),var(--brand-2),#e87ba4,var(--brand));
+  background:linear-gradient(90deg,var(--brand),var(--brand-2),#c9a37e,var(--brand));
   background-size:250% 100%;animation:slide 14s linear infinite}
 @keyframes slide{to{background-position:250% 0}}
 .brand{display:flex;align-items:center;gap:13px;min-width:0}
 .brand-mark{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:grid;place-items:center;
   background:linear-gradient(145deg,var(--brand),var(--brand-2));color:#fff;
-  font-family:'Syne',sans-serif;font-weight:800;font-size:15px;box-shadow:0 4px 14px rgba(42,120,214,.45)}
+  font-family:'Syne',sans-serif;font-weight:800;font-size:15px;box-shadow:0 4px 14px rgba(105,84,64,.45)}
 .brand-title{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1.1;white-space:nowrap}
 .brand-sub{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--header-ink-2);margin-top:2px;white-space:nowrap}
 .topbar-spacer{flex:1}
@@ -134,7 +144,7 @@ button,input,a{font-family:inherit}
   background:var(--header-chip);border:1px solid var(--header-chip-line);color:var(--header-ink);
   font-size:13px;font-weight:600;cursor:pointer;transition:.16s;white-space:nowrap}
 .hbtn:hover{background:rgba(255,255,255,.19);transform:translateY(-1px)}
-.hbtn-cta{background:linear-gradient(135deg,var(--brand),var(--brand-2));border-color:transparent;box-shadow:0 4px 16px rgba(42,120,214,.42)}
+.hbtn-cta{background:linear-gradient(135deg,var(--brand),var(--brand-2));border-color:transparent;box-shadow:0 4px 16px rgba(105,84,64,.42)}
 .hbtn-cta:hover{filter:brightness(1.1)}
 .hbtn-icon{width:38px;padding:0;justify-content:center}
 .sync{display:flex;align-items:center;gap:9px;padding-left:14px;border-left:1px solid var(--header-chip-line)}
@@ -147,6 +157,11 @@ button,input,a{font-family:inherit}
 main{max-width:1660px;margin:0 auto;padding:26px 26px 100px}
 .section{margin-bottom:24px}
 .section-head{display:flex;align-items:center;gap:12px;margin:0 2px 13px}
+/* a second-level heading inside a section (Comparison, inside Overview) */
+.sub-head{display:flex;align-items:center;gap:12px;margin:22px 2px 12px}
+.sub-title{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);
+  display:flex;align-items:center;gap:8px}
+.sub-title::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--brand);opacity:.6}
 .section-title{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:800;letter-spacing:.14em;
   text-transform:uppercase;color:var(--text-2);display:flex;align-items:center;gap:9px}
 .section-title::before{content:'';width:4px;height:15px;border-radius:2px;background:linear-gradient(180deg,var(--brand),var(--brand-2))}
@@ -181,6 +196,18 @@ main{max-width:1660px;margin:0 auto;padding:26px 26px 100px}
 .ms-opt .cnt{margin-left:auto;font-size:11px;color:var(--text-muted);font-variant-numeric:tabular-nums}
 .ms-opt.is-new .lbl::after{content:'new';margin-left:7px;font-size:9px;font-weight:800;letter-spacing:.07em;
   text-transform:uppercase;color:var(--brand);background:var(--brand-soft);padding:2px 5px;border-radius:5px;vertical-align:1px}
+.is-hidden{display:none!important}
+.filter-country{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+.filter-country .field-label{flex-shrink:0}
+.seg{display:inline-flex;gap:4px;padding:4px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap}
+.seg-btn{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;border-radius:9px;border:1px solid transparent;
+  background:none;color:var(--text-2);font-size:12.5px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
+.seg-btn:hover{background:var(--surface);color:var(--text);border-color:var(--border)}
+.seg-btn .sd{width:8px;height:8px;border-radius:3px;background:var(--gc);flex-shrink:0}
+.seg-btn .sn{font-size:11px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.seg-btn.on{background:var(--surface);color:var(--text);border-color:color-mix(in srgb, var(--gc) 55%, var(--border));
+  box-shadow:0 1px 3px rgba(38,28,18,.10)}
+.seg-btn.on .sn{color:var(--text-2)}
 .filter-row2{display:flex;gap:10px;align-items:center;margin-top:11px;flex-wrap:wrap}
 .search{position:relative;flex:1;min-width:220px}
 .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
@@ -216,25 +243,40 @@ main{max-width:1660px;margin:0 auto;padding:26px 26px 100px}
 .kpi-spark{position:relative;margin-top:10px;height:26px}
 .kpi-spark svg{display:block;width:100%;height:26px;overflow:visible}
 
-/* ── Locations ────────────────────────────────────────────────── */
-.locs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
-.loc{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--border);
-  border-radius:14px;padding:15px 17px 14px;box-shadow:var(--shadow-sm);
-  transition:transform .18s,box-shadow .18s,border-color .18s}
-.loc::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--lc)}
-.loc:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:color-mix(in srgb, var(--lc) 45%, var(--border))}
-.loc.is-zero{opacity:.6}
-.loc-top{display:flex;align-items:center;gap:8px;margin-bottom:9px}
-.loc-dot{width:9px;height:9px;border-radius:3px;background:var(--lc);flex-shrink:0}
-.loc-name{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-2);
+/* ── Locations: the map ───────────────────────────────────────── */
+.map-card{padding:6px 6px 0}
+.map-wrap{position:relative;border-radius:14px;overflow:hidden;background:var(--map-sea)}
+.map-svg{display:block;width:100%;height:auto}
+.map-ctx{fill:var(--map-land);stroke:var(--map-line);stroke-width:.7;vector-effect:non-scaling-stroke}
+.mc{cursor:pointer;transition:opacity .2s}
+.mc path{fill:var(--gc);stroke:var(--map-sea);stroke-width:.8;vector-effect:non-scaling-stroke;transition:fill .2s}
+.mc.is-zero path{fill:var(--map-zero)}
+.mc.dim{opacity:.34}
+.mc:hover path{fill:color-mix(in srgb, var(--gc) 72%, #ffffff)}
+.mc .pin{fill:var(--gc);stroke:var(--map-sea);stroke-width:2;vector-effect:non-scaling-stroke}
+.mc.is-zero .pin{fill:var(--map-zero)}
+/* body font, not Syne: Syne's zero reads as a blank oval at this size */
+.mc .pin-n{fill:#ffffff;font-weight:800;font-size:14px;font-variant-numeric:tabular-nums;
+  text-anchor:middle;pointer-events:none;letter-spacing:.01em}
+.mc .pin-l{fill:var(--text);font-size:12.5px;font-weight:700;text-anchor:middle;pointer-events:none;
+  stroke:var(--map-sea);stroke-width:3.5px;paint-order:stroke;stroke-linejoin:round}
+.mc.on .pin{stroke:var(--brand);stroke-width:3}
+.map-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:0 1px;background:var(--border);
+  margin-top:6px;border-top:1px solid var(--border)}
+.ml{background:var(--surface);padding:13px 16px 14px;cursor:pointer;transition:background .14s}
+.ml:hover{background:var(--surface-2)}
+.ml.is-zero{opacity:.6}
+.ml-top{display:flex;align-items:center;gap:8px}
+.ml-dot{width:9px;height:9px;border-radius:3px;background:var(--gc);flex-shrink:0}
+.ml-name{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-2);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.loc-row{display:flex;align-items:baseline;gap:9px}
-.loc-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--text)}
-.loc-pct{font-size:11.5px;color:var(--text-muted);font-variant-numeric:tabular-nums}
-.loc-meta{font-size:11.5px;color:var(--text-muted);margin-top:7px}
-.loc-meta b{color:var(--lc-ink);font-weight:650}
-.loc-bar{height:4px;border-radius:2px;background:var(--track);overflow:hidden;margin-top:10px}
-.loc-bar > i{display:block;height:100%;border-radius:2px;background:var(--lc);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.ml-row{display:flex;align-items:baseline;gap:9px;margin-top:7px}
+.ml-val{font-size:24px;font-weight:800;line-height:1;letter-spacing:-.02em;color:var(--text);font-variant-numeric:tabular-nums}
+.ml-pct{font-size:11.5px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.ml-meta{font-size:11.5px;color:var(--text-muted);margin-top:6px}
+.ml-meta b{color:var(--gc-ink);font-weight:650}
+.ml-bar{height:4px;border-radius:2px;background:var(--track);overflow:hidden;margin-top:9px}
+.ml-bar > i{display:block;height:100%;border-radius:2px;background:var(--gc);transition:width .6s cubic-bezier(.4,0,.2,1)}
 
 /* ── Needs attention ──────────────────────────────────────── */
 .att-head{display:flex;align-items:center;gap:11px;padding:16px 20px;border-bottom:1px solid var(--border)}
@@ -259,7 +301,7 @@ main{max-width:1660px;margin:0 auto;padding:26px 26px 100px}
   background:var(--surface-2);border-radius:0 0 16px 16px;font-size:11.5px;color:var(--text-muted)}
 .att-foot svg{flex-shrink:0;color:var(--text-2)}
 .att-foot b{color:var(--text-2);font-weight:650}
-.rec{display:inline-flex;vertical-align:-1px;margin-right:5px;color:var(--st-prog)}
+.rec{display:inline-flex;vertical-align:-1px;margin-right:5px;color:var(--brand)}
 .att-clear span{font-size:12px;color:var(--text-muted)}
 
 /* ── Chart grids ───────────────────────────────────────────── */
@@ -438,7 +480,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
 
 .totop{position:fixed;right:24px;bottom:24px;z-index:65;width:46px;height:46px;border-radius:15px;
   background:linear-gradient(135deg,var(--brand),var(--brand-2));border:0;color:#fff;cursor:pointer;display:grid;place-items:center;
-  box-shadow:0 8px 24px rgba(42,120,214,.42);opacity:0;pointer-events:none;transform:translateY(10px) scale(.9);transition:.24s cubic-bezier(.4,0,.2,1)}
+  box-shadow:0 8px 24px rgba(105,84,64,.42);opacity:0;pointer-events:none;transform:translateY(10px) scale(.9);transition:.24s cubic-bezier(.4,0,.2,1)}
 .totop.show{opacity:1;pointer-events:auto;transform:none}
 .totop:hover{filter:brightness(1.12)}
 #tip{position:fixed;z-index:200;pointer-events:none;opacity:0;padding:8px 11px;border-radius:10px;font-size:12px;line-height:1.45;
@@ -449,6 +491,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
 #tip .t-list > div{display:flex;justify-content:space-between;gap:16px;font-size:11.5px;color:var(--text-2)}
 #tip .t-list b{color:var(--text);font-variant-numeric:tabular-nums;font-weight:650}
 #tip .t-more{color:var(--text-muted);font-size:10.5px;justify-content:flex-start!important}
+#tip .t-hint{margin-top:7px;color:var(--text-muted);font-size:10.5px}
 
 @media (max-width:1340px){
   .kpis{grid-template-columns:repeat(3,1fr)}
@@ -491,7 +534,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
     <button class="hbtn hbtn-icon" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme"></button>
     <div class="sync" id="sync">
       <span class="sync-dot" id="syncDot"></span>
-      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">09 Sep 2026, 11:25</span></div>
+      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">09 Sep 2026, 11:29</span></div>
     </div>
   </div>
 </header>
@@ -507,8 +550,6 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
           <div class="ms" id="msQuarter"><button class="ms-toggle" onclick="openMS('msQuarter')">All quarters</button><div class="ms-menu" id="msQuarter-menu"></div></div></div>
         <div class="field"><div class="field-label">Company</div>
           <div class="ms" id="msCompany"><button class="ms-toggle" onclick="openMS('msCompany')">All companies</button><div class="ms-menu" id="msCompany-menu"></div></div></div>
-        <div class="field"><div class="field-label">Location</div>
-          <div class="ms" id="msLocation"><button class="ms-toggle" onclick="openMS('msLocation')">All locations</button><div class="ms-menu" id="msLocation-menu"></div></div></div>
         <div class="field"><div class="field-label">Assignee</div>
           <div class="ms" id="msAssignee"><button class="ms-toggle" onclick="openMS('msAssignee')">All assignees</button><div class="ms-menu" id="msAssignee-menu"></div></div></div>
         <div class="field"><div class="field-label">Priority</div>
@@ -518,6 +559,14 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
         <div class="field"><div class="field-label">Service type</div>
           <div class="ms" id="msService"><button class="ms-toggle" onclick="openMS('msService')">All service types</button><div class="ms-menu" id="msService-menu"></div></div></div>
       </div>
+      <div class="filter-country">
+        <div class="field-label">Country</div>
+        <div class="seg" id="countrySeg"></div>
+      </div>
+      <!-- The Country buttons above drive this multi-select, which stays in the
+           DOM (hidden) so the filter chips, Reset and count badges all keep
+           working through exactly the same code path as the other filters. -->
+      <div class="ms is-hidden" id="msLocation"><button class="ms-toggle">All locations</button><div class="ms-menu" id="msLocation-menu"></div></div>
       <div class="filter-row2">
         <div class="search">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -555,11 +604,54 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
         <svg class="kpi-glyph" width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-5h6v5"/></svg>
       </div>
     </div>
+    <div class="sub-head"><span class="sub-title">Comparison</span><span class="section-rule"></span><span class="section-note" id="cmpNote"></span></div>
+    <div class="grid-2">
+      <div class="card card-pad">
+        <div class="card-title">Year over year</div>
+        <div class="card-sub">Volume and completion each year, with the change on the year before</div>
+        <div class="yoy" id="yoy"></div>
+      </div>
+      <div class="card card-pad">
+        <div class="card-title">Period vs period</div>
+        <div class="card-sub">Pick any two years or quarters to compare</div>
+        <div class="cmp-pick">
+          <div class="cmp-sel" style="--pc:var(--s1)"><select id="cmpA" onchange="renderCompare()" aria-label="First period"></select></div>
+          <span class="cmp-vs">vs</span>
+          <div class="cmp-sel" style="--pc:var(--s2)"><select id="cmpB" onchange="renderCompare()" aria-label="Second period"></select></div>
+        </div>
+        <div class="cmp-rows" id="cmpRows"></div>
+      </div>
+    </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="locSection">
     <div class="section-head"><span class="section-title">Locations</span><span class="section-rule"></span><span class="section-note" id="locNote"></span></div>
-    <div class="locs" id="locations"></div>
+    <div class="card map-card">
+      <div class="map-wrap">
+        <svg class="map-svg" viewBox="0 0 960 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Tasks by country">
+          <path class="map-ctx" d="M142 314L171 331L172 335L183 343L180 353L180 357L185 360L183 373L192 387L186 392L162 398L147 397L140 380L117 372L108 357L106 342L117 333L115 325L117 320L114 315L142 314ZM561 -80L549 -74L548 -66L544 -63L529 -65L523 -51L503 -46L510 -33L505 -31L506 -26L497 -30L469 -30L458 -34L454 -32L452 -27L434 -29L418 -19L414 -13L409 -17L399 -17L398 -23L394 -23L394 -31L385 -37L362 -35L355 -42L335 -52L315 -47L315 -18L311 -18L300 -26L288 -22L288 -30L279 -32L270 -44L278 -43L278 -49L292 -49L292 -61L277 -63L261 -58L257 -59L258 -63L253 -68L247 -68L240 -74L249 -90L257 -85L258 -91L274 -99L286 -100L313 -91L321 -94L334 -95L344 -90L357 -92L359 -96L346 -102L360 -110L354 -115L358 -118L387 -120L418 -128L432 -127L434 -119L443 -121L453 -118L452 -114L479 -121L476 -119L486 -113L504 -93L508 -97L519 -93L530 -95L547 -84L557 -85L561 -80ZM315 -18L315 -47L335 -52L355 -42L362 -35L385 -37L394 -31L394 -23L398 -23L399 -17L409 -17L411 -13L433 -25L435 -25L428 -20L449 -14L439 -9L430 -9L430 -15L420 -13L414 -4L407 -4L405 -1L411 1L412 7L408 15L398 13L398 8L379 1L365 -8L361 -16L350 -17L346 -25L336 -29L322 -22L324 -18L315 -18ZM982 327L983 378L976 371L956 372L964 364L958 349L925 334L919 339L918 332L912 328L925 324L914 324L900 314L915 309L927 312L931 328L939 333L954 320L982 327ZM857 376L857 380L852 386L845 387L849 379L857 376ZM929 360L931 349L933 355L929 360ZM801 274L796 281L802 288L801 292L810 299L800 300L798 313L791 318L787 338L786 335L777 339L774 334L765 331L755 334L752 330L741 329L740 319L732 310L731 303L736 291L743 300L761 295L769 297L775 295L785 272L801 274ZM891 328L900 331L903 337L880 333L881 329L891 328ZM872 336L865 331L873 331L874 333L872 336ZM880 289L886 297L885 304L881 304L881 313L876 298L880 289ZM841 299L859 295L852 303L846 304L819 304L818 310L825 317L844 311L843 315L840 314L829 321L837 331L842 348L838 351L835 348L839 341L831 344L829 342L830 339L825 335L825 327L820 329L821 350L816 351L813 349L814 334L810 334L808 328L816 305L825 296L841 299ZM820 387L809 381L817 380L824 385L820 387ZM828 373L840 370L839 374L817 375L817 373L823 371L828 373ZM804 372L809 371L811 375L792 377L801 370L804 372ZM727 357L728 360L743 360L745 357L760 361L762 366L784 372L775 375L726 367L703 360L708 353L727 357ZM695 315L699 325L705 325L709 330L706 352L698 352L681 339L655 305L650 292L624 263L641 265L666 290L674 290L680 295L691 305L688 312L695 315ZM106 342L108 357L117 372L101 373L98 399L108 402L109 410L103 410L89 397L84 400L66 392L49 393L46 364L33 361L28 362L25 369L13 370L4 352L-28 354L-29 352L-25 345L-18 342L-10 345L1 334L4 320L14 310L21 273L28 267L51 275L55 269L77 265L90 265L99 273L109 270L118 279L117 288L120 289L110 302L103 329L106 342ZM202 320L197 313L197 284L206 273L218 267L229 267L260 232L260 217L277 212L272 234L257 264L241 284L214 304L202 320ZM183 343L172 335L171 331L142 314L142 305L151 291L142 273L153 263L157 264L159 271L175 278L186 279L196 273L204 276L197 284L197 313L202 320L192 327L183 343ZM68 242L60 236L60 227L51 207L48 207L56 183L63 184L63 149L72 149L72 134L165 134L170 160L177 165L165 173L160 200L144 223L142 238L140 225L136 222L136 211L133 210L127 212L130 219L122 229L111 226L103 233L86 232L78 225L72 226L68 236L63 239L68 242ZM63 153L63 184L56 183L48 207L51 207L55 219L46 223L40 232L23 236L24 239L17 244L-4 248L-7 237L-15 231L-13 228L-3 228L-7 221L-10 202L-15 201L-18 194L-15 183L-5 176L0 146L-6 139L-8 127L0 123L63 153ZM90 265L67 266L55 269L51 275L28 267L21 273L20 279L10 277L1 289L-11 269L-11 263L-4 248L17 244L24 239L23 236L40 232L46 223L55 219L60 227L60 236L73 245L90 265ZM-22 344L-29 352L-31 346L-25 341L-22 344ZM-28 354L4 352L13 370L25 369L28 362L33 361L46 364L49 393L60 392L64 395L64 408L48 408L47 433L58 444L43 447L24 446L19 442L-14 443L-19 440L-32 442L-29 420L-17 395L-28 354ZM115 325L117 333L106 342L103 329L115 325ZM156 50L152 51L150 56L150 60L153 59L154 62L150 75L145 61L151 47L157 45L156 50ZM157 45L151 47L158 34L162 35L163 38L157 45ZM153 59L150 60L152 51L155 52L153 59ZM155 52L156 50L165 53L180 44L183 54L166 59L174 67L159 77L150 75L155 52ZM280 116L300 117L316 102L317 104L318 111L314 111L315 117L311 118L307 130L284 126L280 116ZM274 112L274 106L278 101L281 108L279 113L274 112ZM252 71L256 82L241 78L247 70L252 71ZM183 54L180 44L197 36L200 21L211 13L227 15L232 24L237 26L238 31L232 40L238 47L247 51L251 57L250 63L257 71L247 70L241 78L227 77L204 61L183 54ZM309 128L311 118L315 117L314 111L318 111L326 119L337 121L345 131L335 146L329 147L328 158L320 160L317 166L312 166L306 173L292 176L284 157L307 149L313 134L309 128ZM681 211L679 201L684 195L694 193L708 197L712 192L719 195L720 200L719 209L706 215L710 220L688 223L681 211ZM702 194L684 195L679 201L681 211L667 207L668 201L661 201L654 234L660 234L664 248L677 257L670 262L669 258L661 256L646 241L657 213L653 198L646 188L652 179L640 161L647 152L661 146L665 153L671 154L669 169L686 163L692 163L698 169L698 177L704 184L702 194ZM719 195L712 192L708 197L702 194L704 184L692 163L677 164L669 169L671 154L665 153L661 146L670 138L675 140L674 131L678 130L686 143L695 143L698 150L691 155L701 160L718 181L719 195ZM661 146L647 152L640 161L652 179L646 188L653 198L657 213L649 228L649 203L638 173L624 183L615 180L616 163L611 151L601 144L600 138L603 139L603 133L607 131L608 117L614 119L622 98L632 92L638 94L640 84L644 84L650 90L650 103L643 109L642 119L650 117L652 125L657 126L655 133L664 137L670 135L661 146ZM695 224L710 220L706 215L719 209L720 187L701 160L691 155L698 150L695 143L686 143L678 130L696 127L702 123L713 127L712 132L716 135L724 137L713 144L705 157L730 186L734 201L733 215L701 239L698 234L700 228L695 224ZM901 -27L893 -20L894 -15L877 -6L876 -2L882 5L859 11L855 7L860 -3L851 -7L857 -12L871 -22L882 -19L881 -23L893 -27L896 -31L901 -27ZM866 10L883 3L892 18L889 31L868 36L866 18L871 17L866 10ZM564 -81L600 -93L639 -84L647 -90L643 -94L652 -102L677 -96L678 -90L689 -87L715 -88L727 -81L744 -79L773 -88L791 -85L782 -72L784 -68L802 -71L816 -63L815 -60L797 -60L766 -45L754 -48L750 -43L753 -37L742 -30L700 -20L667 -29L632 -29L624 -41L609 -47L589 -49L587 -53L590 -62L584 -68L566 -75L564 -81ZM640 84L638 94L632 92L622 98L618 113L614 119L608 117L607 131L603 133L599 121L595 126L591 122L601 110L581 108L581 102L571 99L568 104L574 108L567 114L572 116L573 136L558 138L559 143L555 148L543 153L521 173L521 176L506 181L502 225L498 225L495 231L497 234L490 236L484 244L477 236L460 192L453 181L446 139L429 142L419 133L422 130L420 127L411 120L416 115L433 115L426 98L421 95L430 87L439 87L460 63L460 58L466 53L460 49L454 37L458 34L479 34L487 28L495 37L497 47L497 51L491 50L494 59L512 69L504 80L529 91L567 99L567 87L572 86L573 94L580 97L598 96L595 88L618 76L624 78L630 75L634 80L631 83L640 84ZM603 133L601 144L593 128L586 127L584 135L574 133L572 116L567 114L574 108L568 104L571 99L581 102L581 108L601 110L591 122L595 126L599 121L603 133ZM595 88L598 96L580 97L573 94L582 84L595 88ZM567 87L567 99L560 99L529 91L504 80L507 73L516 67L549 85L567 87ZM487 28L479 34L458 34L454 37L460 49L466 53L460 58L460 63L439 87L430 87L421 95L426 98L433 115L416 115L411 120L405 118L397 107L358 109L361 100L373 96L368 91L368 84L360 81L353 72L367 76L396 72L397 65L401 61L420 56L419 51L428 44L424 39L432 39L438 30L435 23L440 20L466 15L474 25L487 28ZM398 13L419 15L431 4L436 6L440 18L451 12L466 15L435 23L438 30L432 39L424 39L428 44L419 51L420 56L401 61L397 65L396 72L367 76L353 72L361 65L360 60L354 59L351 47L354 43L351 42L356 26L370 28L372 25L382 21L384 15L392 11L398 13ZM408 15L412 7L411 1L405 -1L407 -4L414 -4L420 -13L430 -15L429 -12L433 -10L422 -9L421 -4L454 -3L456 4L463 5L464 13L451 12L440 18L436 6L431 4L419 15L408 15ZM433 -25L440 -30L452 -27L454 -32L458 -34L469 -30L497 -30L506 -26L489 -17L479 -16L476 -11L463 -11L454 -3L421 -4L422 -9L439 -9L449 -14L428 -20L435 -25L433 -25ZM288 -22L300 -26L311 -18L324 -18L322 -22L336 -29L346 -25L350 -17L361 -16L365 -8L379 1L398 8L398 13L392 11L384 15L382 21L364 29L356 26L355 20L326 8L311 8L299 14L299 1L292 -2L294 -8L289 -8L291 -15L298 -13L305 -15L297 -24L291 -22L290 -17L288 -22ZM257 71L250 63L251 57L247 51L238 47L232 40L238 31L237 26L232 24L223 8L222 -3L227 -5L232 1L238 2L253 -4L255 -2L252 2L259 5L262 11L275 17L298 16L320 7L355 20L351 42L354 43L351 47L354 59L360 60L361 65L353 72L360 81L368 84L368 91L373 96L361 100L358 109L326 104L323 95L305 98L295 96L280 88L269 70L260 68L257 71ZM156 50L163 38L158 34L157 28L164 17L186 18L208 14L200 21L197 36L165 53L156 50ZM241 2L218 -10L218 -16L229 -17L233 -14L232 -12L236 -9L234 -7L240 -3L241 2ZM53 -41L56 -38L76 -37L89 -40L100 -37L93 -28L95 -23L81 -22L80 -18L56 -18L51 -26L56 -33L52 -36L53 -41ZM82 29L70 32L60 29L62 26L82 29ZM56 -18L80 -18L81 -22L84 -20L80 -14L62 -13L67 -9L53 -10L59 -1L56 0L64 6L64 11L57 9L59 13L54 13L57 20L52 20L46 17L34 -5L41 -14L56 -18ZM227 15L211 13L186 18L164 17L159 25L156 22L159 19L148 17L143 22L131 23L116 18L109 23L101 18L93 19L82 6L86 0L81 -3L90 -11L102 -11L105 -17L120 -16L139 -24L152 -24L177 -15L210 -20L218 -16L218 -10L227 -5L222 -3L223 8L227 15ZM81 -22L95 -23L103 -18L82 -9L80 -14L84 -20L81 -22ZM41 -14L34 -5L28 -10L27 -25L30 -29L37 -25L37 -16L41 -14ZM518 247L516 255L506 259L501 242L505 229L518 247ZM735 163L728 161L728 154L745 149L747 152L742 160L735 163ZM506 -26L505 -31L510 -33L503 -46L523 -51L529 -65L544 -63L548 -66L549 -74L564 -81L566 -75L584 -68L590 -62L587 -53L589 -49L609 -47L624 -41L632 -29L667 -29L700 -20L709 -24L733 -27L753 -37L750 -43L754 -48L766 -45L797 -60L815 -60L816 -63L802 -71L784 -68L782 -72L791 -85L801 -82L812 -87L812 -91L823 -102L823 -106L819 -108L835 -113L864 -108L878 -84L891 -82L901 -76L904 -69L935 -74L920 -48L904 -47L905 -31L901 -30L901 -27L896 -31L893 -27L881 -23L882 -19L871 -22L851 -7L826 1L835 -11L830 -15L798 2L815 15L824 9L836 12L837 16L826 19L811 32L819 37L833 58L832 63L827 65L834 72L831 85L826 85L807 114L785 127L772 132L769 129L745 138L743 147L738 147L738 138L716 135L712 132L713 127L702 123L696 127L674 131L675 140L671 140L670 135L664 137L655 133L657 126L652 125L650 117L642 119L643 109L650 103L650 90L644 84L631 83L634 80L630 75L624 78L618 76L602 87L582 84L573 92L572 86L549 85L494 59L491 50L497 51L497 47L495 37L487 28L474 25L464 13L463 5L456 4L454 -3L463 -11L476 -11L479 -16L489 -17L506 -26ZM831 115L823 134L818 121L829 108L833 110L831 115ZM240 -22L251 -17L257 -22L271 -10L265 -9L259 5L252 2L255 -2L253 -4L241 2L240 -3L234 -7L236 -9L229 -17L241 -16L240 -22ZM238 2L232 1L227 -5L235 -4L238 2ZM189 -35L232 -27L242 -17L218 -16L202 -20L201 -28L189 -35ZM661 256L669 258L670 262L677 257L684 263L694 296L688 297L671 285L661 256ZM801 274L785 272L775 295L761 295L743 300L738 296L736 291L748 292L750 285L763 282L772 271L776 275L781 272L782 264L792 252L795 252L799 259L811 264L801 274ZM782 264L781 272L776 275L772 271L782 264ZM162 193L165 173L177 165L184 181L214 207L208 208L190 192L178 192L173 189L171 195L162 193ZM989 -1L982 7L981 25L977 30L953 35L942 44L936 41L936 35L904 40L912 46L906 59L901 63L898 60L900 53L891 45L917 28L941 27L949 13L954 17L970 6L977 -17L985 -19L989 -1ZM1011 -39L1016 -42L1018 -33L1006 -31L1000 -23L987 -29L983 -20L974 -20L973 -28L977 -34L985 -34L990 -51L999 -43L1011 -39ZM915 44L927 37L933 41L929 46L922 45L920 50L915 47L915 44ZM284 157L292 176L287 178L285 184L258 196L234 202L229 207L217 207L210 187L216 168L243 171L245 173L261 160L284 157ZM133 30L147 26L142 31L133 30ZM133 30L142 32L134 35L129 31L133 30ZM72 134L72 149L63 149L63 153L0 123L-13 130L-30 122L-40 113L-44 115L-51 101L-48 98L-47 79L-50 68L-46 67L-46 60L-35 52L-34 46L-5 53L-1 60L25 69L33 63L31 57L39 50L55 50L58 54L71 56L72 134ZM251 243L229 267L218 267L204 276L196 273L186 279L159 271L148 255L139 246L134 245L141 241L144 223L157 208L162 193L171 195L173 189L178 192L190 192L202 201L208 208L203 215L203 220L211 221L210 223L218 234L251 243ZM208 208L216 209L211 214L214 216L211 221L203 220L203 215L208 208ZM260 217L260 232L251 243L218 234L210 223L214 216L222 224L260 217ZM142 314L108 317L110 302L120 289L117 288L118 279L121 277L138 277L142 273L146 278L151 291L142 305L142 314ZM114 315L117 324L103 329L105 319L114 315ZM51 -26L56 -18L41 -14L37 -16L39 -24L51 -26ZM33 -28L30 -29L28 -22L20 -27L26 -35L35 -30L33 -28ZM37 -22L33 -28L38 -33L46 -29L37 -22ZM118 279L109 270L95 272L73 245L63 239L68 236L72 226L78 225L86 232L103 233L111 226L122 229L130 219L127 212L136 211L136 222L140 225L142 238L134 245L143 250L153 263L138 277L118 279Z"/>
+      <g class="mc" id="mc-SA" data-loc="Saudi Arabia" style="--gc:var(--s1);--gc-ink:var(--s1-ink)" role="button" tabindex="0" aria-label="Saudi Arabia">
+        <path d="M165.2 107L162.1 105L165.2 107ZM205.2 175.1L205.7 174.4L206.5 176.2L203.7 174.6L204.1 172.8L205.2 175.1ZM283.6 157.2L260.5 160.4L253.7 163.8L248 172L245.6 173.3L242.4 170.8L229.9 169.5L220.3 170.3L216.4 168.8L214.6 170L214.4 175.3L211.5 177.8L207.6 169.4L203.3 165.9L199.2 159.7L195.5 151.2L187.4 146.2L183.9 141.7L181.6 134.5L182.2 128.9L177.5 120.2L173.2 116.4L170.3 115.6L167.4 111.5L167.2 107.8L151.7 86.2L147.3 86L149.9 75.9L158.7 77.1L164.1 71.8L169.7 70.8L171 68.3L173.7 66.9L165.7 59.1L182.8 54.1L192.4 55.6L205.8 62.3L226.4 77.1L247.9 78.7L249.8 82.3L255.8 82.2L258.6 88.7L269.2 97L268.1 96.9L269.7 99.8L268.3 101.3L272.4 109.4L275.3 113.2L279.1 113.4L278.3 115.2L280.4 115.7L288.1 126.3L308.8 128.1L312.3 133.6L307.1 149.3L283.6 157.2Z"/>
+        <rect class="pin" x="205.0" y="104.4" width="40" height="25" rx="12.5"/>
+        <text class="pin-n" x="225" y="122.30000000000001" id="mcn-SA">0</text>
+        <text class="pin-l" x="225" y="149.9">Saudi Arabia</text>
+      </g>
+      <g class="mc" id="mc-EG" data-loc="Egypt" style="--gc:var(--s2);--gc-ink:var(--s2-ink)" role="button" tabindex="0" aria-label="Egypt">
+        <path d="M165 133.6L122.3 133.6L122.1 132L120.6 133.6L71.6 133.6L71.6 77.2L69.5 69.2L71.6 64.7L70.6 60.3L73 57.8L74.8 58.9L78.8 58.1L103.8 64.3L112.8 60.9L114.2 59.4L118.3 58.5L115.5 59.7L118.9 59.3L119.6 58.2L123 59.3L125.9 58.7L127.8 60.3L125.9 59.2L125 60.7L127.6 62.2L129 61.4L128.4 60.6L131.5 62.4L139.8 61.9L144 60.4L149.5 74.9L144.2 88.3L136.5 82L131.2 71L129.6 73.7L133.8 82.1L138.9 87.3L142.1 97.1L151.8 114.2L156.4 118.4L154.5 118.5L154.3 119.6L155.8 126.2L165 133.6Z"/>
+        <rect class="pin" x="89.8" y="85.7" width="40" height="25" rx="12.5"/>
+        <text class="pin-n" x="109.8" y="103.60000000000001" id="mcn-EG">0</text>
+        <text class="pin-l" x="109.8" y="131.2">Egypt</text>
+      </g>
+      <g class="mc" id="mc-PH" data-loc="Philippines" style="--gc:var(--s3);--gc-ink:var(--s3-ink)" role="button" tabindex="0" aria-label="Philippines">
+        <path d="M826.2 160.2L832 162.7L835.3 161.4L834.4 167.6L837.3 171.9L834.3 179.2L830.1 181.2L828.5 186L830.8 190.4L831.4 195.1L834.9 196.9L834.8 195.2L838.2 193.9L840.6 194.9L841.9 198.4L843.4 197.7L843.6 195.9L847.5 197.7L845.4 199.2L847.3 203.4L850.1 204L849.4 207.6L848 206.7L848.5 204.9L843.5 203.9L842.4 200.8L837.9 197.1L836.9 197.3L838.5 201.1L838 202.7L831.5 196.9L828.1 199.2L824.1 197.3L822.5 197.9L822.4 194.9L824.9 191.3L822.1 189.5L822.2 192.6L821 192.8L818.2 189.7L815.8 178.7L818.8 180.3L820.4 179.8L820.4 167.8L822.3 161L826.2 160.2ZM796.5 240.1L795.7 240.6L796.7 237.9L811.5 224.1L812.1 220.2L814 217.5L815.1 223.9L808 228.5L805.3 233.6L796.5 240.1ZM837.1 215.1L839.8 215.3L840.3 216.5L842.3 215.7L842 217.7L839.3 221.3L832.9 224.3L834.1 214.9L832.6 213.2L837.1 215.1ZM842.1 235.1L837.7 231.9L836.4 229.2L840 227.1L839.7 223.8L841 220.8L843.1 220L845.5 221.7L842.4 228.9L843.6 233.5L842.1 235.1ZM853.5 217.3L856.3 217L857 218.3L856.9 221.6L858.9 225.4L857.9 226.3L856.7 224.9L857 227.5L855.1 226.5L855.1 221.7L854.2 220.3L852.4 220.6L851.5 215.8L853.5 217.3ZM858.7 208L861 210.6L860.7 215.3L862.6 219.6L858.6 218.8L857.1 217.3L856.8 213.9L852.4 210.9L851.3 207.6L858.7 208ZM823.1 200.5L827 200.9L829.5 203.2L829.6 207.1L827.3 210.4L820.2 201L823.1 200.5ZM864.7 233.1L866.2 233.5L867 236L865.7 238.8L867.5 239.7L868.3 241.9L869.2 249.4L866.2 252.5L866.1 256.8L863.3 248.7L862.2 249.3L859.8 253.8L861.4 255.5L862 259.4L859.5 262.3L858.6 258.7L856.2 260.2L849.6 256L848.8 251.4L850.6 248.2L846.3 244.9L845 245L844.2 248.1L841.9 245.9L839.9 247.2L838.1 245.4L834.4 251.7L832.5 250.8L835.2 243.9L840.4 242.3L844.5 238L847.8 240.1L847.4 243.1L850.5 241.7L852.1 238.8L854.7 239.1L855.8 235.9L857.9 236.7L858.5 235.4L860.7 235.5L860.5 229.7L864.7 233.1ZM844 232.1L844.1 228.1L849.2 217.8L849 224.7L846.6 226.8L844 232.1ZM826.7 258.6L828.6 259.7L824.4 259.6L826.7 258.6ZM794.6 244.4L793.9 243.1L794.6 244.4ZM816.9 224L815.9 224.2L816.4 222.8L817.6 223.3L816.9 224ZM818.3 210.8L819.3 210.4L820 212L817.6 212L816.7 209.7L818.3 210.8ZM817.8 214.4L816.5 212.5L817.8 212.8L817.8 214.4ZM838.3 224.1L837.5 224.5L837.5 223L838.8 222L838.3 224.1ZM853.6 229.5L849.9 230.9L847.5 229.2L851.6 226.5L853.5 227.6L853.6 229.5ZM819.5 265L816.2 266.5L818.8 264.4L819.5 265ZM834 255.8L831.9 254L833.7 253.4L835.8 254.5L834 255.8ZM865.1 229.6L865.2 227.3L866 229.4L865.1 229.6ZM862.2 228.5L860.7 226.9L862 224.3L862.2 228.5ZM832.6 200L834.2 200.6L833.3 202.6L831.9 201.7L832.6 200ZM834 209.3L833.4 211.3L832.7 209.5L834.4 207L834 209.3ZM838.4 209.7L836.6 208.5L838 208.2L838.4 209.7ZM843.3 205.4L844 206.6L840.8 203.4L843.3 205.4ZM847.2 208.5L846 206.8L847.2 208.5ZM846.7 209.8L849.3 212.4L849.3 214L844.8 210.4L842.3 212.7L842.9 207.5L846.7 209.8ZM851.7 199.3L850.3 200.1L849.2 199L850.7 195.8L852.2 197.4L851.7 199.3ZM833.5 188.5L832.7 191.3L831.8 188.8L833.5 188.5ZM853.7 216.1L851.8 214.7L853 214.6L853.7 216.1ZM846.6 233.8L845.9 234.8L845 234.1L846.6 233.8Z"/>
+        <rect class="pin" x="820.3" y="201.4" width="40" height="25" rx="12.5"/>
+        <text class="pin-n" x="840.3" y="219.3" id="mcn-PH">0</text>
+        <text class="pin-l" x="840.3" y="246.9">Philippines</text>
+      </g>
+        </svg>
+      </div>
+      <div class="map-legend" id="mapLegend"></div>
+    </div>
   </section>
 
   <section class="section">
@@ -592,27 +684,6 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
           <div class="area-x" id="areaX"></div>
           <div class="area-cursor" id="areaCursor"></div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head"><span class="section-title">Comparison</span><span class="section-rule"></span><span class="section-note" id="cmpNote"></span></div>
-    <div class="grid-2">
-      <div class="card card-pad">
-        <div class="card-title">Year over year</div>
-        <div class="card-sub">Volume and completion each year, with the change on the year before</div>
-        <div class="yoy" id="yoy"></div>
-      </div>
-      <div class="card card-pad">
-        <div class="card-title">Period vs period</div>
-        <div class="card-sub">Pick any two years or quarters to compare</div>
-        <div class="cmp-pick">
-          <div class="cmp-sel" style="--pc:var(--s1)"><select id="cmpA" onchange="renderCompare()" aria-label="First period"></select></div>
-          <span class="cmp-vs">vs</span>
-          <div class="cmp-sel" style="--pc:var(--s2)"><select id="cmpB" onchange="renderCompare()" aria-label="Second period"></select></div>
-        </div>
-        <div class="cmp-rows" id="cmpRows"></div>
       </div>
     </div>
   </section>
@@ -778,8 +849,10 @@ const mk = (tag, attrs) => { const e = document.createElementNS(SVGNS, tag); for
 
 /* ── Tooltip ──────────────────────────────────────────────────── */
 const tip = $('tip');
+/* Pass the html once, or set el._tipHTML on every render for a tooltip
+   whose contents change with the filters (the map shapes do). */
 function bindTip(el, html){
-  el.addEventListener('mouseenter', e => { tip.innerHTML = html; tip.style.opacity = 1; moveTip(e); });
+  el.addEventListener('mouseenter', e => { tip.innerHTML = el._tipHTML || html; tip.style.opacity = 1; moveTip(e); });
   el.addEventListener('mousemove', moveTip);
   el.addEventListener('mouseleave', () => { tip.style.opacity = 0; });
 }
@@ -1011,42 +1084,114 @@ function renderAttention(){
   card.innerHTML = head + `<div class="att-list">${body}${filler}</div>` + foot;
 }
 
-/* ── Locations: where the work sits ──────────────────────────────
+/* ── Locations: the map ─────────────────────────────────────────
    Locations are an identity dimension with few values, so they take
    fixed categorical slots keyed on the place — home first, then the
-   overseas branches alphabetically, so a filter never repaints them. */
+   overseas branches alphabetically, so a filter never repaints them.
+   The map carries the three countries we operate in; the legend strip
+   underneath carries the numbers and covers any country that has no
+   shape on the map yet. */
 const LOCATION_ORDER = [DEFAULT_LOCATION,
   ...[...new Set(Object.values(LOCATION_MAP))].filter(l => l !== DEFAULT_LOCATION).sort()];
 const LOCATION_VAR = {};
 LOCATION_ORDER.forEach((l, i) => { LOCATION_VAR[l] = ['--s1','--s2','--s3'][i] || '--s-other'; });
 
-function renderLocations(){
-  const host = $('locations');
+/* Country name -> the <g> drawn on the map. Adding a country to the
+   Excel needs no map work: it simply shows in the legend and the
+   Country buttons instead. */
+const MAP_SHAPES = {'Saudi Arabia':'mc-SA', 'Egypt':'mc-EG', 'Philippines':'mc-PH'};
+
+function locStats(loc){
+  const rows = view.filter(d => d.location === loc);
+  return {
+    n: rows.length,
+    open: rows.filter(d => d.open).length,
+    clients: [...new Set(rows.map(d => d.company).filter(Boolean))].sort()
+  };
+}
+function locTip(loc, s, total){
+  return `<b>${esc(loc)}</b><br><span class="t-sub">${s.n} task${s.n === 1 ? '' : 's'} · ${pct(s.n, total)}% · ${s.open} open</span>`
+    + (s.clients.length ? '<div class="t-list">' + s.clients.map(c =>
+        `<div><span>${esc(c)}</span><b>${view.filter(d => d.company === c).length}</b></div>`).join('') + '</div>' : '')
+    + `<div class="t-hint">${sel.msLocation.has(loc) ? 'Click to clear this country' : 'Click to filter to this country'}</div>`;
+}
+
+/* ── Country buttons (top filter bar) ───────────────────────────
+   These drive the hidden msLocation multi-select, so the chips,
+   Reset and the rest of the filter machinery need no special case. */
+function toggleLoc(loc){
+  const cb = $('msLocation-menu').querySelector(`input[value="${CSS.escape(loc)}"]`);
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  onPick('msLocation');
+}
+function clearLocs(){
+  $('msLocation-menu').querySelectorAll('input').forEach(cb => cb.checked = false);
+  onPick('msLocation');
+}
+function renderCountrySeg(){
+  const host = $('countrySeg');
   const counts = countBy(view, 'location');
-  /* every known location gets a tile, dimmed at zero, so a branch that exists
-     but has no work yet is visible rather than absent */
+  const extra = Object.keys(counts).filter(l => l && !LOCATION_ORDER.includes(l)).sort();
+  const keys = [...LOCATION_ORDER, ...extra];
+  const anyOn = sel.msLocation.size > 0;
+  host.innerHTML = `<button class="seg-btn${anyOn ? '' : ' on'}" style="--gc:var(--brand)" onclick="clearLocs()">`
+      + `All countries <span class="sn">${view.length}</span></button>`
+    + keys.map(loc => {
+        const cv = LOCATION_VAR[loc] || '--s-other';
+        return `<button class="seg-btn${sel.msLocation.has(loc) ? ' on' : ''}" style="--gc:var(${cv})"`
+             + ` onclick="toggleLoc('${esc(loc).replace(/'/g, "\\'")}')">`
+             + `<span class="sd"></span>${esc(loc)} <span class="sn">${counts[loc] || 0}</span></button>`;
+      }).join('');
+}
+
+function renderMap(){
+  const counts = countBy(view, 'location');
   const extra = Object.keys(counts).filter(l => l && !LOCATION_ORDER.includes(l)).sort();
   const keys = [...LOCATION_ORDER, ...extra];
   const total = view.length;
-  $('locNote').textContent = `${keys.filter(k => counts[k]).length} of ${keys.length} with activity`;
+  const unmapped = keys.filter(k => !MAP_SHAPES[k]);
+  $('locNote').textContent = `${keys.filter(k => counts[k]).length} of ${keys.length} with activity`
+    + (unmapped.length ? ` · ${unmapped.join(', ')} not on the map` : '');
+
+  /* map shapes */
+  for (const [loc, id] of Object.entries(MAP_SHAPES)){
+    const g = $(id);
+    if (!g) continue;
+    const s = locStats(loc), cv = LOCATION_VAR[loc] || '--s-other';
+    g.style.setProperty('--gc', `var(${cv})`);
+    g.classList.toggle('is-zero', !s.n);
+    g.classList.toggle('on', sel.msLocation.has(loc));
+    g.classList.toggle('dim', sel.msLocation.size > 0 && !sel.msLocation.has(loc));
+    const num = g.querySelector('.pin-n'), pill = g.querySelector('.pin');
+    if (num) num.textContent = s.n;
+    if (num && pill){                       /* pill grows with the digit count */
+      const w = 26 + String(s.n).length * 9.5;
+      pill.setAttribute('width', w);
+      pill.setAttribute('x', (+num.getAttribute('x')) - w / 2);
+    }
+    g.onclick = () => toggleLoc(loc);
+    g.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleLoc(loc); } };
+    if (!g.dataset.tipped){ bindTip(g, ''); g.dataset.tipped = '1'; }
+    g._tipHTML = locTip(loc, s, total);
+  }
+
+  /* legend strip — the numbers the cards used to carry */
+  const host = $('mapLegend');
   host.innerHTML = '';
   keys.forEach(loc => {
-    const n = counts[loc] || 0;
-    const open = view.filter(d => d.location === loc && d.open).length;
-    const clients = [...new Set(view.filter(d => d.location === loc && d.company).map(d => d.company))];
-    const cv = LOCATION_VAR[loc] || '--s-other';
+    const s = locStats(loc), cv = LOCATION_VAR[loc] || '--s-other';
     const el = document.createElement('div');
-    el.className = 'loc' + (n ? '' : ' is-zero');
-    el.style.setProperty('--lc', `var(${cv})`);
-    el.style.setProperty('--lc-ink', `var(${cv}-ink)`);
-    el.innerHTML = `<div class="loc-top"><span class="loc-dot"></span><span class="loc-name">${esc(loc)}</span></div>
-      <div class="loc-row"><span class="loc-val">${n}</span><span class="loc-pct">${pct(n, total)}%</span></div>
-      <div class="loc-meta">${n ? `<b>${open}</b> open · ${clients.length} client${clients.length === 1 ? '' : 's'}`
-                              : 'No tasks logged yet'}</div>
-      <div class="loc-bar"><i style="width:${pct(n, total)}%"></i></div>`;
-    bindTip(el, `<b>${esc(loc)}</b><br><span class="t-sub">${n} task${n === 1 ? '' : 's'} · ${pct(n, total)}% · ${open} open</span>`
-      + (clients.length ? '<div class="t-list">' + clients.sort().map(c =>
-          `<div><span>${esc(c)}</span><b>${view.filter(d => d.company === c).length}</b></div>`).join('') + '</div>' : ''));
+    el.className = 'ml' + (s.n ? '' : ' is-zero');
+    el.style.setProperty('--gc', `var(${cv})`);
+    el.style.setProperty('--gc-ink', `var(${cv}-ink)`);
+    el.innerHTML = `<div class="ml-top"><span class="ml-dot"></span><span class="ml-name">${esc(loc)}</span></div>
+      <div class="ml-row"><span class="ml-val">${s.n}</span><span class="ml-pct">${pct(s.n, total)}%</span></div>
+      <div class="ml-meta">${s.n ? `<b>${s.open}</b> open · ${s.clients.length} client${s.clients.length === 1 ? '' : 's'}`
+                                 : 'No tasks logged yet'}</div>
+      <div class="ml-bar"><i style="width:${pct(s.n, total)}%"></i></div>`;
+    el.onclick = () => toggleLoc(loc);
+    bindTip(el, locTip(loc, s, total));
     host.appendChild(el);
   });
 }
@@ -1541,7 +1686,7 @@ addEventListener('scroll', () => { $('totop').classList.toggle('show', scrollY >
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-09-09T11:25:06+03:00');
+  const built = new Date('2026-09-09T11:29:58+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
@@ -1559,7 +1704,7 @@ addEventListener('scroll', () => { $('totop').classList.toggle('show', scrollY >
 
 /* ── Boot ─────────────────────────────────────────────────────── */
 function render(){
-  renderKPIs(); renderLocations(); renderAttention(); renderDonut(); renderColumns();
+  renderKPIs(); renderCountrySeg(); renderMap(); renderAttention(); renderDonut(); renderColumns();
   renderYoY(); renderCompare();
   renderArea(); renderAssignees(); renderServiceHeatmap(); renderTable();
 }
