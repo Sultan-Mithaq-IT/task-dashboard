@@ -40,6 +40,9 @@ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+
   --brand:#8a725c; --brand-2:#5f4c39; --brand-strong:#6d5842;
   --brand-soft:rgba(165,144,123,.16);
 
+  --glow-1:rgba(168,114,28,.16); --glow-2:rgba(165,144,123,.20);
+  --spot:rgba(165,144,123,.10);
+
   /* map: neutral base so the three country colours carry all the meaning */
   --map-sea:#f7f4f0; --map-land:#e6dfd5; --map-line:#d6ccbe; --map-zero:#c9c0b4;
 
@@ -86,6 +89,9 @@ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+
   --brand:#c4a98d; --brand-2:#8a725c; --brand-strong:#d9c3aa;
   --brand-soft:rgba(196,169,141,.18);
 
+  --glow-1:rgba(184,131,31,.14); --glow-2:rgba(196,169,141,.12);
+  --spot:rgba(196,169,141,.07);
+
   --map-sea:#131110; --map-land:#292219; --map-line:#39301f; --map-zero:#4a423a;
 
   --s1:#b8831f; --s2:#4a92cf; --s3:#bb6a97; --s-other:#9a8f83;
@@ -114,7 +120,7 @@ unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:96px}
+html{scroll-behavior:smooth;scroll-padding-top:128px}
 body{
   background:var(--page); color:var(--text); min-height:100vh;
   font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -499,70 +505,192 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
    for byte the same. The `anim` class is set by script, so if the
    script never runs nothing is left hidden. prefers-reduced-motion
    switches the whole layer off at the bottom of this block.       */
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes popIn{0%{opacity:0;transform:scale(.72)}62%{transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+@keyframes rise{from{opacity:0;transform:translateY(30px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes riseSoft{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes popIn{0%{opacity:0;transform:scale(.72)}62%{transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes chipIn{from{opacity:0;transform:translateY(-5px) scale(.9)}to{opacity:1;transform:none}}
-@keyframes ringPulse{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.9);opacity:0}100%{opacity:0}}
+@keyframes ringPulse{0%{transform:scale(1);opacity:.55}70%{transform:scale(2);opacity:0}100%{opacity:0}}
+@keyframes ruleDraw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes bump{0%{transform:none}30%{transform:translateY(-4px) scale(1.06)}100%{transform:none}}
+@keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(4vw,3vh,0) scale(1.12)}100%{transform:translate3d(0,0,0) scale(1)}}
+@keyframes drift2{0%{transform:translate3d(0,0,0) scale(1.05)}50%{transform:translate3d(-5vw,-2vh,0) scale(.95)}100%{transform:translate3d(0,0,0) scale(1.05)}}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+@keyframes sweep{to{transform:translateX(260%)}}
 
-/* sections and cards arrive as you scroll to them */
+/* a thin bar sweeps the top while the first paint lands */
+.boot-bar{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;pointer-events:none;
+  background:linear-gradient(90deg,var(--brand),var(--s1),var(--brand-strong));
+  box-shadow:0 0 12px var(--brand);transition:width .9s cubic-bezier(.16,1,.3,1),opacity .4s}
+
+/* ── Ambience: two very slow blooms behind everything ───────────── */
+.ambient{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.ambient i{position:absolute;display:block;border-radius:50%;filter:blur(80px);opacity:.75}
+.ambient i:nth-child(1){width:46vw;height:46vw;left:-8vw;top:-12vw;background:var(--glow-1);animation:drift 38s ease-in-out infinite}
+.ambient i:nth-child(2){width:40vw;height:40vw;right:-10vw;top:22vh;background:var(--glow-2);animation:drift2 46s ease-in-out infinite}
+
+/* ── Entrance: sections, then the cards inside them ─────────────── */
 html.anim .rv{opacity:0}
-html.anim .rv.in{animation:rise .62s cubic-bezier(.22,1,.36,1) both;animation-delay:var(--rvd,0ms)}
+html.anim .rv.in{animation:rise .95s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--rvd,0ms)}
+html.anim .rv .section-rule{transform-origin:left center}
+html.anim .rv.in .section-rule{animation:ruleDraw .9s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--rvd,0ms) + 160ms)}
+html.anim .stg{opacity:0}
+html.anim .in .stg{animation:riseSoft .8s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--sd,0ms)}
 
-/* cards answer the pointer */
-.card{transition:box-shadow .26s cubic-bezier(.4,0,.2,1),border-color .26s}
-.card:hover{box-shadow:var(--shadow)}
-.btn,.pg,.seg-btn,.hbtn,.ms-toggle{transition:background .15s,color .15s,border-color .15s,box-shadow .15s,transform .12s}
-.btn:active,.pg:active:not(:disabled),.seg-btn:active,.hbtn:active{transform:scale(.97)}
-html.anim .chip{animation:chipIn .26s cubic-bezier(.22,1,.36,1) both}
-html.anim tbody tr.rin{animation:fadeIn .34s ease both;animation-delay:var(--d,0ms)}
+/* ── Depth: cards lift, and a soft light follows the cursor ─────── */
+.card,.kpi{position:relative}
+.card{transition:box-shadow .3s cubic-bezier(.16,1,.3,1),border-color .3s,transform .3s cubic-bezier(.16,1,.3,1)}
+.card:hover{box-shadow:var(--shadow-lg);border-color:var(--border-strong);transform:translateY(-3px)}
+.card.card-pad::after,.kpi::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  opacity:0;transition:opacity .3s;
+  background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%), var(--spot), transparent 62%)}
+.card.card-pad:hover::after,.kpi:hover::after{opacity:1}
+.kpi{transform-style:preserve-3d}
+.kpi:hover{transform:translateY(-6px) scale(1.012)}
+.kpi-value{display:inline-block}
+.kpi-value.bump{animation:bump .55s cubic-bezier(.16,1,.3,1)}
 
-/* the header gives the page back some room once you scroll */
-.topbar{transition:height .26s cubic-bezier(.4,0,.2,1),box-shadow .26s}
+/* ── Buttons: press, and a ripple from the click point ──────────── */
+.btn,.pg,.seg-btn,.hbtn,.ms-toggle{transition:background .15s,color .15s,border-color .15s,box-shadow .2s,transform .14s;
+  position:relative;overflow:hidden}
+.btn:active,.pg:active:not(:disabled),.seg-btn:active,.hbtn:active{transform:scale(.96)}
+.btn:hover,.seg-btn:hover{box-shadow:0 4px 14px rgba(38,28,18,.10)}
+.rpl{position:absolute;border-radius:50%;background:currentColor;opacity:.22;pointer-events:none;
+  transform:scale(0);animation:ripple .6s cubic-bezier(.16,1,.3,1) forwards}
+html.anim .chip{animation:chipIn .3s cubic-bezier(.16,1,.3,1) both}
+html.anim tbody tr.rin{animation:fadeIn .45s ease both;animation-delay:var(--d,0ms)}
+
+/* ── Header: condenses, and hands over to a live stat strip ─────── */
+.topbar{transition:height .3s cubic-bezier(.16,1,.3,1),box-shadow .3s}
 .topbar.small{height:60px;box-shadow:0 8px 30px rgba(0,0,0,.34)}
-.brand-mark,.brand-title{transition:all .26s cubic-bezier(.4,0,.2,1)}
+.brand-mark,.brand-title{transition:all .3s cubic-bezier(.16,1,.3,1)}
 .topbar.small .brand-mark{width:34px;height:34px;border-radius:10px;font-size:13px}
 .topbar.small .brand-title{font-size:17px}
 .topbar.small .brand-sub{opacity:0}
 .brand-sub{transition:opacity .2s}
-#themeBtn svg{transition:transform .4s cubic-bezier(.22,1,.36,1)}
+#themeBtn svg{transition:transform .45s cubic-bezier(.16,1,.3,1)}
 html.theming *,html.theming *::before,html.theming *::after{
   transition:background-color .3s ease,border-color .3s ease,color .3s ease,fill .3s ease,stroke .3s ease!important}
 #themeBtn:hover svg{transform:rotate(26deg)}
 
-/* anything you can click to filter says so */
+.statbar{position:fixed;left:0;right:0;top:60px;z-index:55;display:flex;align-items:center;gap:10px;
+  height:54px;padding:0 26px;background:color-mix(in srgb, var(--surface) 86%, transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm);
+  transform:translateY(-110%);transition:transform .4s cubic-bezier(.16,1,.3,1);overflow-x:auto;scrollbar-width:none}
+.statbar::-webkit-scrollbar{display:none}
+.statbar.show{transform:translateY(0)}
+.sb-stat{display:inline-flex;align-items:baseline;gap:7px;padding:5px 11px;border-radius:9px;flex-shrink:0;
+  background:var(--surface-2);border:1px solid var(--border);cursor:pointer;transition:.18s}
+.sb-stat:hover{border-color:color-mix(in srgb, var(--sc) 50%, var(--border));background:var(--surface-3);transform:translateY(-1px)}
+.sb-k{font-size:9.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
+.sb-v{font-size:15px;font-weight:800;color:var(--sc-ink);font-variant-numeric:tabular-nums;line-height:1}
+.sb-nav{display:flex;gap:3px;margin-left:auto;flex-shrink:0}
+.sb-link{padding:6px 11px;border-radius:9px;font-size:12px;font-weight:600;color:var(--text-muted);
+  background:none;border:0;cursor:pointer;white-space:nowrap;transition:.18s;position:relative}
+.sb-link:hover{color:var(--text);background:var(--surface-2)}
+.sb-link.on{color:var(--brand);background:var(--brand-soft)}
+@media (max-width:1100px){.sb-nav{display:none}}
+
+/* ── Anything you can click to filter says so ───────────────────── */
 .ck{cursor:pointer}
 .ck:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:10px}
 .dl-row{cursor:pointer}
 .dl-row.on{background:var(--brand-soft)}
 .dl-row.on .dl-name{color:var(--text);font-weight:650}
-.dl-row.dim,.col.dim,.person.dim,.hm-r.dim{opacity:.38}
-.dl-row,.col,.person,.hm-r{transition:opacity .22s}
+.dl-row.dim,.col.dim,.person.dim,.hm-r.dim{opacity:.34}
+.dl-row,.col,.person,.hm-r{transition:opacity .25s,transform .25s,background .15s}
+.dl-row:hover{transform:translateX(3px)}
 .col.on .col-bar{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--cc)}
+.col:hover .col-val{transform:translateY(-4px);color:var(--cc)}
+.col-val{transition:transform .25s cubic-bezier(.16,1,.3,1),color .2s}
+.person:hover{transform:translateX(4px)}
 .person.on{border-color:var(--pc);background:var(--surface-3)}
 .hm-name{cursor:pointer;transition:color .15s}
 .hm-name:hover,.hm-name.on{color:var(--text);font-weight:700}
-.donut-holder circle.arc{transition:stroke-width .18s cubic-bezier(.4,0,.2,1),opacity .22s;cursor:pointer}
-.donut-holder circle.arc:hover,.donut-holder circle.arc.lit{stroke-width:27}
-.dl-row.lit{background:var(--surface-2)}
-.donut-holder circle.arc.on{stroke-width:27}
-.donut-holder circle.arc.dim{opacity:.3}
-.kpi.ck:active{transform:translateY(-2px) scale(.995)}
+.donut-holder circle.arc{transition:stroke-width .22s cubic-bezier(.16,1,.3,1),opacity .25s;cursor:pointer}
+.donut-holder circle.arc:hover,.donut-holder circle.arc.lit,.donut-holder circle.arc.on{stroke-width:29}
+.dl-row.lit{background:var(--surface-2);transform:translateX(3px)}
+.donut-holder circle.arc.dim{opacity:.26}
+.donut-holder{transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.donut-wrap:hover .donut-holder{transform:scale(1.02)}
+.kpi.ck:active{transform:translateY(-3px) scale(.995)}
+.kpi.on{border-color:var(--kc);box-shadow:0 0 0 2px color-mix(in srgb, var(--kc) 35%, transparent),var(--shadow)}
 
 /* the live country keeps a slow pulse so the eye finds it */
 html.anim .mc.on .pulse{animation:ringPulse 2.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
 .mc .pulse{fill:none;stroke:var(--gc);stroke-width:2;opacity:0;pointer-events:none}
-html.anim .mc .pin{transform-box:fill-box;transform-origin:center;animation:popIn .55s cubic-bezier(.22,1,.36,1) both}
-html.anim .hm-cell{animation:popIn .34s cubic-bezier(.22,1,.36,1) both;animation-delay:var(--d,0ms)}
-html.settled .hm-cell{animation-duration:.2s;animation-delay:0ms!important}
-html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
+html.anim .mc .pin{transform-box:fill-box;transform-origin:center;animation:popIn .6s cubic-bezier(.16,1,.3,1) both}
+html.anim .hm-cell{animation:popIn .42s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}
+
+/* ── Expand a chart to full size ────────────────────────────────── */
+.card-tools{position:absolute;top:12px;right:12px;display:flex;gap:5px;opacity:0;transition:opacity .22s;z-index:3}
+.card:hover .card-tools,.card-tools:focus-within{opacity:1}
+.ctool{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;cursor:pointer;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);transition:.18s}
+.ctool:hover{background:var(--surface-3);color:var(--text);border-color:var(--border-strong);transform:translateY(-1px)}
+.scrim{position:fixed;inset:0;z-index:150;background:rgba(10,8,6,.55);backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.show{opacity:1;pointer-events:auto}
+.stage{position:fixed;inset:4vh 4vw;z-index:160;display:none;pointer-events:none}
+.stage.show{display:block}
+.stage > .card{height:100%;overflow:auto;pointer-events:auto;box-shadow:var(--shadow-lg);
+  display:flex;flex-direction:column;animation:zoomIn .4s cubic-bezier(.16,1,.3,1) both}
+/* the same card, just given the room — every chart grows to fill it */
+.stage .cols{height:auto;flex:1;min-height:340px}
+.stage .col-bar{max-width:92px}
+.stage .donut-wrap{flex:1;justify-content:center}
+.stage .donut-holder{width:300px;height:300px}
+.stage .donut-holder svg{width:100%;height:100%}
+.stage .donut-total{font-size:52px}
+.stage .donut-legend{max-width:560px}
+.stage .dl-row{padding:11px 10px}
+.stage .area-wrap{flex:1}
+.stage .hm{flex:1}
+.stage .hm-cell,.stage .hm-total{height:40px;font-size:13px}
+.stage .people{flex:1;justify-content:center}
+.stage .cmpv{height:auto;flex:1;min-height:340px}
+.stage .yoy{flex:1}
+.stage .map-wrap{flex:1}
+.stage .card-sub{margin-bottom:26px}
+@keyframes zoomIn{from{opacity:0;transform:scale(.96) translateY(14px)}to{opacity:1;transform:none}}
+
+/* ── Task detail drawer ─────────────────────────────────────────── */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,92vw);z-index:170;background:var(--surface);
+  border-left:1px solid var(--border);box-shadow:var(--shadow-lg);transform:translateX(102%);
+  transition:transform .42s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;overflow:hidden}
+.drawer.show{transform:none}
+.dw-head{display:flex;align-items:flex-start;gap:12px;padding:20px 22px 16px;border-bottom:1px solid var(--border)}
+.dw-id{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.dw-task{font-family:'Syne',sans-serif;font-size:16.5px;font-weight:700;line-height:1.3;margin-top:7px;color:var(--text)}
+.dw-close{width:32px;height:32px;border-radius:10px;flex-shrink:0;display:grid;place-items:center;cursor:pointer;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);transition:.18s}
+.dw-close:hover{background:var(--surface-3);color:var(--text)}
+.dw-body{padding:18px 22px;overflow-y:auto;flex:1}
+.dw-grid{display:grid;grid-template-columns:104px 1fr;gap:11px 14px;align-items:start}
+.dw-k{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);padding-top:3px}
+.dw-v{font-size:13px;color:var(--text)}
+.dw-acts{display:flex;flex-wrap:wrap;gap:7px;padding:16px 22px;border-top:1px solid var(--border);background:var(--surface-2)}
+tbody tr{cursor:pointer}
+tbody tr td:first-child{position:relative;transition:padding-left .18s}
+tbody tr:hover td:first-child{padding-left:24px}
+tbody tr:hover td:first-child::before{content:'';position:absolute;left:12px;top:50%;width:5px;height:5px;
+  border-right:2px solid var(--brand);border-top:2px solid var(--brand);transform:translateY(-50%) rotate(45deg)}
+.att-row.ck:hover{background:var(--surface-2);transform:translateX(3px)}
+.att-row{transition:background .14s,transform .2s cubic-bezier(.16,1,.3,1)}
+tbody tr.sel{background:var(--brand-soft)!important;box-shadow:inset 3px 0 0 var(--brand)}
+
+/* ── Keyboard shortcuts ─────────────────────────────────────────── */
+.keys{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)}
+kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;background:var(--surface-3);
+  border:1px solid var(--border);font:inherit;font-size:10.5px;font-weight:700;color:var(--text-2);text-align:center}
 
 @media (prefers-reduced-motion: reduce){
-  html.anim .rv{opacity:1}
+  html.anim .rv,html.anim .stg{opacity:1}
+  .ambient{display:none}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
     transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
-
 @media (max-width:1340px){
   .kpis{grid-template-columns:repeat(3,1fr)}
   .grid-3{grid-template-columns:1fr 1fr}
@@ -587,6 +715,9 @@ html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
 </head>
 <body>
 
+<div class="ambient" aria-hidden="true"><i></i><i></i></div>
+<div class="boot-bar" id="bootBar" aria-hidden="true"></div>
+
 <header class="topbar">
   <div class="brand">
     <div class="brand-mark">IT</div>
@@ -609,6 +740,12 @@ html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
     </div>
   </div>
 </header>
+
+<!-- Condensed stats + section jump, slides in once Overview scrolls away -->
+<div class="statbar" id="statbar">
+  <div class="sb-stats" id="sbStats" style="display:flex;gap:8px;flex-shrink:0"></div>
+  <nav class="sb-nav" id="sbNav" aria-label="Jump to section"></nav>
+</div>
 
 <main>
 
@@ -649,7 +786,7 @@ html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="secOverview">
     <div class="section-head"><span class="section-title">Overview</span><span class="section-rule"></span><span class="section-note" id="scopeNote"></span></div>
     <div class="kpis">
       <div class="kpi" style="--kc:var(--s1);--kc-ink:var(--s1-ink)">
@@ -725,12 +862,12 @@ html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="secAttention">
     <div class="section-head"><span class="section-title">Needs attention</span><span class="section-rule"></span><span class="section-note" id="attNote"></span></div>
     <div class="card" id="attCard"></div>
   </section>
 
-  <section class="section">
+  <section class="section" id="secBreakdown">
     <div class="section-head"><span class="section-title">Breakdown</span><span class="section-rule"></span></div>
     <div class="grid-3">
       <div class="card card-pad">
@@ -739,7 +876,7 @@ html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
         <div class="donut-wrap">
           <div class="donut-holder">
             <svg width="186" height="186" viewBox="0 0 186 186"><g id="donutArcs"></g></svg>
-            <div class="donut-center"><div class="donut-total" id="donutTotal">—</div><div class="donut-cap">tasks</div></div>
+            <div class="donut-center"><div class="donut-total" id="donutTotal">—</div><div class="donut-cap" id="donutCap">tasks</div></div>
           </div>
           <div class="donut-legend" id="donutLegend"></div>
         </div>
@@ -759,7 +896,7 @@ html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="secWorkload">
     <div class="section-head"><span class="section-title">Workload &amp; services</span><span class="section-rule"></span><span class="section-note" id="svcNote"></span></div>
     <div class="grid-2">
       <div class="card card-pad">
@@ -781,6 +918,7 @@ html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
       <div class="log-head">
         <span class="log-title">All tasks</span>
         <span class="log-count">Showing <b id="showCount">—</b> of <b id="totalCount">—</b></span>
+        <span class="keys" title="Keyboard shortcuts"><kbd>/</kbd>search <kbd>o</kbd>overdue <kbd>r</kbd>reset <kbd>t</kbd>theme</span>
         <span style="flex:1"></span>
         <button class="btn" onclick="showOverdueOnly()" id="odBtn">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7.5 12 12 15.5 13.5"/></svg>
@@ -820,6 +958,23 @@ html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
 <button class="totop" id="totop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
+<div class="scrim" id="scrim" onclick="closeStage();closeDrawer()"></div>
+<div class="stage" id="stage" role="dialog" aria-modal="true" aria-label="Expanded chart"></div>
+
+<aside class="drawer" id="drawer" role="dialog" aria-modal="false" aria-label="Task detail">
+  <div class="dw-head">
+    <div style="min-width:0;flex:1">
+      <div class="dw-id" id="dwId">—</div>
+      <div class="dw-task" id="dwTask">—</div>
+    </div>
+    <button class="dw-close" onclick="closeDrawer()" aria-label="Close">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="dw-body"><div class="dw-grid" id="dwGrid"></div></div>
+  <div class="dw-acts" id="dwActs"></div>
+</aside>
+
 <div id="tip"></div>
 <script>
 /* ═══════════════════════════════════════════════════════════════
@@ -948,6 +1103,9 @@ const numJobs = new WeakMap();
 function setNum(el, to){
   if (!el) return;
   to = Number(to) || 0;
+  if (!REDUCE && isFinite(Number(el._n)) && Number(el._n) !== to && el.classList.contains('kpi-value')){
+    el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+  }
   /* an unseen element counts up from zero, so the first paint ticks too */
   const from = isFinite(Number(el._n)) ? Number(el._n) : 0;
   el._n = to;
@@ -982,16 +1140,214 @@ function initReveal(){
     els.forEach(e => e.classList.add('rv', 'in')); return;
   }
   document.documentElement.classList.add('anim');
-  els.forEach((e, i) => { e.classList.add('rv'); e.style.setProperty('--rvd', Math.min(i, 4) * 60 + 'ms'); });
+  els.forEach((e, i) => {
+    e.classList.add('rv');
+    e.style.setProperty('--rvd', Math.min(i, 3) * 90 + 'ms');
+    /* every card in the section arrives a beat after the one before it */
+    [...e.querySelectorAll(':scope > .grid-2 > .card, :scope > .grid-3 > .card, :scope > .kpis > .kpi, :scope > .card')]
+      .forEach((c, j) => { c.classList.add('stg'); c.style.setProperty('--sd', 120 + j * 90 + 'ms'); });
+  });
   const io = new IntersectionObserver((entries, obs) => {
     entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } });
-  }, {rootMargin:'0px 0px -8% 0px', threshold:.04});
+  }, {rootMargin:'0px 0px -10% 0px', threshold:.03});
   els.forEach(e => io.observe(e));
   /* whatever is already on screen should not wait for a scroll */
   requestAnimationFrame(() => els.forEach(e => {
     if (e.getBoundingClientRect().top < innerHeight) e.classList.add('in');
   }));
 }
+
+/* ── A light that follows the pointer across a card ─────────────── */
+function initSpotlight(){
+  if (REDUCE) return;
+  const sel = '.card.card-pad, .kpi';
+  addEventListener('pointermove', e => {
+    const el = e.target.closest && e.target.closest(sel);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+  }, {passive:true});
+}
+
+/* ── A ripple out of the point you pressed ──────────────────────── */
+function initRipple(){
+  if (REDUCE) return;
+  addEventListener('pointerdown', e => {
+    const b = e.target.closest && e.target.closest('.btn,.pg,.seg-btn,.hbtn,.ctool,.sb-stat,.sb-link');
+    if (!b || b.disabled) return;
+    const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height);
+    const s = document.createElement('span');
+    s.className = 'rpl';
+    s.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`;
+    b.appendChild(s);
+    setTimeout(() => s.remove(), 620);
+  }, {passive:true});
+}
+
+/* ── The condensed stat strip, and jumping between sections ─────── */
+const SECTIONS = [
+  {id:'secOverview', label:'Overview'},
+  {id:'locSection',  label:'Locations'},
+  {id:'secAttention',label:'Attention'},
+  {id:'secBreakdown',label:'Breakdown'},
+  {id:'secWorkload', label:'Workload'},
+  {id:'taskLog',     label:'Task log'}
+];
+function initStatbar(){
+  $('sbNav').innerHTML = SECTIONS.map(s =>
+    `<button class="sb-link" data-sec="${s.id}" onclick="jumpTo('${s.id}')">${s.label}</button>`).join('');
+}
+function jumpTo(id){
+  const el = $(id);
+  if (el) scrollTo({top: el.getBoundingClientRect().top + scrollY - 120, behavior: REDUCE ? 'auto' : 'smooth'});
+}
+/* the strip mirrors the KPI tiles, so the headline numbers stay on
+   screen for someone scrolling the task log */
+function renderStatbar(){
+  const t = view.length;
+  const open = view.filter(d => d.open).length;
+  const over = view.filter(d => d.overdue).length;
+  const cos = new Set(view.map(d => d.company).filter(Boolean)).size;
+  const stats = [
+    {k:'Total',   v:t,    c:'--s1',       go:() => resetFilters()},
+    {k:'Open',    v:open, c:'--st-prog',  go:() => jumpTo('secAttention')},
+    {k:'Overdue', v:over, c:'--alert',    go:() => showOverdueOnly()},
+    {k:'Clients', v:cos,  c:'--s2',       go:() => jumpTo('secBreakdown')}
+  ];
+  const host = $('sbStats');
+  if (host.children.length !== stats.length){
+    host.innerHTML = stats.map(s =>
+      `<button class="sb-stat" style="--sc:var(${s.c});--sc-ink:var(${s.c}-ink)">
+         <span class="sb-k">${s.k}</span><span class="sb-v">0</span></button>`).join('');
+    [...host.children].forEach((el, i) => el.addEventListener('click', stats[i].go));
+  }
+  [...host.children].forEach((el, i) => setNum(el.querySelector('.sb-v'), stats[i].v));
+}
+function syncStatbar(){
+  const kpis = document.querySelector('.kpis');
+  const past = kpis ? kpis.getBoundingClientRect().bottom < 10 : false;
+  $('statbar').classList.toggle('show', past);
+  /* scroll spy */
+  let active = SECTIONS[0].id;
+  for (const s of SECTIONS){
+    const el = $(s.id);
+    if (el && el.getBoundingClientRect().top <= 160) active = s.id;
+  }
+  document.querySelectorAll('.sb-link').forEach(b => b.classList.toggle('on', b.dataset.sec === active));
+}
+
+/* ── Expand a chart card to the full window ─────────────────────── */
+const EXPAND_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
+const CLOSE_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+let staged = null, stageHome = null;
+function initExpand(){
+  /* the chart cards, and the map — the same card, just bigger */
+  document.querySelectorAll('.grid-3 > .card, .grid-2 > .card, .map-card').forEach(card => {
+    const tools = document.createElement('div');
+    tools.className = 'card-tools';
+    tools.innerHTML = `<button class="ctool" title="Expand" aria-label="Expand this card">${EXPAND_ICON}</button>`;
+    tools.querySelector('button').addEventListener('click', e => { e.stopPropagation(); openStage(card); });
+    card.appendChild(tools);
+  });
+}
+function openStage(card){
+  if (staged) closeStage();
+  staged = card;
+  stageHome = document.createComment('card-home');
+  card.parentNode.insertBefore(stageHome, card);
+  const st = $('stage');
+  st.appendChild(card);
+  st.classList.add('show');
+  $('scrim').classList.add('show');
+  const tool = card.querySelector('.card-tools .ctool');
+  tool.innerHTML = CLOSE_ICON; tool.title = 'Close';
+  card.querySelector('.card-tools').style.opacity = 1;
+  document.body.style.overflow = 'hidden';
+  /* the pixel-laid-out charts need to know they just got bigger */
+  requestAnimationFrame(() => { renderArea(); renderColumns(); renderServiceHeatmap(); });
+}
+function closeStage(){
+  if (!staged) return;
+  const card = staged;
+  const tool = card.querySelector('.card-tools .ctool');
+  tool.innerHTML = EXPAND_ICON; tool.title = 'Expand';
+  card.querySelector('.card-tools').style.opacity = '';
+  stageHome.parentNode.insertBefore(card, stageHome);
+  stageHome.remove();
+  staged = null; stageHome = null;
+  $('stage').classList.remove('show');
+  $('scrim').classList.remove('show');
+  document.body.style.overflow = '';
+  requestAnimationFrame(() => { renderArea(); renderColumns(); renderServiceHeatmap(); });
+}
+
+/* ── Task detail drawer ─────────────────────────────────────────── */
+let drawerRow = null;
+function openDrawer(d, tr){
+  drawerRow = d;
+  document.querySelectorAll('#tbody tr.sel').forEach(r => r.classList.remove('sel'));
+  if (tr) tr.classList.add('sel');
+  $('dwId').textContent = '#' + (d.id || '—');
+  $('dwTask').textContent = d.task || '—';
+  const age = d.ageDays ?? null;
+  const rows = [
+    ['Client',       esc(d.company) || '—'],
+    ['Status',       stBadge(d.status)],
+    ['Priority',     prBadge(d.priority)],
+    ['Assignee',     whoCell(d.assignee)],
+    ['Service type', (d.recurring ? RECUR_ICON : '') + (esc(d.service_type) || '—')],
+    ['Location',     esc(d.location) || '—'],
+    ['Logged',       fmtDate(d.date_entered) || '—'],
+    ['Due',          fmtDate(d.due_date) || 'No due date'],
+    ['Open for',     age === null ? '—' : `${age} day${age === 1 ? '' : 's'}`],
+    ['Overdue by',   d.overdueBy ? `<b style="color:var(--alert-ink)">${d.overdueBy} days</b>` : '—']
+  ];
+  $('dwGrid').innerHTML = rows.map(([k, v]) =>
+    `<div class="dw-k">${k}</div><div class="dw-v">${v}</div>`).join('');
+  const acts = [];
+  if (d.company)  acts.push(`<button class="btn" onclick="drawerFilter('msCompany','${esc(d.company).replace(/'/g,"\'")}')">Filter to ${esc(d.company)}</button>`);
+  if (d.assignee) acts.push(`<button class="btn" onclick="drawerFilter('msAssignee','${esc(d.assignee).replace(/'/g,"\'")}')">Filter to ${esc(d.assignee)}</button>`);
+  acts.push(`<button class="btn" onclick="copyTask()">Copy details</button>`);
+  $('dwActs').innerHTML = acts.join('');
+  $('drawer').classList.add('show');
+  $('scrim').classList.add('show');
+}
+function drawerFilter(id, val){ closeDrawer(); toggleFilter(id, val); }
+function closeDrawer(){
+  $('drawer').classList.remove('show');
+  if (!staged) $('scrim').classList.remove('show');
+  document.querySelectorAll('#tbody tr.sel').forEach(r => r.classList.remove('sel'));
+  drawerRow = null;
+}
+function copyTask(){
+  if (!drawerRow) return;
+  const d = drawerRow;
+  const text = [`#${d.id} — ${d.task}`, `Client: ${d.company || '—'}`, `Status: ${d.status || '—'}`,
+    `Priority: ${d.priority || '—'}`, `Assignee: ${d.assignee || '—'}`,
+    `Service: ${d.service_type || '—'}`, `Logged: ${fmtDate(d.date_entered) || '—'}`,
+    `Due: ${fmtDate(d.due_date) || 'none'}`].join(String.fromCharCode(10));
+  navigator.clipboard?.writeText(text);
+  const b = $('dwActs').lastElementChild;
+  if (b){ b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy details', 1400); }
+}
+
+/* ── Keyboard ───────────────────────────────────────────────────── */
+addEventListener('keydown', e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName);
+  if (e.key === 'Escape'){
+    if (staged) return closeStage();
+    if ($('drawer').classList.contains('show')) return closeDrawer();
+    if (typing && e.target.id === 'q'){ e.target.value = ''; applyFilters(); e.target.blur(); }
+    return;
+  }
+  if (typing) return;
+  if (e.key === '/'){ e.preventDefault(); $('q').focus(); }
+  else if (e.key.toLowerCase() === 't') toggleTheme();
+  else if (e.key.toLowerCase() === 'r') resetFilters();
+  else if (e.key.toLowerCase() === 'o') showOverdueOnly();
+});
+
 
 /* ── Click to filter ──────────────────────────────────────────────
    Every chart mark drives the same multi-selects the filter bar
@@ -1229,13 +1585,13 @@ function renderAttention(){
       <span class="att-pill" style="background:${over.length ? 'var(--alert-soft)' : 'var(--warn-soft)'};color:${over.length ? 'var(--alert-ink)' : 'var(--warn-ink)'}">
         ${over.length ? over.length + ' overdue' : 'Needs action'}</span>
       <span class="log-count">Oldest first · <b>${rows.length}</b> of ${actionable.length} shown</span></div>`;
-  const body = rows.map(d => {
+  const body = rows.map((d, i) => {
     const isOver = d.overdue;
     const ac = isOver ? '--alert' : '--st-prog';
     const glyph = isOver
       ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7.5 12 12 15.5 13.5"/></svg>'
       : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h11M4 18h7"/></svg>';
-    return `<div class="att-row" style="--ac:var(${ac});--ac-ink:var(${ac}-ink)">
+    return `<div class="att-row ck" data-i="${i}" title="Click for the full detail" style="--ac:var(${ac});--ac-ink:var(${ac}-ink)">
       <span class="att-flag">${glyph}</span>
       <div style="min-width:0">
         <div class="att-task" title="${esc(d.task)}">${esc(d.task)}</div>
@@ -1248,6 +1604,10 @@ function renderAttention(){
   }).join('');
   const filler = rows.length % 2 ? '<div class="att-row att-filler"></div>' : '';
   card.innerHTML = head + `<div class="att-list">${body}${filler}</div>` + foot;
+  card.querySelectorAll('.att-row[data-i]').forEach(el => {
+    const d = rows[+el.dataset.i];
+    clickable(el, () => openDrawer(d, null), `Open ${d.id}`);
+  });
 }
 
 /* ── Locations: the map ─────────────────────────────────────────
@@ -1502,6 +1862,15 @@ function renderDonut(){
       + `<div class="t-hint">${sel.msStatus.has(k) ? 'Click to clear this status' : 'Click to filter to this status'}</div>`);
     clickable(arc, () => toggleFilter('msStatus', k), `Filter to ${k}`);
     markPick(arc, 'msStatus', k);
+    /* the centre reads out whichever slice you are pointing at */
+    arc.addEventListener('mouseenter', () => {
+      $('donutTotal').textContent = n;
+      $('donutCap').textContent = k;
+    });
+    arc.addEventListener('mouseleave', () => {
+      $('donutTotal').textContent = $('donutTotal')._n ?? total;
+      $('donutCap').textContent = 'tasks';
+    });
     g.appendChild(arc);
     /* sweep each arc out from nothing, one after the other */
     arc.style.transition = 'stroke-dasharray .75s cubic-bezier(.22,1,.36,1), stroke-width .18s, opacity .22s';
@@ -1590,6 +1959,7 @@ function renderArea(){
   svg.innerHTML = ''; $('areaX').innerHTML = '';
   if (keys.length < 2){
     const W0 = Math.max(wrap.clientWidth || 520, 260);
+    svg.style.height = '190px';
     svg.setAttribute('viewBox', `0 0 ${W0} 190`);
     $('areaNote').textContent = keys.length ? '1 month' : '';
     svg.innerHTML = `<text x="${W0 / 2}" y="98" fill="var(--text-muted)" font-size="13" text-anchor="middle">`
@@ -1608,7 +1978,10 @@ function renderArea(){
   const shown = series.slice(-18);
   $('areaNote').textContent = `${shown.length} months`;
 
-  const W = Math.max(wrap.clientWidth || 520, 260), H = 190;
+  const W = Math.max(wrap.clientWidth || 520, 260);
+  /* 190 is the in-page height; expanded, it takes the room it is given */
+  const H = svg.closest('.stage') ? Math.max(300, (wrap.clientHeight || 300) - 26) : 190;
+  svg.style.height = H + 'px';
   const padL = 34, padR = 8, padT = 14, padB = 8;
   const iw = W - padL - padR, ih = H - padT - padB;
   const max = Math.max(...shown.map(p => p.v), 1);
@@ -1871,6 +2244,12 @@ function renderTable(){
     <td class="c-date">${fmtDate(d.due_date) || '—'}</td>
     <td>${durCell(d.duration)}</td></tr>`).join('')
     : `<tr><td colspan="10"><div class="empty">No tasks match the current filters.<br><span style="font-size:12.5px">Try clearing a filter or the search box.</span></div></td></tr>`;
+  [...$('tbody').querySelectorAll('tr')].forEach((tr, i) => {
+    const d = rows[i];
+    if (!d) return;
+    tr.addEventListener('click', () => openDrawer(d, tr));
+    tr.title = 'Click for the full detail';
+  });
   $('showCount').textContent = Math.min(end, view.length);
   $('totalCount').textContent = view.length;
   const pages = Math.max(1, Math.ceil(view.length / PER_PAGE));
@@ -1938,6 +2317,7 @@ function toggleTheme(){
 addEventListener('scroll', () => {
   $('totop').classList.toggle('show', scrollY > 420);
   document.querySelector('.topbar').classList.toggle('small', scrollY > 90);
+  syncStatbar();
 }, {passive:true});
 
 /* ── Freshness ────────────────────────────────────────────────────
@@ -1945,7 +2325,7 @@ addEventListener('scroll', () => {
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-10-07T15:51:34+03:00');
+  const built = new Date('2026-10-07T15:51:52+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
@@ -1966,14 +2346,26 @@ function render(){
   renderKPIs(); renderCountrySeg(); renderMap(); renderAttention(); renderDonut(); renderColumns();
   renderYoY(); renderCompare();
   renderArea(); renderAssignees(); renderServiceHeatmap(); renderTable();
+  renderStatbar();
 }
 paintThemeBtn();
 buildFilters();
 buildPeriodPickers();
 sortView();
 markSort();
+initStatbar();
+/* the sweep runs while the first paint lands, then clears itself */
+if (!REDUCE){
+  const bar = $('bootBar');
+  requestAnimationFrame(() => { bar.style.width = '100%'; });
+  setTimeout(() => { bar.style.opacity = 0; }, 1000);
+}
 render();
 initReveal();
+initSpotlight();
+initRipple();
+initExpand();
+syncStatbar();
 /* first paint gets the full staggered build; everything after it is
    quicker, so filtering stays snappy rather than theatrical */
 setTimeout(() => document.documentElement.classList.add('settled'), 1400);
