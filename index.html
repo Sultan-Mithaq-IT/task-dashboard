@@ -736,7 +736,7 @@ kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;backgr
     <button class="hbtn hbtn-icon" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme"></button>
     <div class="sync" id="sync">
       <span class="sync-dot" id="syncDot"></span>
-      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">07 Oct 2026, 15:51</span></div>
+      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">07 Oct 2026, 15:52</span></div>
     </div>
   </div>
 </header>
@@ -2325,7 +2325,7 @@ addEventListener('scroll', () => {
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-10-07T15:51:52+03:00');
+  const built = new Date('2026-10-07T15:52:41+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
