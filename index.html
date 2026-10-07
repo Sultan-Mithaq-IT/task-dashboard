@@ -379,7 +379,7 @@ main{max-width:1660px;margin:0 auto;padding:26px 26px 100px}
 .p-name{font-size:13.5px;font-weight:650;color:var(--text)}
 .p-meta{font-size:11.5px;color:var(--text-muted);margin-top:3px}
 .p-split{display:flex;height:6px;border-radius:4px;overflow:hidden;gap:2px;margin-top:8px;max-width:230px}
-.p-split i{display:block;height:100%;border-radius:2px}
+.p-split i{display:block;height:100%;border-radius:2px;transition:width .7s cubic-bezier(.22,1,.36,1)}
 .p-count{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--pc-ink);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
 
 /* ── Comparison ───────────────────────────────────────────────── */
@@ -493,6 +493,76 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
 #tip .t-more{color:var(--text-muted);font-size:10.5px;justify-content:flex-start!important}
 #tip .t-hint{margin-top:7px;color:var(--text-muted);font-size:10.5px}
 
+
+/* ── Motion & interaction ─────────────────────────────────────────
+   Everything below is additive: with motion off the layout is byte
+   for byte the same. The `anim` class is set by script, so if the
+   script never runs nothing is left hidden. prefers-reduced-motion
+   switches the whole layer off at the bottom of this block.       */
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes popIn{0%{opacity:0;transform:scale(.72)}62%{transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes chipIn{from{opacity:0;transform:translateY(-5px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes ringPulse{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.9);opacity:0}100%{opacity:0}}
+
+/* sections and cards arrive as you scroll to them */
+html.anim .rv{opacity:0}
+html.anim .rv.in{animation:rise .62s cubic-bezier(.22,1,.36,1) both;animation-delay:var(--rvd,0ms)}
+
+/* cards answer the pointer */
+.card{transition:box-shadow .26s cubic-bezier(.4,0,.2,1),border-color .26s}
+.card:hover{box-shadow:var(--shadow)}
+.btn,.pg,.seg-btn,.hbtn,.ms-toggle{transition:background .15s,color .15s,border-color .15s,box-shadow .15s,transform .12s}
+.btn:active,.pg:active:not(:disabled),.seg-btn:active,.hbtn:active{transform:scale(.97)}
+html.anim .chip{animation:chipIn .26s cubic-bezier(.22,1,.36,1) both}
+html.anim tbody tr.rin{animation:fadeIn .34s ease both;animation-delay:var(--d,0ms)}
+
+/* the header gives the page back some room once you scroll */
+.topbar{transition:height .26s cubic-bezier(.4,0,.2,1),box-shadow .26s}
+.topbar.small{height:60px;box-shadow:0 8px 30px rgba(0,0,0,.34)}
+.brand-mark,.brand-title{transition:all .26s cubic-bezier(.4,0,.2,1)}
+.topbar.small .brand-mark{width:34px;height:34px;border-radius:10px;font-size:13px}
+.topbar.small .brand-title{font-size:17px}
+.topbar.small .brand-sub{opacity:0}
+.brand-sub{transition:opacity .2s}
+#themeBtn svg{transition:transform .4s cubic-bezier(.22,1,.36,1)}
+html.theming *,html.theming *::before,html.theming *::after{
+  transition:background-color .3s ease,border-color .3s ease,color .3s ease,fill .3s ease,stroke .3s ease!important}
+#themeBtn:hover svg{transform:rotate(26deg)}
+
+/* anything you can click to filter says so */
+.ck{cursor:pointer}
+.ck:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:10px}
+.dl-row{cursor:pointer}
+.dl-row.on{background:var(--brand-soft)}
+.dl-row.on .dl-name{color:var(--text);font-weight:650}
+.dl-row.dim,.col.dim,.person.dim,.hm-r.dim{opacity:.38}
+.dl-row,.col,.person,.hm-r{transition:opacity .22s}
+.col.on .col-bar{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--cc)}
+.person.on{border-color:var(--pc);background:var(--surface-3)}
+.hm-name{cursor:pointer;transition:color .15s}
+.hm-name:hover,.hm-name.on{color:var(--text);font-weight:700}
+.donut-holder circle.arc{transition:stroke-width .18s cubic-bezier(.4,0,.2,1),opacity .22s;cursor:pointer}
+.donut-holder circle.arc:hover,.donut-holder circle.arc.lit{stroke-width:27}
+.dl-row.lit{background:var(--surface-2)}
+.donut-holder circle.arc.on{stroke-width:27}
+.donut-holder circle.arc.dim{opacity:.3}
+.kpi.ck:active{transform:translateY(-2px) scale(.995)}
+
+/* the live country keeps a slow pulse so the eye finds it */
+html.anim .mc.on .pulse{animation:ringPulse 2.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.mc .pulse{fill:none;stroke:var(--gc);stroke-width:2;opacity:0;pointer-events:none}
+html.anim .mc .pin{transform-box:fill-box;transform-origin:center;animation:popIn .55s cubic-bezier(.22,1,.36,1) both}
+html.anim .hm-cell{animation:popIn .34s cubic-bezier(.22,1,.36,1) both;animation-delay:var(--d,0ms)}
+html.settled .hm-cell{animation-duration:.2s;animation-delay:0ms!important}
+html.settled .rv.in{animation-duration:.4s;animation-delay:0ms!important}
+
+@media (prefers-reduced-motion: reduce){
+  html.anim .rv{opacity:1}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
 @media (max-width:1340px){
   .kpis{grid-template-columns:repeat(3,1fr)}
   .grid-3{grid-template-columns:1fr 1fr}
@@ -509,6 +579,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
   .kpi-value{font-size:36px}
 }
 @media print{
+  html.anim .rv{opacity:1!important;animation:none!important}
   .topbar,.totop,.filters,.pager{display:none!important}
   .card,.kpi{break-inside:avoid;box-shadow:none}
 }
@@ -534,7 +605,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
     <button class="hbtn hbtn-icon" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme"></button>
     <div class="sync" id="sync">
       <span class="sync-dot" id="syncDot"></span>
-      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">07 Oct 2026, 15:32</span></div>
+      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">07 Oct 2026, 15:34</span></div>
     </div>
   </div>
 </header>
@@ -570,7 +641,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
       <div class="filter-row2">
         <div class="search">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input id="q" placeholder="Search tasks, companies, people…" oninput="applyFilters()" autocomplete="off"/>
+          <input id="q" placeholder="Search tasks, companies, people…" oninput="queueFilters()" autocomplete="off"/>
         </div>
         <div class="chips" id="chips"></div>
         <button class="btn" onclick="resetFilters()">Reset</button>
@@ -590,7 +661,7 @@ tbody tr.od{box-shadow:inset 3px 0 0 var(--alert)}
         <div class="kpi-meter"><i id="kOpenBar" style="width:0%"></i></div>
         <svg class="kpi-glyph" width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h11M4 18h7"/><circle cx="19" cy="17" r="3.4"/></svg>
       </div>
-      <div class="kpi" style="--kc:var(--alert);--kc-ink:var(--alert-ink)">
+      <div class="kpi" id="kOverCard" style="--kc:var(--alert);--kc-ink:var(--alert-ink)">
         <div class="kpi-label">Overdue</div><div class="kpi-value" id="kOver">—</div><div class="kpi-sub" id="kOverSub">—</div>
         <svg class="kpi-glyph" width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7.5 12 12 15.5 13.5"/></svg>
       </div>
@@ -864,6 +935,90 @@ function moveTip(e){
   tip.style.left = x + 'px'; tip.style.top = y + 'px';
 }
 
+/* ── Motion ───────────────────────────────────────────────────────
+   Three primitives the whole page animates with: setNum ticks a
+   number that stays in the DOM, grow replays a CSS transition on an
+   element that was just rebuilt, and initReveal brings sections in as
+   they are scrolled to. Each is a no-op when the viewer has asked
+   for reduced motion.                                             */
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EASE_OUT = p => 1 - Math.pow(1 - p, 3);
+
+const numJobs = new WeakMap();
+function setNum(el, to){
+  if (!el) return;
+  to = Number(to) || 0;
+  /* an unseen element counts up from zero, so the first paint ticks too */
+  const from = isFinite(Number(el._n)) ? Number(el._n) : 0;
+  el._n = to;
+  if (REDUCE || from === to || Math.abs(to - from) < 2){
+    el.textContent = to; return;
+  }
+  cancelAnimationFrame(numJobs.get(el));
+  const t0 = performance.now(), dur = Math.min(850, 300 + Math.abs(to - from) * 1.2);
+  const run = now => {
+    const p = Math.min(1, (now - t0) / dur);
+    el.textContent = Math.round(from + (to - from) * EASE_OUT(p));
+    if (p < 1) numJobs.set(el, requestAnimationFrame(run));
+  };
+  numJobs.set(el, requestAnimationFrame(run));
+}
+
+/* Replay a CSS transition on a freshly built element: set the start
+   value, let the browser lay it out, then set the end value. */
+function grow(el, prop, to, delay){
+  if (!el) return;
+  if (REDUCE){ el.style.setProperty(prop, to); return; }
+  el.style.setProperty(prop, prop === 'stroke-dasharray' ? '0 9999' : '0%');
+  if (delay) el.style.transitionDelay = delay + 'ms';
+  requestAnimationFrame(() => requestAnimationFrame(() => el.style.setProperty(prop, to)));
+}
+
+/* Scroll reveal. The class is added by script only, so a blocked
+   script can never leave the page blank. */
+function initReveal(){
+  const els = [...document.querySelectorAll('main .section')];
+  if (REDUCE || !('IntersectionObserver' in window)){
+    els.forEach(e => e.classList.add('rv', 'in')); return;
+  }
+  document.documentElement.classList.add('anim');
+  els.forEach((e, i) => { e.classList.add('rv'); e.style.setProperty('--rvd', Math.min(i, 4) * 60 + 'ms'); });
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } });
+  }, {rootMargin:'0px 0px -8% 0px', threshold:.04});
+  els.forEach(e => io.observe(e));
+  /* whatever is already on screen should not wait for a scroll */
+  requestAnimationFrame(() => els.forEach(e => {
+    if (e.getBoundingClientRect().top < innerHeight) e.classList.add('in');
+  }));
+}
+
+/* ── Click to filter ──────────────────────────────────────────────
+   Every chart mark drives the same multi-selects the filter bar
+   drives, so the chips, Reset and the counts all stay in step. */
+function toggleFilter(id, val){
+  const cb = $(id + '-menu').querySelector(`input[value="${CSS.escape(val)}"]`);
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  onPick(id);
+}
+/* on = this value is picked · dim = some other value is picked */
+function markPick(el, id, val){
+  const picked = sel[id].has(val);
+  el.classList.toggle('on', picked);
+  el.classList.toggle('dim', sel[id].size > 0 && !picked);
+}
+function clickable(el, fn, label){
+  el.classList.add('ck');
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  if (label) el.setAttribute('aria-label', label);
+  el.addEventListener('click', fn);
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fn(); }
+  });
+}
+
 /* ── Filters ──────────────────────────────────────────────────── */
 function buildFilters(){
   for (const [id, cfg] of Object.entries(FILTERS)){
@@ -930,6 +1085,8 @@ function matches(d, q, skipPeriod){
   if (q && !(`${d.task} ${d.company} ${d.assignee} ${d.service_type} ${d.location}`.toLowerCase().includes(q))) return false;
   return true;
 }
+let qTimer;
+function queueFilters(){ clearTimeout(qTimer); qTimer = setTimeout(applyFilters, 170); }
 function applyFilters(){
   const q = $('q').value.trim().toLowerCase();
   view = DATA.filter(d => matches(d, q, false));
@@ -984,21 +1141,21 @@ function renderKPIs(){
   const prev = view.filter(d => d._in && d._in.getTime() >= prevCut && d._in.getTime() < cutoff).length;
   const cos = new Set(view.map(d => d.company).filter(Boolean)).size;
 
-  $('kTotal').textContent = t;
+  setNum($('kTotal'), t);
   $('kTotalSub').textContent = t === DATA.length ? 'All records' : `of ${DATA.length} total`;
 
-  $('kOpen').textContent = open;
+  setNum($('kOpen'), open);
   $('kOpenSub').innerHTML = !open ? 'Nothing outstanding'
     : recur ? `<b>${open - recur}</b> need action · ${recur} recurring`
             : `<b>${pct(open, t)}%</b> of tasks in view`;
   $('kOpenBar').style.width = pct(open, t) + '%';
 
-  $('kOver').textContent = over.length;
+  setNum($('kOver'), over.length);
   $('kOverSub').innerHTML = over.length
     ? `Oldest is <b>${worst}</b> day${worst === 1 ? '' : 's'} past due`
     : 'Nothing past its due date';
 
-  $('kRecent').textContent = recent;
+  setNum($('kRecent'), recent);
   const delta = recent - prev;
   const arrow = delta > 0 ? '▲' : delta < 0 ? '▼' : '■';
   $('kRecentSub').innerHTML = prev || recent
@@ -1006,11 +1163,20 @@ function renderKPIs(){
     : 'No recent activity';
   renderSpark(recent, prev);
 
-  $('kCos').textContent = cos;
+  setNum($('kCos'), cos);
   $('kCosSub').textContent = 'Clients served';
 
   const active = Object.values(sel).reduce((s, x) => s + x.size, 0) + ($('q').value.trim() ? 1 : 0) + (odOnly ? 1 : 0);
   $('scopeNote').textContent = active ? `${active} filter${active === 1 ? '' : 's'} applied` : 'Unfiltered';
+
+  /* the Overdue tile doubles as the overdue-only switch */
+  const od = $('kOverCard');
+  if (!od._wired){
+    clickable(od, () => showOverdueOnly(), 'Show only overdue tasks');
+    od._wired = true;
+  }
+  od.classList.toggle('on', odOnly);
+  od.title = odOnly ? 'Showing overdue only — click to clear' : 'Click to show only overdue tasks';
 }
 
 /* 12-week trickle line inside the "last 30 days" tile */
@@ -1163,8 +1329,17 @@ function renderMap(){
     g.classList.toggle('is-zero', !s.n);
     g.classList.toggle('on', sel.msLocation.has(loc));
     g.classList.toggle('dim', sel.msLocation.size > 0 && !sel.msLocation.has(loc));
+    if (!g.querySelector('.pulse')){
+      const p = g.querySelector('.pin');
+      const ring = document.createElementNS(SVGNS, 'circle');
+      ring.setAttribute('class', 'pulse');
+      ring.setAttribute('cx', +p.getAttribute('x') + +p.getAttribute('width') / 2);
+      ring.setAttribute('cy', +p.getAttribute('y') + +p.getAttribute('height') / 2);
+      ring.setAttribute('r', 15);
+      g.insertBefore(ring, p);
+    }
     const num = g.querySelector('.pin-n'), pill = g.querySelector('.pin');
-    if (num) num.textContent = s.n;
+    if (num) setNum(num, s.n);
     if (num && pill){                       /* pill grows with the digit count */
       const w = 26 + String(s.n).length * 9.5;
       pill.setAttribute('width', w);
@@ -1247,6 +1422,7 @@ function renderYoY(){
   };
   const all = Object.fromEntries(years.map(y => [y, stat(y)]));
   const max = Math.max(...years.map(y => all[y].n), 1);
+  const bars = [];
   host.innerHTML = years.map(y => {
     const c = all[y];
     const prevY = String(Number(y) - 1);
@@ -1258,7 +1434,7 @@ function renderYoY(){
       : `<span class="chip-d flat">—</span>`;
     return `<div class="yoy-row" title="${y}: ${c.n} logged, ${c.done} completed (${c.rate}%)${prev ? ` · ${prevY}: ${prev.n} logged` : ''}">
       <span class="yoy-year">${y}</span>
-      <span class="yoy-bar"><i class="done" style="width:${donePart.toFixed(1)}%"></i><i class="rest" style="width:${(w - donePart).toFixed(1)}%"></i></span>
+      <span class="yoy-bar"><i class="done" data-w="${donePart.toFixed(1)}%"></i><i class="rest" data-w="${(w - donePart).toFixed(1)}%"></i></span>
       <span class="yoy-n">${c.n}</span>
       <span class="yoy-rate">${c.rate}%</span>
       ${chip}
@@ -1267,6 +1443,7 @@ function renderYoY(){
   + `<div class="yoy-legend"><span><i style="background:var(--st-done)"></i>Completed</span>
      <span><i style="background:var(--s1);opacity:.55"></i>Still open</span>
      <span style="margin-left:auto">count · completion · change vs the year before</span></div>`;
+  host.querySelectorAll('.yoy-bar i').forEach((el, i) => grow(el, 'width', el.dataset.w, Math.floor(i / 2) * 80));
 }
 
 function renderCompare(){
@@ -1290,7 +1467,7 @@ function renderCompare(){
   const bar = (v, cvar, label) =>
     `<div class="cmpv-b" title="${esc(label)}: ${v}">
        <span class="cmpv-n">${v}</span>
-       <i class="cmpv-f" style="--bc:var(${cvar});height:${((v / max) * 100).toFixed(1)}%"></i>
+       <i class="cmpv-f" style="--bc:var(${cvar})" data-h="${((v / max) * 100).toFixed(1)}%"></i>
      </div>`;
   host.innerHTML = `<div class="cmpv">` + metrics.map(m => `
     <div class="cmpv-g">
@@ -1300,6 +1477,7 @@ function renderCompare(){
   + `<div class="yoy-legend"><span><i style="background:var(--s1)"></i>${esc(la)}</span>
      <span><i style="background:var(--s2)"></i>${esc(lb)}</span>
      <span style="margin-left:auto">change vs ${esc(lb)}</span></div>`;
+  host.querySelectorAll('.cmpv-f').forEach((el, i) => grow(el, 'height', el.dataset.h, i * 70));
 }
 
 /* ── Donut: status distribution ───────────────────────────────── */
@@ -1310,7 +1488,7 @@ function renderDonut(){
   const R = 72, SW = 22, C = 2 * Math.PI * R;
   const g = $('donutArcs'); g.innerHTML = '';
   g.appendChild(mk('circle', {cx:93, cy:93, r:R, fill:'none', stroke:'var(--track)', 'stroke-width':SW}));
-  let acc = 0;
+  let acc = 0, drawn = 0;
   keys.forEach(k => {
     const n = counts[k] || 0;
     if (!n) return;
@@ -1318,22 +1496,40 @@ function renderDonut(){
     const len = Math.max(frac * C - 3, 1);          /* 3px surface gap between arcs */
     const arc = mk('circle', {
       cx:93, cy:93, r:R, fill:'none', stroke:`var(${statusVar(k)})`, 'stroke-width':SW,
-      'stroke-dasharray':`${len.toFixed(2)} ${(C - len).toFixed(2)}`,
-      'stroke-dashoffset':(-acc * C).toFixed(2), 'stroke-linecap':'butt'
+      'stroke-dashoffset':(-acc * C).toFixed(2), 'stroke-linecap':'butt', class:'arc', 'data-k':k
     });
-    arc.style.cursor = 'default';
-    bindTip(arc, `<b>${esc(k)}</b><br><span class="t-sub">${n} of ${total} tasks · ${pct(n, total)}%</span>`);
+    bindTip(arc, `<b>${esc(k)}</b><br><span class="t-sub">${n} of ${total} tasks · ${pct(n, total)}%</span>`
+      + `<div class="t-hint">${sel.msStatus.has(k) ? 'Click to clear this status' : 'Click to filter to this status'}</div>`);
+    clickable(arc, () => toggleFilter('msStatus', k), `Filter to ${k}`);
+    markPick(arc, 'msStatus', k);
     g.appendChild(arc);
+    /* sweep each arc out from nothing, one after the other */
+    arc.style.transition = 'stroke-dasharray .75s cubic-bezier(.22,1,.36,1), stroke-width .18s, opacity .22s';
+    grow(arc, 'stroke-dasharray', `${len.toFixed(2)} ${(C - len).toFixed(2)}`, drawn * 70);
+    drawn++;
     acc += frac;
   });
-  $('donutTotal').textContent = total;
-  $('donutLegend').innerHTML = keys.map(k => {
+  setNum($('donutTotal'), total);
+  const leg = $('donutLegend');
+  leg.innerHTML = '';
+  keys.forEach(k => {
     const n = counts[k] || 0;
-    return `<div class="dl-row${n ? '' : ' is-zero'}">
-      <span class="dl-dot" style="background:var(${statusVar(k)})"></span>
+    const row = document.createElement('div');
+    row.className = 'dl-row' + (n ? '' : ' is-zero');
+    row.innerHTML = `<span class="dl-dot" style="background:var(${statusVar(k)})"></span>
       <span class="dl-name">${esc(k)}</span>
-      <span class="dl-val">${n}</span><span class="dl-pct">${pct(n, total)}%</span></div>`;
-  }).join('');
+      <span class="dl-val">${n}</span><span class="dl-pct">${pct(n, total)}%</span>`;
+    clickable(row, () => toggleFilter('msStatus', k), `Filter to ${k}`);
+    markPick(row, 'msStatus', k);
+    const arcFor = g.querySelector(`circle.arc[data-k="${CSS.escape(k)}"]`);
+    if (arcFor){
+      row.addEventListener('mouseenter', () => arcFor.classList.add('lit'));
+      row.addEventListener('mouseleave', () => arcFor.classList.remove('lit'));
+      arcFor.addEventListener('mouseenter', () => row.classList.add('lit'));
+      arcFor.addEventListener('mouseleave', () => row.classList.remove('lit'));
+    }
+    leg.appendChild(row);
+  });
 }
 
 /* ── Columns: tasks by company ────────────────────────────────── */
@@ -1349,14 +1545,19 @@ function renderColumns(){
   const max = rows[0]?.[1] || 1, total = view.length;
   const host = $('companyCols'); host.innerHTML = '';
   if (!rows.length){ host.innerHTML = '<div class="empty" style="padding:20px">No data</div>'; return; }
-  rows.forEach(([n, v]) => {
+  rows.forEach(([n, v], i) => {
     const el = document.createElement('div');
     el.className = 'col';
     el.style.setProperty('--cc', n === 'Other' ? 'var(--s-other)' : 'var(--s1)');
     const h = Math.max((v / max) * 100, 1.5);
     el.innerHTML = `<div class="col-val">${v}</div>
-      <div class="col-bar" style="height:${h}%"></div>
+      <div class="col-bar"></div>
       <div class="col-name"><span>${esc(n)}</span></div>`;
+    grow(el.querySelector('.col-bar'), 'height', h + '%', i * 55);
+    if (n !== 'Other'){
+      clickable(el, () => toggleFilter('msCompany', n), `Filter to ${n}`);
+      markPick(el, 'msCompany', n);
+    }
     let extra = '';
     if (n === 'Other' && others.length){
       const CAP = 10;
@@ -1368,8 +1569,10 @@ function renderColumns(){
         + '</div>';
     }
     const head = n === 'Other' ? `${others.length} smaller clients` : esc(n);
+    const hint = n === 'Other' ? ''
+      : `<div class="t-hint">${sel.msCompany.has(n) ? 'Click to clear this client' : 'Click to filter to this client'}</div>`;
     bindTip(el, `<b>${head}</b><br><span class="t-sub">${v} task${v === 1 ? '' : 's'} · `
-      + `${pct(v, total)}% of all tasks</span>${extra}`);
+      + `${pct(v, total)}% of all tasks</span>${extra}${hint}`);
     host.appendChild(el);
   });
 }
@@ -1428,10 +1631,27 @@ function renderArea(){
   grad.appendChild(mk('stop', {offset:'0%', 'stop-color':'var(--s1)', 'stop-opacity':.34}));
   grad.appendChild(mk('stop', {offset:'100%', 'stop-color':'var(--s1)', 'stop-opacity':.02}));
   const defs = mk('defs', {}); defs.appendChild(grad); svg.appendChild(defs);
-  svg.appendChild(mk('path', {d:`${line} L${X(shown.length - 1).toFixed(1)},${Y(0)} L${X(0).toFixed(1)},${Y(0)} Z`, fill:'url(#areaGrad)', stroke:'none'}));
-  svg.appendChild(mk('path', {d:line, fill:'none', stroke:'var(--s1)', 'stroke-width':2, 'stroke-linejoin':'round', 'stroke-linecap':'round', 'vector-effect':'non-scaling-stroke'}));
+  const fillPath = mk('path', {d:`${line} L${X(shown.length - 1).toFixed(1)},${Y(0)} L${X(0).toFixed(1)},${Y(0)} Z`, fill:'url(#areaGrad)', stroke:'none'});
+  svg.appendChild(fillPath);
+  const linePath = mk('path', {d:line, fill:'none', stroke:'var(--s1)', 'stroke-width':2, 'stroke-linejoin':'round', 'stroke-linecap':'round', 'vector-effect':'non-scaling-stroke'});
+  svg.appendChild(linePath);
+  if (!REDUCE){
+    /* the line draws itself left to right, the fill follows it in */
+    const L = linePath.getTotalLength();
+    linePath.style.strokeDasharray = L;
+    linePath.style.strokeDashoffset = L;
+    fillPath.style.opacity = 0;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      linePath.style.transition = 'stroke-dashoffset .95s cubic-bezier(.33,1,.68,1)';
+      linePath.style.strokeDashoffset = 0;
+      fillPath.style.transition = 'opacity .7s ease .25s';
+      fillPath.style.opacity = 1;
+    }));
+  }
 
   /* peak gets a direct label; every point gets a hover target */
+  const dot = mk('circle', {r:4.6, fill:'var(--s1)', stroke:'var(--surface)', 'stroke-width':2.4, cx:-20, cy:-20});
+  dot.style.cssText = 'opacity:0;transition:opacity .15s,cx .18s cubic-bezier(.22,1,.36,1),cy .18s cubic-bezier(.22,1,.36,1);pointer-events:none';
   const peak = shown.reduce((a, b, i) => b.v > shown[a].v ? i : a, 0);
   shown.forEach((p, i) => {
     if (i === peak || i === shown.length - 1){
@@ -1442,14 +1662,25 @@ function renderArea(){
       }
     }
     const hit = mk('rect', {x:X(i) - iw / (shown.length * 2), y:padT, width:Math.max(iw / shown.length, 6), height:ih, fill:'transparent'});
-    hit.style.cursor = 'default';
     const label = new Date(p.y, p.m - 1, 1).toLocaleDateString('en-GB', {month:'long', year:'numeric'});
     bindTip(hit, `<b>${label}</b><br><span class="t-sub">${p.v} task${p.v === 1 ? '' : 's'} logged</span>`);
+    /* the cursor line and dot track whichever month you are over */
+    hit.addEventListener('mouseenter', () => {
+      const cur = $('areaCursor');
+      cur.style.left = (X(i) / W * 100) + '%';
+      cur.style.height = (ih + padT) + 'px';
+      cur.style.opacity = 1;
+      dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(p.v));
+      dot.style.opacity = 1;
+    });
     svg.appendChild(hit);
   });
 
+  wrap.onmouseleave = () => { $('areaCursor').style.opacity = 0; dot.style.opacity = 0; };
+
   const fmtX = p => new Date(p.y, p.m - 1, 1).toLocaleDateString('en-GB', {month:'short', year:'2-digit'});
   const first = shown[0], mid = shown[Math.floor(shown.length / 2)], last = shown[shown.length - 1];
+  svg.appendChild(dot);
   $('areaX').innerHTML = `<span>${fmtX(first)}</span><span>${fmtX(mid)}</span><span>${fmtX(last)}</span>`;
 }
 
@@ -1499,12 +1730,15 @@ function renderServiceHeatmap(){
   monthKeys.forEach(k => grid.insertAdjacentHTML('beforeend', `<div class="hm-head">${monthLabel(k)}</div>`));
   grid.insertAdjacentHTML('beforeend', '<div class="hm-head">All</div>');
 
-  types.forEach(([name, total]) => {
+  let ci = 0;
+  types.forEach(([name, total], ri) => {
+    const rowEls = [];
     const label = document.createElement('div');
-    label.className = 'hm-name';
+    label.className = 'hm-name hm-r';
     label.title = name;
     label.textContent = name;
     grid.appendChild(label);
+    rowEls.push(label);
 
     monthKeys.forEach(k => {
       const n = cell[`${name}||${k}`] || 0;
@@ -1519,17 +1753,28 @@ function renderServiceHeatmap(){
         el.className = 'hm-cell zero';
         el.textContent = '0';
       }
+      el.classList.add('hm-r');
+      el.style.setProperty('--d', Math.min(ci++ * 14, 420) + 'ms');
       bindTip(el, `<b>${esc(name)}</b><br><span class="t-sub">${monthLabel(k)} · `
-        + `${n} task${n === 1 ? '' : 's'}${n ? '' : ' logged'}</span>`);
+        + `${n} task${n === 1 ? '' : 's'}${n ? '' : ' logged'}</span>`
+        + `<div class="t-hint">${sel.msService.has(name) ? 'Click to clear this service type' : 'Click to filter to this service type'}</div>`);
       grid.appendChild(el);
+      rowEls.push(el);
     });
 
     const tot = document.createElement('div');
-    tot.className = 'hm-total';
+    tot.className = 'hm-total hm-r';
     tot.textContent = total;
     bindTip(tot, `<b>${esc(name)}</b><br><span class="t-sub">${total} task${total === 1 ? '' : 's'} in total · `
       + `${pct(total, view.length)}% of all tasks</span>`);
     grid.appendChild(tot);
+    rowEls.push(tot);
+
+    /* the label, its cells and its total act as one clickable row */
+    rowEls.forEach(e => {
+      clickable(e, () => toggleFilter('msService', name), `Filter to ${name}`);
+      markPick(e, 'msService', name);
+    });
   });
 
   host.innerHTML = '';
@@ -1547,7 +1792,7 @@ function renderAssignees(){
   const host = $('assigneeChart'); host.innerHTML = '';
   if (!rows.length){ host.innerHTML = '<div class="empty" style="padding:20px">No data</div>'; return; }
   const total = view.length;
-  rows.forEach(([n, v]) => {
+  rows.forEach(([n, v], i) => {
     const done = view.filter(d => d.assignee === n && !d.open).length;
     const openN = v - done;
     const rate = pct(done, v);
@@ -1561,8 +1806,8 @@ function renderAssignees(){
       <div class="ring">
         <svg width="54" height="54" viewBox="0 0 54 54" role="img" aria-label="${rate}% completed">
           <circle cx="27" cy="27" r="${R}" fill="none" stroke="var(--track)" stroke-width="5"/>
-          <circle cx="27" cy="27" r="${R}" fill="none" stroke="var(${cv})" stroke-width="5"
-                  stroke-linecap="round" stroke-dasharray="${dash.toFixed(1)} ${(C - dash).toFixed(1)}"/>
+          <circle class="ring-fill" cx="27" cy="27" r="${R}" fill="none" stroke="var(${cv})" stroke-width="5"
+                  stroke-linecap="round"/>
         </svg>
         <span class="ring-ini">${esc(initials(n))}</span>
       </div>
@@ -1570,13 +1815,22 @@ function renderAssignees(){
         <div class="p-name">${esc(n)}</div>
         <div class="p-meta">${rate}% closed · ${openN} open · ${pct(v, total)}% of all tasks</div>
         <div class="p-split">
-          <i style="width:${rate}%;background:var(${cv})"></i>
-          <i style="width:${100 - rate}%;background:var(--track)"></i>
+          <i style="background:var(${cv})"></i>
+          <i style="background:var(--track)"></i>
         </div>
       </div>
       <span class="p-count">${v}</span>`;
-    bindTip(el, `<b>${esc(n)}</b><br><span class="t-sub">${v} tasks · ${done} closed · ${openN} open</span>`);
+    bindTip(el, `<b>${esc(n)}</b><br><span class="t-sub">${v} tasks · ${done} closed · ${openN} open</span>`
+      + `<div class="t-hint">${sel.msAssignee.has(n) ? 'Click to clear this person' : 'Click to filter to this person'}</div>`);
+    clickable(el, () => toggleFilter('msAssignee', n), `Filter to ${n}`);
+    markPick(el, 'msAssignee', n);
     host.appendChild(el);
+    const ring = el.querySelector('.ring-fill');
+    ring.style.transition = 'stroke-dasharray .8s cubic-bezier(.22,1,.36,1)';
+    grow(ring, 'stroke-dasharray', `${dash.toFixed(1)} ${(C - dash).toFixed(1)}`, i * 90);
+    const split = el.querySelectorAll('.p-split i');
+    grow(split[0], 'width', rate + '%', i * 90);
+    grow(split[1], 'width', (100 - rate) + '%', i * 90);
   });
 }
 
@@ -1605,7 +1859,7 @@ const RECUR_ICON = '<span class="rec" title="Recurring daily duty — ongoing by
 function renderTable(){
   const start = (page - 1) * PER_PAGE, end = start + PER_PAGE;
   const rows = view.slice(start, end);
-  $('tbody').innerHTML = rows.length ? rows.map(d => `<tr class="${d.overdue ? 'od' : ''}">
+  $('tbody').innerHTML = rows.length ? rows.map((d, i) => `<tr class="${d.overdue ? 'od' : ''} rin" style="--d:${Math.min(i * 16, 320)}ms">
     <td class="c-id">#${esc(d.id)}</td>
     <td class="c-date">${fmtDate(d.date_entered) || '—'}</td>
     <td class="c-task"><span title="${esc(d.task)}">${esc(d.task)}</span></td>
@@ -1659,9 +1913,18 @@ function paintThemeBtn(){
   $('themeBtn').innerHTML = dark ? SUN : MOON;
   $('themeBtn').title = dark ? 'Switch to light mode' : 'Switch to dark mode';
 }
+let themeT;
 function toggleTheme(){
-  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+  const root = document.documentElement;
+  const dark = root.getAttribute('data-theme') === 'dark';
+  /* the crossfade class lives only for the length of the fade, so it
+     never slows down the rest of the page */
+  if (!REDUCE){
+    root.classList.add('theming');
+    clearTimeout(themeT);
+    themeT = setTimeout(() => root.classList.remove('theming'), 340);
+  }
+  root.setAttribute('data-theme', dark ? 'light' : 'dark');
   try { localStorage.setItem('ittracker-theme', dark ? 'light' : 'dark'); } catch(e){}
   paintThemeBtn();
 }
@@ -1672,14 +1935,17 @@ function toggleTheme(){
   document.documentElement.setAttribute('data-theme', t);
 })();
 
-addEventListener('scroll', () => { $('totop').classList.toggle('show', scrollY > 420); }, {passive:true});
+addEventListener('scroll', () => {
+  $('totop').classList.toggle('show', scrollY > 420);
+  document.querySelector('.topbar').classList.toggle('small', scrollY > 90);
+}, {passive:true});
 
 /* ── Freshness ────────────────────────────────────────────────────
    This page is a static build. If the refresh job stops it keeps
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-10-07T15:32:09+03:00');
+  const built = new Date('2026-10-07T15:34:34+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
@@ -1707,6 +1973,10 @@ buildPeriodPickers();
 sortView();
 markSort();
 render();
+initReveal();
+/* first paint gets the full staggered build; everything after it is
+   quicker, so filtering stays snappy rather than theatrical */
+setTimeout(() => document.documentElement.classList.add('settled'), 1400);
 
 /* the area chart is laid out in pixels — redraw on resize (the heatmap is CSS grid and reflows on its own) */
 let rzT;
