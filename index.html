@@ -691,6 +691,66 @@ kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;backgr
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
     transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+/* ── Views bar ──────────────────────────────────────────────────── */
+.view-row{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+.view-row .field-label{flex-shrink:0}
+.views{display:flex;gap:6px;flex-wrap:wrap}
+.vw{position:relative;height:30px;padding:0 13px;border-radius:9px;background:var(--surface-2);
+  border:1px solid var(--border);color:var(--text-2);font-size:12.5px;font-weight:600;cursor:pointer;
+  transition:.18s;display:inline-flex;align-items:center;gap:7px;overflow:hidden}
+.vw:hover{background:var(--surface);color:var(--text);border-color:var(--border-strong);transform:translateY(-1px);
+  box-shadow:0 4px 14px rgba(38,28,18,.10)}
+.vw:active{transform:scale(.96)}
+.vw-own{padding-right:7px}
+.vw-own i{font-style:normal;font-size:14px;line-height:1;opacity:.45;padding:0 3px;border-radius:5px}
+.vw-own i:hover{opacity:1;background:var(--alert-soft);color:var(--alert-ink)}
+.vw-add{border-style:dashed;color:var(--text-muted)}
+
+/* ── Command palette ────────────────────────────────────────────── */
+.palette{position:fixed;left:50%;top:14vh;transform:translate(-50%,-14px);width:min(660px,94vw);z-index:180;
+  background:var(--surface);border:1px solid var(--border-strong);border-radius:16px;box-shadow:var(--shadow-lg);
+  opacity:0;pointer-events:none;transition:opacity .22s,transform .28s cubic-bezier(.16,1,.3,1);overflow:hidden}
+.palette.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.pal-top{display:flex;align-items:center;gap:11px;padding:15px 17px;border-bottom:1px solid var(--border);color:var(--text-muted)}
+.pal-top input{flex:1;background:none;border:0;outline:none;color:var(--text);font-size:15px}
+.pal-top input::placeholder{color:var(--text-muted)}
+.pal-list{max-height:min(52vh,420px);overflow-y:auto;padding:7px}
+.pal-row{display:grid;grid-template-columns:86px 1fr auto;align-items:center;gap:12px;padding:9px 11px;
+  border-radius:10px;cursor:pointer;font-size:13px}
+.pal-row.on{background:var(--brand-soft)}
+.pal-type{font-size:9.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted)}
+.pal-label{color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pal-hint{font-size:11px;color:var(--text-muted)}
+.pal-empty{padding:26px;text-align:center;color:var(--text-muted);font-size:13px}
+.pal-foot{display:flex;gap:14px;padding:10px 16px;border-top:1px solid var(--border);background:var(--surface-2);
+  font-size:11px;color:var(--text-muted)}
+
+/* ── Task log: grouping and density ─────────────────────────────── */
+.seg-sm{padding:3px}
+.seg-sm .seg-btn{height:28px;padding:0 10px;font-size:11.5px}
+tbody tr.grp{cursor:pointer;background:var(--surface-2)}
+tbody tr.grp:hover{background:var(--surface-3)}
+tbody tr.grp td{padding:9px 14px;border-bottom:1px solid var(--border)}
+.grp-caret{display:inline-block;margin-right:9px;color:var(--text-muted);transition:transform .22s cubic-bezier(.16,1,.3,1)}
+tbody tr.grp.shut .grp-caret{transform:rotate(-90deg)}
+.grp-name{font-size:12.5px;font-weight:700;color:var(--text)}
+.grp-n{margin-left:11px;font-size:11px;color:var(--text-muted)}
+.log-table.dense tbody td{padding-top:5px;padding-bottom:5px;font-size:12px}
+.log-table.dense .badge{height:19px;font-size:10.5px;padding:0 7px}
+.log-table.dense .who i{width:19px;height:19px;font-size:9.5px}
+.log-table.dense tbody tr.grp td{padding:6px 14px}
+
+/* ── Toast ──────────────────────────────────────────────────────── */
+.toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,16px);z-index:210;
+  padding:11px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--border-strong);
+  box-shadow:var(--shadow-lg);font-size:13px;color:var(--text);opacity:0;pointer-events:none;
+  transition:opacity .25s,transform .35s cubic-bezier(.16,1,.3,1)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* the activity chart is a date picker you drag */
+#areaSvg{cursor:crosshair}
+
 @media (max-width:1340px){
   .kpis{grid-template-columns:repeat(3,1fr)}
   .grid-3{grid-template-columns:1fr 1fr}
@@ -736,7 +796,7 @@ kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;backgr
     <button class="hbtn hbtn-icon" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme"></button>
     <div class="sync" id="sync">
       <span class="sync-dot" id="syncDot"></span>
-      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">07 Oct 2026, 16:35</span></div>
+      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">08 Oct 2026, 09:51</span></div>
     </div>
   </div>
 </header>
@@ -775,12 +835,20 @@ kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;backgr
            DOM (hidden) so the filter chips, Reset and count badges all keep
            working through exactly the same code path as the other filters. -->
       <div class="ms is-hidden" id="msLocation"><button class="ms-toggle">All locations</button><div class="ms-menu" id="msLocation-menu"></div></div>
+      <div class="view-row">
+        <div class="field-label">Views</div>
+        <div class="views" id="viewBar"></div>
+      </div>
       <div class="filter-row2">
         <div class="search">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <input id="q" placeholder="Search tasks, companies, people…" oninput="queueFilters()" autocomplete="off"/>
         </div>
         <div class="chips" id="chips"></div>
+        <button class="btn" onclick="openPalette()" title="Search everything (Ctrl K)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          Command <kbd>Ctrl K</kbd>
+        </button>
         <button class="btn" onclick="resetFilters()">Reset</button>
       </div>
     </div>
@@ -886,7 +954,7 @@ kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;backgr
         <div class="cols" id="companyCols"></div>
       </div>
       <div class="card card-pad">
-        <div class="chart-head"><div><div class="card-title">Activity over time</div><div class="card-sub">Tasks logged per month</div></div><div class="section-note" id="areaNote"></div></div>
+        <div class="chart-head"><div><div class="card-title">Activity over time</div><div class="card-sub">Tasks logged per month — drag across to filter by date</div></div><div class="section-note" id="areaNote"></div></div>
         <div class="area-wrap" id="areaWrap">
           <svg id="areaSvg" viewBox="0 0 800 190" preserveAspectRatio="none"></svg>
           <div class="area-x" id="areaX"></div>
@@ -918,19 +986,21 @@ kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;backgr
       <div class="log-head">
         <span class="log-title">All tasks</span>
         <span class="log-count">Showing <b id="showCount">—</b> of <b id="totalCount">—</b></span>
-        <span class="keys" title="Keyboard shortcuts"><kbd>/</kbd>search <kbd>o</kbd>overdue <kbd>r</kbd>reset <kbd>t</kbd>theme</span>
+        <span class="keys" title="Keyboard shortcuts"><kbd>Ctrl K</kbd>command <kbd>/</kbd>search <kbd>o</kbd>overdue <kbd>r</kbd>reset</span>
         <span style="flex:1"></span>
         <button class="btn" onclick="showOverdueOnly()" id="odBtn">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7.5 12 12 15.5 13.5"/></svg>
           Overdue only
         </button>
+        <div class="seg seg-sm" id="groupSeg" role="group" aria-label="Group the task log"></div>
+        <button class="btn" id="denseBtn" onclick="toggleDense()" title="Row height">Compact</button>
         <button class="btn" onclick="exportCSV()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export CSV
         </button>
       </div>
       <div class="table-scroll">
-        <table>
+        <table class="log-table">
           <thead><tr>
             <th class="sortable" data-k="id">ID<span class="arrow">▲</span></th>
             <th class="sortable" data-k="date_entered">Date<span class="arrow">▲</span></th>
@@ -958,7 +1028,17 @@ kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;backgr
 <button class="totop" id="totop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
-<div class="scrim" id="scrim" onclick="closeStage();closeDrawer()"></div>
+<div class="scrim" id="scrim" onclick="closeStage();closeDrawer();closePalette()"></div>
+
+<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="pal-top">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="palInput" placeholder="Find a task, a client, a person, a section…" autocomplete="off" aria-label="Search everything"/>
+    <kbd>Esc</kbd>
+  </div>
+  <div class="pal-list" id="palList"></div>
+  <div class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> run</span><span style="margin-left:auto">Ctrl K anywhere</span></div>
+</div>
 <div class="stage" id="stage" role="dialog" aria-modal="true" aria-label="Expanded chart"></div>
 
 <aside class="drawer" id="drawer" role="dialog" aria-modal="false" aria-label="Task detail">
@@ -1061,6 +1141,11 @@ const FILTERS = {
 };
 const sel = {};
 let view = [...DATA], cmpBase = [...DATA], sortKey = 'date_entered', sortDir = 'desc', page = 1, odOnly = false;
+/* a month range picked by dragging across the activity chart: 'YYYY-MM' */
+let dateFrom = null, dateTo = null;
+/* task log display state */
+let groupBy = '', dense = false;
+const collapsed = new Set();
 const PER_PAGE = 50;
 
 /* ── Helpers ──────────────────────────────────────────────────── */
@@ -1151,10 +1236,20 @@ function initReveal(){
     entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } });
   }, {rootMargin:'0px 0px -10% 0px', threshold:.03});
   els.forEach(e => io.observe(e));
+  /* A fast scroll can jump a whole section between two frames, and the
+     observer never sees it intersect. Catch those on every scroll —
+     there are only a handful of sections, so this costs nothing. */
+  addEventListener('scroll', sweepReveal, {passive:true});
   /* whatever is already on screen should not wait for a scroll */
   requestAnimationFrame(() => els.forEach(e => {
     if (e.getBoundingClientRect().top < innerHeight) e.classList.add('in');
   }));
+}
+
+function sweepReveal(){
+  document.querySelectorAll('main .section.rv:not(.in)').forEach(e => {
+    if (e.getBoundingClientRect().top < innerHeight * .92) e.classList.add('in');
+  });
 }
 
 /* ── A light that follows the pointer across a card ─────────────── */
@@ -1335,6 +1430,17 @@ function copyTask(){
 /* ── Keyboard ───────────────────────────────────────────────────── */
 addEventListener('keydown', e => {
   const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName);
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+    e.preventDefault();
+    return pal.open ? closePalette() : openPalette();
+  }
+  if (pal.open){
+    if (e.key === 'ArrowDown'){ e.preventDefault(); return palMove(1); }
+    if (e.key === 'ArrowUp'){ e.preventDefault(); return palMove(-1); }
+    if (e.key === 'Enter'){ e.preventDefault(); return pal.items[pal.idx]?.run(); }
+    if (e.key === 'Escape'){ e.preventDefault(); return closePalette(); }
+    return;
+  }
   if (e.key === 'Escape'){
     if (staged) return closeStage();
     if ($('drawer').classList.contains('show')) return closeDrawer();
@@ -1348,6 +1454,164 @@ addEventListener('keydown', e => {
   else if (e.key.toLowerCase() === 'o') showOverdueOnly();
 });
 
+
+/* ── Views: one click puts the whole page into a named scope ──────
+   The built-ins answer the questions the dashboard gets asked every
+   day. Anything you build with the filters can be saved next to them;
+   saved views live in this browser only. */
+const VIEW_KEY = 'ittracker-views';
+const BUILT_IN = [
+  {id:'all',      name:'Everything',   apply(){ resetFilters(); }},
+  {id:'action',   name:'Needs action', apply(){ resetFilters(); setPick('msStatus', s => s !== 'Completed'); }},
+  {id:'overdue',  name:'Overdue',      apply(){ resetFilters(); odOnly = true; applyFilters(); }},
+  {id:'quarter',  name:'This quarter', apply(){ resetFilters(); setPick('msQuarter', q => q === THIS_QUARTER); setPick('msYear', y => y === THIS_YEAR); }},
+  {id:'daily',    name:'Daily ops',    apply(){ resetFilters(); setPick('msService', s => s === RECURRING_SERVICE); }}
+];
+const THIS_YEAR = String(TODAY.getFullYear());
+const THIS_QUARTER = 'Q' + (Math.floor(TODAY.getMonth() / 3) + 1);
+
+/* tick every checkbox in a multi-select whose value passes the test */
+function setPick(id, test){
+  const menu = $(id + '-menu');
+  menu.querySelectorAll('input').forEach(cb => { if (test(cb.value)) cb.checked = true; });
+  onPick(id);
+}
+function loadViews(){
+  try { return JSON.parse(localStorage.getItem(VIEW_KEY) || '[]'); } catch(e){ return []; }
+}
+function saveViews(v){
+  try { localStorage.setItem(VIEW_KEY, JSON.stringify(v)); } catch(e){}
+}
+function currentState(){
+  const s = {q: $('q').value.trim(), od: odOnly, f: dateFrom, t: dateTo, sel: {}};
+  for (const id of Object.keys(FILTERS)) if (sel[id].size) s.sel[id] = [...sel[id]];
+  return s;
+}
+function applyState(s){
+  document.querySelectorAll('.ms-menu input').forEach(cb => cb.checked = false);
+  Object.keys(FILTERS).forEach(id => sel[id] = new Set());
+  for (const [id, vals] of Object.entries(s.sel || {})){
+    const want = new Set(vals);
+    $(id + '-menu').querySelectorAll('input').forEach(cb => { if (want.has(cb.value)) cb.checked = true; });
+    sel[id] = new Set([...$(id + '-menu').querySelectorAll('input:checked')].map(cb => cb.value));
+  }
+  Object.keys(FILTERS).forEach(syncToggle);
+  $('q').value = s.q || '';
+  odOnly = !!s.od; dateFrom = s.f || null; dateTo = s.t || null;
+  applyFilters();
+}
+function saveCurrentView(){
+  const name = prompt('Name this view');
+  if (!name) return;
+  const views = loadViews();
+  views.push({name: name.slice(0, 28), state: currentState()});
+  saveViews(views);
+  renderViews();
+  toast(`Saved “${name.slice(0, 28)}”`);
+}
+function applySaved(i){ applyState(loadViews()[i].state); }
+function deleteSaved(i, e){
+  e.stopPropagation();
+  const views = loadViews();
+  const [gone] = views.splice(i, 1);
+  saveViews(views); renderViews();
+  toast(`Removed “${gone.name}”`);
+}
+function renderViews(){
+  const saved = loadViews();
+  $('viewBar').innerHTML =
+      BUILT_IN.map(v => `<button class="vw" onclick="runBuiltIn('${v.id}')">${esc(v.name)}</button>`).join('')
+    + saved.map((v, i) => `<button class="vw vw-own" onclick="applySaved(${i})">${esc(v.name)}`
+        + `<i onclick="deleteSaved(${i},event)" title="Remove" role="button" aria-label="Remove view">×</i></button>`).join('')
+    + `<button class="vw vw-add" onclick="saveCurrentView()" title="Save the current filters as a view">+ Save view</button>`
+    + `<button class="vw vw-add" onclick="copyViewLink()" title="Copy a link to exactly this view">Share link</button>`;
+}
+function runBuiltIn(id){ (BUILT_IN.find(v => v.id === id) || {}).apply?.(); }
+
+/* ── Command palette: one box over the whole dashboard ────────────
+   Tasks, every filter value, every section and every action, found by
+   typing. Ctrl/Cmd + K. */
+let pal = {open:false, items:[], idx:0};
+function paletteItems(q){
+  const out = [];
+  /* rank: an exact or leading match beats a mention, and a named thing
+     (a client, a status, a section) beats a task that merely contains
+     the word — otherwise typing "hardware" buries the Hardware filter */
+  const score = s => {
+    const v = s.toLowerCase();
+    return v === q ? 0 : v.startsWith(q) ? 1 : 2;
+  };
+  const add = (type, label, hint, w, s, run) => out.push({type, label, hint, w, s, run});
+
+  for (const [id, cfg] of Object.entries(FILTERS)){
+    [...$(id + '-menu').querySelectorAll('input')].map(cb => cb.value)
+      .filter(v => v && v.toLowerCase().includes(q)).slice(0, 5)
+      .forEach(v => add(cfg.label, v, sel[id].has(v) ? 'remove filter' : 'filter', 0, score(v), () => {
+        closePalette(); toggleFilter(id, v);
+      }));
+  }
+  SECTIONS.filter(s => s.label.toLowerCase().includes(q))
+    .forEach(s => add('Go to', s.label, '', 1, score(s.label), () => { closePalette(); jumpTo(s.id); }));
+  BUILT_IN.filter(v => v.name.toLowerCase().includes(q))
+    .forEach(v => add('View', v.name, '', 1, score(v.name), () => { closePalette(); v.apply(); }));
+  [['Reset all filters', () => resetFilters()],
+   ['Overdue only', () => showOverdueOnly()],
+   ['Switch theme', () => toggleTheme()],
+   ['Export CSV', () => exportCSV()],
+   ['Copy link to this view', () => copyViewLink()],
+   ['Save current view', () => saveCurrentView()]]
+    .filter(([n]) => n.toLowerCase().includes(q))
+    .forEach(([n, fn]) => add('Action', n, '', 1, score(n), () => { closePalette(); fn(); }));
+  if (q.length > 1){
+    DATA.filter(d => (`${d.id} ${d.task}`).toLowerCase().includes(q)).slice(0, 8)
+      .forEach(d => add('Task', `#${d.id} ${d.task}`, d.company || '', 2, 2, () => {
+        closePalette(); openDrawer(d, null);
+      }));
+  }
+  out.sort((a, b) => (a.s - b.s) || (a.w - b.w));
+  return out.slice(0, 14);
+}
+function openPalette(){
+  pal.open = true;
+  $('palette').classList.add('show');
+  $('scrim').classList.add('show');
+  $('palInput').value = '';
+  $('palInput').focus();
+  paintPalette();
+}
+function closePalette(){
+  pal.open = false;
+  $('palette').classList.remove('show');
+  if (!staged && !$('drawer').classList.contains('show')) $('scrim').classList.remove('show');
+}
+function paintPalette(){
+  const q = $('palInput').value.trim().toLowerCase();
+  pal.items = q ? paletteItems(q) : [
+    ...BUILT_IN.map(v => ({type:'View', label:v.name, hint:'', run:() => { closePalette(); v.apply(); }})),
+    ...SECTIONS.map(s => ({type:'Go to', label:s.label, hint:'', run:() => { closePalette(); jumpTo(s.id); }}))
+  ].slice(0, 12);
+  pal.idx = 0;
+  $('palList').innerHTML = pal.items.length
+    ? pal.items.map((it, i) => `<div class="pal-row${i ? '' : ' on'}" data-i="${i}">
+        <span class="pal-type">${esc(it.type)}</span>
+        <span class="pal-label">${esc(it.label)}</span>
+        <span class="pal-hint">${esc(it.hint || '')}</span></div>`).join('')
+    : `<div class="pal-empty">Nothing matches “${esc(q)}”</div>`;
+  $('palList').querySelectorAll('.pal-row').forEach(r => {
+    r.addEventListener('click', () => pal.items[+r.dataset.i].run());
+    r.addEventListener('mouseenter', () => {
+      pal.idx = +r.dataset.i;
+      $('palList').querySelectorAll('.pal-row').forEach((x, i) => x.classList.toggle('on', i === pal.idx));
+    });
+  });
+}
+function palMove(step){
+  if (!pal.items.length) return;
+  pal.idx = (pal.idx + step + pal.items.length) % pal.items.length;
+  const rows = $('palList').querySelectorAll('.pal-row');
+  rows.forEach((x, i) => x.classList.toggle('on', i === pal.idx));
+  rows[pal.idx]?.scrollIntoView({block:'nearest'});
+}
 
 /* ── Click to filter ──────────────────────────────────────────────
    Every chart mark drives the same multi-selects the filter bar
@@ -1419,12 +1683,16 @@ function clearOne(id, val){
 function resetFilters(){
   document.querySelectorAll('.ms-menu input').forEach(cb => cb.checked = false);
   Object.keys(FILTERS).forEach(id => { sel[id] = new Set(); syncToggle(id); });
-  $('q').value = ''; odOnly = false; applyFilters();
+  $('q').value = ''; odOnly = false; dateFrom = dateTo = null; applyFilters();
 }
+function clearDates(){ dateFrom = dateTo = null; applyFilters(); }
 function showOverdueOnly(){ odOnly = !odOnly; applyFilters(); }
 function renderChips(){
   const out = [];
   if (odOnly) out.push(`<span class="chip">Overdue only<button onclick="showOverdueOnly()" aria-label="Remove filter">×</button></span>`);
+  if (dateFrom || dateTo)
+    out.push(`<span class="chip">${esc(prettyMonth(dateFrom) || 'start')} → ${esc(prettyMonth(dateTo) || 'now')}`
+           + `<button onclick="clearDates()" aria-label="Clear the date range">×</button></span>`);
   for (const [id, cfg] of Object.entries(FILTERS))
     for (const v of sel[id])
       out.push(`<span class="chip">${esc(cfg.label)}: ${esc(v)}<button onclick="clearOne('${id}','${esc(v).replace(/'/g,"\\'")}')" aria-label="Remove filter">×</button></span>`);
@@ -1432,10 +1700,22 @@ function renderChips(){
   $('odBtn').style.borderColor = odOnly ? 'var(--alert)' : '';
   $('odBtn').style.color = odOnly ? 'var(--alert-ink)' : '';
 }
+function monthKey(dt){ return dt ? `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}` : ''; }
+function prettyMonth(k){
+  if (!k) return '';
+  const [y, m] = k.split('-').map(Number);
+  return new Date(y, m - 1, 1).toLocaleDateString('en-GB', {month:'short', year:'numeric'});
+}
 function matches(d, q, skipPeriod){
   for (const [id, cfg] of Object.entries(FILTERS)){
     if (skipPeriod && (cfg.field === 'year' || cfg.field === 'quarter')) continue;
     if (sel[id].size && !sel[id].has(d[cfg.field])) return false;
+  }
+  if (dateFrom || dateTo){
+    const k = monthKey(d._in);
+    if (!k) return false;
+    if (dateFrom && k < dateFrom) return false;
+    if (dateTo && k > dateTo) return false;
   }
   if (odOnly && !d.overdue) return false;
   if (q && !(`${d.task} ${d.company} ${d.assignee} ${d.service_type} ${d.location}`.toLowerCase().includes(q))) return false;
@@ -1443,6 +1723,70 @@ function matches(d, q, skipPeriod){
 }
 let qTimer;
 function queueFilters(){ clearTimeout(qTimer); qTimer = setTimeout(applyFilters, 170); }
+/* ── The view in the URL ──────────────────────────────────────────
+   Everything that scopes the page is encoded in the hash, so a
+   filtered view can be bookmarked or pasted to someone and it opens
+   exactly as you left it. */
+const URL_KEYS = {msYear:'y', msQuarter:'qt', msCompany:'co', msLocation:'lo',
+                  msAssignee:'as', msPriority:'pr', msStatus:'st', msService:'sv'};
+let urlLock = false;
+function writeURL(){
+  if (urlLock) return;
+  const p = new URLSearchParams();
+  for (const [id, k] of Object.entries(URL_KEYS)) if (sel[id].size) p.set(k, [...sel[id]].join('~'));
+  const q = $('q').value.trim();
+  if (q) p.set('q', q);
+  if (odOnly) p.set('od', '1');
+  if (dateFrom) p.set('f', dateFrom);
+  if (dateTo) p.set('t', dateTo);
+  if (groupBy) p.set('g', groupBy);
+  if (dense) p.set('d', '1');
+  const s = p.toString();
+  history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
+}
+function readURL(){
+  const raw = location.hash.replace(/^#/, '');
+  if (!raw) return false;
+  const p = new URLSearchParams(raw);
+  urlLock = true;
+  for (const [id, k] of Object.entries(URL_KEYS)){
+    const v = p.get(k);
+    if (!v) continue;
+    const want = new Set(v.split('~'));
+    $(id + '-menu').querySelectorAll('input').forEach(cb => cb.checked = want.has(cb.value));
+    sel[id] = new Set([...$(id + '-menu').querySelectorAll('input:checked')].map(cb => cb.value));
+    syncToggle(id);
+  }
+  $('q').value = p.get('q') || '';
+  odOnly = p.get('od') === '1';
+  dateFrom = p.get('f') || null;
+  dateTo   = p.get('t') || null;
+  groupBy  = p.get('g') || '';
+  dense    = p.get('d') === '1';
+  urlLock = false;
+  return true;
+}
+function copyViewLink(){
+  writeURL();
+  navigator.clipboard?.writeText(location.href);
+  toast('View link copied — paste it to share exactly this view');
+}
+
+/* a small confirmation that something happened */
+let toastT;
+function toast(msg){
+  let el = $('toast');
+  if (!el){
+    el = document.createElement('div');
+    el.id = 'toast'; el.className = 'toast';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 2600);
+}
+
 function applyFilters(){
   const q = $('q').value.trim().toLowerCase();
   view = DATA.filter(d => matches(d, q, false));
@@ -1450,12 +1794,17 @@ function applyFilters(){
      filter but ignores Year and Quarter — otherwise choosing a year in the
      filter bar would empty out one side of the comparison. */
   cmpBase = DATA.filter(d => matches(d, q, true));
-  sortView(); page = 1; renderChips(); render();
+  sortView(); page = 1; renderChips(); writeURL(); render();
 }
 
 /* ── Sorting ──────────────────────────────────────────────────── */
 function sortView(){
   view.sort((a, b) => {
+    if (groupBy){
+      /* blanks sort last — \uffff beats every letter, unlike '~' */
+      const ga = String(a[groupBy] || '\uffff'), gb = String(b[groupBy] || '\uffff');
+      if (ga !== gb) return ga.localeCompare(gb);
+    }
     let av = a[sortKey], bv = b[sortKey];
     if (sortKey === 'priority'){ av = PRIORITY_ORDER[av] ?? 9; bv = PRIORITY_ORDER[bv] ?? 9; }
     else if (sortKey === 'status'){ av = STATUS_ORDER[av] ?? 99; bv = STATUS_ORDER[bv] ?? 99; }
@@ -2051,6 +2400,61 @@ function renderArea(){
 
   wrap.onmouseleave = () => { $('areaCursor').style.opacity = 0; dot.style.opacity = 0; };
 
+  /* ── Brush: drag across the months to filter everything by date ──
+     The whole dashboard follows the range, and the chip clears it. */
+  const band = mk('rect', {y:padT, height:ih, fill:'var(--brand)', 'fill-opacity':.14,
+                           stroke:'var(--brand)', 'stroke-opacity':.5, rx:3});
+  band.style.pointerEvents = 'none';
+  band.setAttribute('width', 0); band.setAttribute('x', 0);
+  svg.appendChild(band);
+  const half = iw / (shown.length * 2);
+  const idxAt = px => {
+    const rel = (px - padL) / (iw || 1);
+    return Math.max(0, Math.min(shown.length - 1, Math.round(rel * (shown.length - 1))));
+  };
+  const paintBand = (a, b) => {
+    const lo = Math.min(a, b), hi = Math.max(a, b);
+    band.setAttribute('x', X(lo) - half);
+    band.setAttribute('width', Math.max(X(hi) - X(lo) + half * 2, 6));
+  };
+  /* an existing range shows up as soon as the chart is drawn */
+  if (dateFrom || dateTo){
+    const ia = shown.findIndex(p => p.key === dateFrom);
+    const ib = shown.findIndex(p => p.key === dateTo);
+    if (ia >= 0 || ib >= 0) paintBand(ia < 0 ? 0 : ia, ib < 0 ? shown.length - 1 : ib);
+  }
+  let dragging = false, startI = 0;
+  const toLocal = e => {
+    const r = svg.getBoundingClientRect();
+    return (e.clientX - r.left) * (W / (r.width || W));
+  };
+  svg.style.touchAction = 'pan-y';
+  svg.addEventListener('pointerdown', e => {
+    if (e.button) return;
+    dragging = true; startI = idxAt(toLocal(e));
+    paintBand(startI, startI);
+    svg.setPointerCapture(e.pointerId);
+  });
+  svg.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    paintBand(startI, idxAt(toLocal(e)));
+  });
+  svg.addEventListener('pointerup', e => {
+    if (!dragging) return;
+    dragging = false;
+    const endI = idxAt(toLocal(e));
+    if (Math.abs(endI - startI) < 1 && !(dateFrom || dateTo)){
+      /* a plain click on one month scopes to that month */
+      dateFrom = dateTo = shown[startI].key;
+    } else if (Math.abs(endI - startI) < 1){
+      dateFrom = dateTo = null;              /* click again to clear */
+    } else {
+      dateFrom = shown[Math.min(startI, endI)].key;
+      dateTo   = shown[Math.max(startI, endI)].key;
+    }
+    applyFilters();
+  });
+
   const fmtX = p => new Date(p.y, p.m - 1, 1).toLocaleDateString('en-GB', {month:'short', year:'2-digit'});
   const first = shown[0], mid = shown[Math.floor(shown.length / 2)], last = shown[shown.length - 1];
   svg.appendChild(dot);
@@ -2229,10 +2633,29 @@ function durCell(d){
 const RECUR_ICON = '<span class="rec" title="Recurring daily duty — ongoing by design, no due date">'
   + '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">'
   + '<polyline points="21 4 21 10 15 10"/><path d="M20.5 14a8.5 8.5 0 1 1-2.6-8.1L21 8"/></svg></span>';
-function renderTable(){
-  const start = (page - 1) * PER_PAGE, end = start + PER_PAGE;
-  const rows = view.slice(start, end);
-  $('tbody').innerHTML = rows.length ? rows.map((d, i) => `<tr class="${d.overdue ? 'od' : ''} rin" style="--d:${Math.min(i * 16, 320)}ms">
+const GROUPS = [{k:'', label:'No grouping'}, {k:'company', label:'Client'},
+                {k:'assignee', label:'Assignee'}, {k:'status', label:'Status'},
+                {k:'service_type', label:'Service'}];
+function renderGroupSeg(){
+  $('groupSeg').innerHTML = GROUPS.map(g =>
+    `<button class="seg-btn${groupBy === g.k ? ' on' : ''}" style="--gc:var(--brand)"
+       onclick="setGroup('${g.k}')">${g.label}</button>`).join('');
+  $('denseBtn').textContent = dense ? 'Comfortable' : 'Compact';
+}
+function setGroup(k){
+  groupBy = k; collapsed.clear(); page = 1;
+  writeURL(); sortView(); renderTable(); renderGroupSeg();
+}
+function toggleDense(){
+  dense = !dense;
+  document.querySelector('.log-table').classList.toggle('dense', dense);
+  writeURL(); renderGroupSeg();
+}
+function toggleGroup(key){
+  collapsed.has(key) ? collapsed.delete(key) : collapsed.add(key);
+  renderTable();
+}
+const rowHTML = (d, i) => `<tr class="${d.overdue ? 'od' : ''} rin" data-id="${esc(d.id)}" style="--d:${Math.min(i * 16, 320)}ms">
     <td class="c-id">#${esc(d.id)}</td>
     <td class="c-date">${fmtDate(d.date_entered) || '—'}</td>
     <td class="c-task"><span title="${esc(d.task)}">${esc(d.task)}</span></td>
@@ -2242,10 +2665,40 @@ function renderTable(){
     <td>${whoCell(d.assignee)}</td>
     <td class="c-svc">${d.recurring ? RECUR_ICON : ''}${esc(d.service_type) || '—'}</td>
     <td class="c-date">${fmtDate(d.due_date) || '—'}</td>
-    <td>${durCell(d.duration)}</td></tr>`).join('')
-    : `<tr><td colspan="10"><div class="empty">No tasks match the current filters.<br><span style="font-size:12.5px">Try clearing a filter or the search box.</span></div></td></tr>`;
-  [...$('tbody').querySelectorAll('tr')].forEach((tr, i) => {
-    const d = rows[i];
+    <td>${durCell(d.duration)}</td></tr>`;
+
+function renderTable(){
+  const start = (page - 1) * PER_PAGE, end = start + PER_PAGE;
+  const rows = view.slice(start, end);
+  if (!rows.length){
+    $('tbody').innerHTML = `<tr><td colspan="10"><div class="empty">No tasks match the current filters.<br><span style="font-size:12.5px">Try clearing a filter or the search box.</span></div></td></tr>`;
+  } else if (!groupBy){
+    $('tbody').innerHTML = rows.map(rowHTML).join('');
+  } else {
+    /* group headers break up the page; each one folds away */
+    const seen = new Map();
+    rows.forEach(d => {
+      const k = d[groupBy] || '—';
+      if (!seen.has(k)) seen.set(k, []);
+      seen.get(k).push(d);
+    });
+    const whole = countBy(view, groupBy);
+    let html = '', i = 0;
+    for (const [k, list] of seen){
+      const shut = collapsed.has(k);
+      html += `<tr class="grp${shut ? ' shut' : ''}" data-g="${esc(k)}"><td colspan="10">
+          <span class="grp-caret">▾</span><span class="grp-name">${esc(k)}</span>
+          <span class="grp-n">${list.length} here${whole[k] && whole[k] !== list.length ? ` · ${whole[k]} in view` : ''}</span>
+        </td></tr>`;
+      if (!shut) html += list.map(d => rowHTML(d, i++)).join('');
+    }
+    $('tbody').innerHTML = html;
+    $('tbody').querySelectorAll('tr.grp').forEach(tr =>
+      tr.addEventListener('click', () => toggleGroup(tr.dataset.g)));
+  }
+  const byId = new Map(rows.map(d => [String(d.id), d]));
+  $('tbody').querySelectorAll('tr[data-id]').forEach(tr => {
+    const d = byId.get(tr.dataset.id);
     if (!d) return;
     tr.addEventListener('click', () => openDrawer(d, tr));
     tr.title = 'Click for the full detail';
@@ -2325,7 +2778,7 @@ addEventListener('scroll', () => {
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-10-07T16:35:02+03:00');
+  const built = new Date('2026-10-08T09:51:21+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
@@ -2346,14 +2799,20 @@ function render(){
   renderKPIs(); renderCountrySeg(); renderMap(); renderAttention(); renderDonut(); renderColumns();
   renderYoY(); renderCompare();
   renderArea(); renderAssignees(); renderServiceHeatmap(); renderTable();
-  renderStatbar();
+  renderStatbar(); renderGroupSeg();
 }
 paintThemeBtn();
 buildFilters();
 buildPeriodPickers();
+/* a link with a view in it opens on that view */
+const fromURL = readURL();
+if (dense) document.querySelector('.log-table').classList.add('dense');
+renderGroupSeg();
 sortView();
 markSort();
 initStatbar();
+renderViews();
+$('palInput').addEventListener('input', paintPalette);
 /* the sweep runs while the first paint lands, then clears itself */
 if (!REDUCE){
   const bar = $('bootBar');
@@ -2361,6 +2820,7 @@ if (!REDUCE){
   setTimeout(() => { bar.style.opacity = 0; }, 1000);
 }
 render();
+if (fromURL) applyFilters();     /* a shared link lands on exactly its view */
 initReveal();
 initSpotlight();
 initRipple();
