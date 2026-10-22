@@ -796,7 +796,7 @@ tbody tr.grp.shut .grp-caret{transform:rotate(-90deg)}
     <button class="hbtn hbtn-icon" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme"></button>
     <div class="sync" id="sync">
       <span class="sync-dot" id="syncDot"></span>
-      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">21 Oct 2026, 09:30</span></div>
+      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">22 Oct 2026, 10:01</span></div>
     </div>
   </div>
 </header>
@@ -2778,7 +2778,7 @@ addEventListener('scroll', () => {
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-10-21T09:30:12+03:00');
+  const built = new Date('2026-10-22T10:01:14+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
