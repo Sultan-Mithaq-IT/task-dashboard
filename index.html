@@ -692,6 +692,16 @@ kbd{display:inline-block;min-width:19px;padding:1px 5px;border-radius:5px;backgr
     transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 
+/* ── Filter dropdowns must sit above the rest of the page ───────────
+   Each section animates in with a transform, which makes it its own
+   stacking layer. A menu's z-index only counts inside its own layer,
+   so without this the Overview tiles (later in the page) paint over
+   any dropdown long enough to hang past the filter card — Company and
+   Service type. Raising the whole filter section fixes every menu. */
+#secFilters{position:relative;z-index:40}
+/* and the panel holds still while you use it, rather than lifting on hover */
+.card.filters:hover{transform:none}
+
 /* ── Views bar ──────────────────────────────────────────────────── */
 .view-row{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
 .view-row .field-label{flex-shrink:0}
@@ -796,7 +806,7 @@ tbody tr.grp.shut .grp-caret{transform:rotate(-90deg)}
     <button class="hbtn hbtn-icon" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme"></button>
     <div class="sync" id="sync">
       <span class="sync-dot" id="syncDot"></span>
-      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">17 Nov 2026, 10:59</span></div>
+      <div class="sync-text"><b id="syncLabel">Synced from Excel</b><span id="syncWhen">17 Nov 2026, 12:07</span></div>
     </div>
   </div>
 </header>
@@ -809,7 +819,7 @@ tbody tr.grp.shut .grp-caret{transform:rotate(-90deg)}
 
 <main>
 
-  <section class="section">
+  <section class="section" id="secFilters">
     <div class="card filters">
       <div class="filter-grid">
         <div class="field"><div class="field-label">Year</div>
@@ -2778,7 +2788,7 @@ addEventListener('scroll', () => {
    serving old numbers and looks perfectly healthy — so say so out
    loud rather than let stale data pass as current.                */
 (function freshness(){
-  const built = new Date('2026-11-17T10:59:07+03:00');
+  const built = new Date('2026-11-17T12:07:18+03:00');
   if (isNaN(built)) return;
   const hours = (Date.now() - built.getTime()) / 36e5;
   const dot = $('syncDot'), label = $('syncLabel'), when = $('syncWhen');
